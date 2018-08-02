@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2009 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,29 +11,29 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v1;
+package org.digitalmediaserver.cuelib.id3.v1;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import main.java.org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Reader;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Tag;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Version;
-import main.java.org.digitalmediaserver.cuelib.id3.TextFrame;
+import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
+import org.digitalmediaserver.cuelib.id3.ID3Reader;
+import org.digitalmediaserver.cuelib.id3.ID3Tag;
+import org.digitalmediaserver.cuelib.id3.ID3Version;
+import org.digitalmediaserver.cuelib.id3.TextFrame;
 
 public class ID3v1Reader implements ID3Reader
 {
   public ID3v1Reader()
   {
-    
+
   }
-  
+
   public boolean hasTag(final File file) throws IOException
   {
     final RandomAccessFile input = new RandomAccessFile(file, "r");
@@ -57,7 +57,7 @@ public class ID3v1Reader implements ID3Reader
       input.close();
     }
   }
-  
+
   /*
    * (non-Javadoc)
    * @see jwbroek.id3.ID3Reader#read(java.io.File)
@@ -124,10 +124,10 @@ public class ID3v1Reader implements ID3Reader
     {
       input.close();
     }
-    
+
     return tag;
   }
-  
+
   public static String getField
     ( final RandomAccessFile input
     , final int length
@@ -137,7 +137,7 @@ public class ID3v1Reader implements ID3Reader
     for (int index = 0; index < length; index++)
     {
       int i = input.readUnsignedByte();
-      
+
       if (i==0)
       {
         // End of buffer.
@@ -152,7 +152,7 @@ public class ID3v1Reader implements ID3Reader
     // TODO remove trailing spaces if desired.
     return result.toString();
   }
-  
+
 	/**
 	 * @param args
 	 */

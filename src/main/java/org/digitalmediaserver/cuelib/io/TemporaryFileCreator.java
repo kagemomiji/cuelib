@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,19 +11,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.io;
+package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import jwbroek.util.LogUtil;
+import org.digitalmediaserver.cuelib.util.LogUtil;
 
 /**
  * Utility class for creating temporary files.
@@ -43,7 +42,7 @@ final public class TemporaryFileCreator
    * Lock for counter.
    */
   private static Object counterLock = new Object();
-  
+
   /**
    * Create a temporary directory based on the information provided. The directory will be
    * deleted when the VM ends. An effort is made to avoid naming conflicts, but such a
@@ -63,7 +62,7 @@ final public class TemporaryFileCreator
       (TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory()", result);
     return result;
   }
-  
+
   /**
    * Create a temporary directory based on the information provided. The directory will be
    * deleted when the VM ends. An effort is made to avoid naming conflicts, but such a
@@ -85,7 +84,7 @@ final public class TemporaryFileCreator
       (TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory(File)", result);
     return result;
   }
-  
+
   /**
    * Create a temporary file based on the information provided. The file will be deleted when
    * the VM ends. An effort is made to avoid naming conflicts, but such a conflict cannot be
@@ -104,7 +103,7 @@ final public class TemporaryFileCreator
       (TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile()", result);
     return result;
   }
-  
+
   /**
    * Create a temporary file based on the information provided. The file will be deleted when
    * the VM ends. An effort is made to avoid naming conflicts, but such a conflict cannot be
@@ -125,7 +124,7 @@ final public class TemporaryFileCreator
       (TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile(File)", result);
     return result;
   }
-  
+
   /**
    * Create a temporary file or directory based on the information provided. The file or
    * directory will be deleted when the VM ends. An effort is made to avoid naming conflicts,
@@ -165,10 +164,10 @@ final public class TemporaryFileCreator
       , methodName
       , new Object [] {prefix, suffix, directory, maxAttempts, createDirectory}
       );
-    
+
     IOException ioException = null;
     File result = null;
-    
+
     if (maxAttempts < 1)
     {
       // TODO This error message should come from a ResourceBundle.
@@ -181,7 +180,7 @@ final public class TemporaryFileCreator
         );
       throw tooFewAttemptsException;
     }
-    
+
     // The filename consists of the prefix, a random number in hex, and a number from the counter.
     // This is probably a little overkill, but you never know...
     int counterNumber;
@@ -193,7 +192,7 @@ final public class TemporaryFileCreator
       .append(Double.toHexString(Math.random()))
       .append(counterNumber)
       ;
-    
+
     // Make the specified number of attempt to create a temporary file.
     for (int attempt = 0; result == null && attempt < maxAttempts; attempt++)
     {
@@ -214,7 +213,7 @@ final public class TemporaryFileCreator
         LogUtil.logStacktrace(TemporaryFileCreator.logger, Level.FINE, ioException);
       }
     }
-    
+
     // If we have no result, then that must be because an exception was thrown. We'll rethrow it.
     if (result == null)
     {
@@ -222,7 +221,7 @@ final public class TemporaryFileCreator
         (TemporaryFileCreator.class.getCanonicalName(), methodName, ioException);
       throw ioException;
     }
-    
+
     TemporaryFileCreator.logger.exiting
       (TemporaryFileCreator.class.getCanonicalName(), methodName, result);
     return result;
@@ -259,9 +258,9 @@ final public class TemporaryFileCreator
       , methodName
       , new Object [] {name, suffix, directory, createDirectory}
       );
-    
+
     File result = null;
-    
+
     // Determine directory to create the file or directory in.
     final File parentDirectory;
     if (directory==null)
@@ -272,7 +271,7 @@ final public class TemporaryFileCreator
     {
       parentDirectory = directory;
     }
-    
+
     if (createDirectory)
     {
       // We need to create a temporary directory.
@@ -304,10 +303,10 @@ final public class TemporaryFileCreator
         result = File.createTempFile(name + (suffix==null?".tmp":suffix), suffix, parentDirectory);
       }
     }
-    
+
     // Request that the file is deleted after the VM ends.
     result.deleteOnExit();
-    
+
     TemporaryFileCreator.logger.exiting
       (TemporaryFileCreator.class.getCanonicalName(), methodName, result);
     return result;

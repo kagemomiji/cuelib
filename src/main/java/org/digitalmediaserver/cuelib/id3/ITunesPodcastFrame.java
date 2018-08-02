@@ -1,7 +1,7 @@
 /*
  * Created on Aug 31, 2009
  */
-package main.java.org.digitalmediaserver.cuelib.id3;
+package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
@@ -10,7 +10,7 @@ public class ITunesPodcastFrame implements ID3Frame
   private int totalFrameSize;
   private Properties flags = new Properties();
   private String payload;
-  
+
   public ITunesPodcastFrame()
   {
   }
@@ -19,7 +19,7 @@ public class ITunesPodcastFrame implements ID3Frame
   {
     this.totalFrameSize = totalFrameSize;
   }
-  
+
   @Override
   public String toString()
   {
@@ -30,18 +30,21 @@ public class ITunesPodcastFrame implements ID3Frame
             ;
     return builder.toString();
   }
-  
-  public CanonicalFrameType getCanonicalFrameType()
+
+  @Override
+public CanonicalFrameType getCanonicalFrameType()
   {
     return CanonicalFrameType.ITUNES_PODCAST;
   }
 
-  public Properties getFlags()
+  @Override
+public Properties getFlags()
   {
     return this.flags;
   }
 
-  public int getTotalFrameSize()
+  @Override
+public int getTotalFrameSize()
   {
     return this.totalFrameSize;
   }

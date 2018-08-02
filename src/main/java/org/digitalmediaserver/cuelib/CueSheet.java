@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,12 +111,12 @@ public class CueSheet
      */
     YEAR
   }
-  
+
   /**
    * Messages that concern this CueSheet.
    */
   private final List<Message> messages = new ArrayList<Message>();
-  
+
   // Various components of a cue sheet.
   /**
    * The file components of the cue sheet.
@@ -183,7 +183,7 @@ public class CueSheet
     CueSheet.logger.entering(CueSheet.class.getCanonicalName(), "CueSheet()");
     CueSheet.logger.exiting(CueSheet.class.getCanonicalName(), "CueSheet()");
   }
-  
+
   /**
    * Convenience method for getting metadata from the cue sheet. If a certain metadata field is not set, the
    * method will return the empty string. When a field is ambiguous (such as the track number on a cue sheet
@@ -196,7 +196,7 @@ public class CueSheet
   {
     CueSheet.logger.entering(CueSheet.class.getCanonicalName(), "getMetaData(MetaDataField)", metaDataField);
     String result;
-    
+
     switch (metaDataField)
     {
       case CATALOG:
@@ -241,7 +241,7 @@ public class CueSheet
         logger.throwing(CueSheet.class.getCanonicalName(), "getMetaData(MetaDataField)", exception);
         throw exception;
     }
-    
+
     logger.exiting(CueSheet.class.getCanonicalName(), "getMetaData(MetaDataField)", result);
     return result;
   }
@@ -258,7 +258,7 @@ public class CueSheet
     this.messages.add(new Error(lineOfInput, message));
     logger.exiting(CueSheet.class.getCanonicalName(), "addError(LineOfInput,String)");
   }
-  
+
   /**
    * Add a warning message to this cue sheet.
    * @param lineOfInput The line of input that caused the warning.
@@ -271,7 +271,7 @@ public class CueSheet
     this.messages.add(new Warning(lineOfInput, message));
     logger.exiting(CueSheet.class.getCanonicalName(), "addWarning(LineOfInput,String)");
   }
-  
+
   /**
    * Get all track data described in this cue sheet.
    * @return All track data associated described in this cue sheet.
@@ -281,17 +281,17 @@ public class CueSheet
     logger.entering(CueSheet.class.getCanonicalName(), "getAllTrackData()");
     
     List<TrackData> allTrackData = new ArrayList<TrackData>();
-    
+
     for (FileData fileData: this.fileData)
     {
       allTrackData.addAll(fileData.getTrackData());
     }
-    
+
     logger.exiting(CueSheet.class.getCanonicalName(), "getAllTrackData()", allTrackData);
     
     return allTrackData;
   }
-  
+
   /**
    * Get the disc's media catalog number. It should be 13 digits and compliant with UPC/EAN rules.
    * Null signifies that the catalog has not been specified.
@@ -303,7 +303,7 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getCatalog()", this.catalog);
     return this.catalog;
   }
-  
+
   /**
    * Set the disc's media catalog number. It should be 13 digits and compliant with UPC/EAN rules.
    * Null signifies that the catalog has not been specified.
@@ -315,7 +315,7 @@ public class CueSheet
     this.catalog = catalog;
     logger.exiting(CueSheet.class.getCanonicalName(), "setCatalog(String)");
   }
-  
+
   /**
    * Get the file containing cd text data. Null signifies that no such file has been specified.
    * @return The file containing cd text data.
@@ -326,7 +326,7 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getCdTextFile()", this.cdTextFile);
     return this.cdTextFile;
   }
-  
+
   /**
    * Set the file containing cd text data. Null signifies that no such file has been specified.
    * @param cdTextFile The file containing cd text data
@@ -337,10 +337,10 @@ public class CueSheet
     this.cdTextFile = cdTextFile;
     logger.exiting(CueSheet.class.getCanonicalName(), "setCdTextFile(String)");
   }
-  
+
   /**
    * Get the performer of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @return The performer of the album
    */
   public String getPerformer()
@@ -349,10 +349,10 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getPerformer()", this.performer);
     return this.performer;
   }
-  
+
   /**
    * Set the performer of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @param performer The performer of the album.
    */
   public void setPerformer(final String performer)
@@ -361,10 +361,10 @@ public class CueSheet
     this.performer = performer;
     logger.exiting(CueSheet.class.getCanonicalName(), "setPerformer(String)");
   }
-  
+
   /**
    * Get the songwriter of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @return The songwriter of the album
    */
   public String getSongwriter()
@@ -373,10 +373,10 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getSongwriter()", this.songwriter);
     return this.songwriter;
   }
-  
+
   /**
    * Set the songwriter of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @param songwriter The songwriter of the album.
    */
   public void setSongwriter(final String songwriter)
@@ -385,10 +385,10 @@ public class CueSheet
     this.songwriter = songwriter;
     logger.exiting(CueSheet.class.getCanonicalName(), "setSongwriter(String)");
   }
-  
+
   /**
    * Get the title of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @return The title of the album
    */
   public String getTitle()
@@ -397,10 +397,10 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getTitle()", this.title);
     return this.title;
   }
-  
+
   /**
    * Set the title of the album. For burning as cd-text, it should be a maximum of 80 characters.
-   * May be null. 
+   * May be null.
    * @param title The title of the album.
    */
   public void setTitle(final String title)
@@ -409,7 +409,7 @@ public class CueSheet
     this.title = title;
     logger.exiting(CueSheet.class.getCanonicalName(), "setTitle(String)");
   }
-  
+
   /**
    * Get the id for the disc. Typically the freedb disc id. May be null.
    * @return The id for the disc.
@@ -497,7 +497,7 @@ public class CueSheet
     this.comment = comment;
     logger.exiting(CueSheet.class.getCanonicalName(), "setComment(String)");
   }
-  
+
   /**
    * Get the file data for this cue sheet.
    * @return The file data for this cue sheet.
@@ -508,7 +508,7 @@ public class CueSheet
     logger.exiting(CueSheet.class.getCanonicalName(), "getFileData()", this.fileData);
     return this.fileData;
   }
-  
+
   /**
    * Get the parsing messages for this cue sheet.
    * @return The parsing messages for the cue sheet.

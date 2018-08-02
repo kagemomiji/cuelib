@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package jwbroek.io;
+package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -69,7 +69,7 @@ public class FileSelectorTest
    * {@link FileSelectorTest#firstDir} + {@link FileSelectorTest#maxDirs}.
    */
   private final static String rootSubdirPrefix = "testDir";
-  
+
   /**
    * <p>Create a testing environment containing various files and directories.</p>
    * <p>The layout is as follows: ([] is directory; {} is logical name (not actual name))</p>
@@ -111,10 +111,10 @@ public class FileSelectorTest
     final int fileBound = firstFile + maxFiles;
     // Dir bound
     final int dirBound = firstDir + maxDirs;
-    
+
     // Create a temporary directory in which to create a test environment.
     this.testRoot = TemporaryFileCreator.createTemporaryDirectory();
-    
+
     // Create numbered files.
     for (int fileIndex = firstFile; fileIndex < fileBound; fileIndex++)
     {
@@ -124,7 +124,7 @@ public class FileSelectorTest
     // Create a file with a name that starts with the name of the root directory and ends in "file".
     TemporaryFileCreator.createNamedTemporaryFileOrDirectory
       (this.testRoot.getName() + "file", "", this.testRoot, false, true);
-    
+
     // Create numbered directories.
     for (int dirIndex = firstDir; dirIndex < dirBound; dirIndex++)
     {
@@ -134,7 +134,7 @@ public class FileSelectorTest
     // Create a directory with the same name as the root directory.
     TemporaryFileCreator.createNamedTemporaryFileOrDirectory
       (this.testRoot.getName(), "", this.testRoot, true, true);
-    
+
     // Create a directory called "a" in the root.
     File newRootDir = TemporaryFileCreator.createNamedTemporaryFileOrDirectory
       ("a", "", this.testRoot, true, true);
@@ -153,7 +153,7 @@ public class FileSelectorTest
     TemporaryFileCreator.createNamedTemporaryFileOrDirectory("b3", "", subDir, false, true);
     TemporaryFileCreator.createNamedTemporaryFileOrDirectory("b4", "", subDir, false, true);
   }
-  
+
   /**
    * Clean up the testing environment.
    */
@@ -166,7 +166,7 @@ public class FileSelectorTest
       this.testRoot.delete();
     }
   }
-  
+
   /**
    * Test for {@link FileSelector#getDirsFilter()}.
    */
@@ -178,10 +178,10 @@ public class FileSelectorTest
     final int bound = FileSelectorTest.firstDir + FileSelectorTest.maxDirs;
     for (int index = FileSelectorTest.firstDir; index < bound; index++)
     {
-      prediction.add(new File(this.testRoot, FileSelectorTest.rootSubdirPrefix + index));      
+      prediction.add(new File(this.testRoot, FileSelectorTest.rootSubdirPrefix + index));
     }
     prediction.add(new File(this.testRoot, this.testRoot.getName()));
-    prediction.add(new File(this.testRoot, "a"));      
+    prediction.add(new File(this.testRoot, "a"));
     testFileFilter(this.testRoot, filter, prediction, "FileSelector.getDirsFilter()");
   }
 
@@ -196,12 +196,12 @@ public class FileSelectorTest
     final int bound = FileSelectorTest.firstFile + FileSelectorTest.maxFiles;
     for (int index = FileSelectorTest.firstFile; index < bound; index++)
     {
-      prediction.add(new File(this.testRoot, FileSelectorTest.rootFilePrefix + index));      
+      prediction.add(new File(this.testRoot, FileSelectorTest.rootFilePrefix + index));
     }
     prediction.add(new File(this.testRoot, this.testRoot.getName() + "file"));
     testFileFilter(this.testRoot, filter, prediction, "FileSelector.testFilesFileFilter()");
   }
-  
+
   /**
    * Test for {@link FileSelector#getFileNamePatternFilter(Pattern)}.
    */
@@ -212,10 +212,10 @@ public class FileSelectorTest
     // "File" or "Dir", then 3 digits, and then a "1" or "2". No other files must be matched.
     FileFilter filter = FileSelector.getFileNamePatternFilter(Pattern.compile("test(?:File|Dir)\\d{3}[12].*"));
     Set<File> prediction = new HashSet<File>();
-    
+
     // We can be clever and optimize these loops by using "%", greater increments and some "if" statements. This is
     // much clearer though, and speed isn't much of an issue, so I'll leave it like this.
-    
+
     // Add all qualifying files.
     final int fileBound = FileSelectorTest.firstFile + FileSelectorTest.maxFiles;
     for (int index = FileSelectorTest.firstFile; index < fileBound; index++)
@@ -237,7 +237,7 @@ public class FileSelectorTest
     }
     testFileFilter(this.testRoot, filter, prediction, "FileSelector.getFileNamePatternFilter(Pattern)");
   }
-  
+
   /**
    * Create a Pattern that must match any file that starts with the name of its parent directory.
    * @return A Pattern that must match any file that starts with the name of its parent directory.
@@ -273,7 +273,7 @@ public class FileSelectorTest
     prediction.add(new File(this.testRoot, this.testRoot.getName()));
     testFileFilter(this.testRoot, filter, prediction, "FileSelector.getPathPatternFilter(Pattern)");
   }
-  
+
   /**
    * Test for {@link FileSelector#getCombinedFileFilter(FileFilter[])} and
    * {@link FileSelector#getCombinedFileFilter(Iterable)}.
@@ -292,7 +292,7 @@ public class FileSelectorTest
     testFileFilter
       (this.testRoot, combinedFileFilter, prediction, "FileSelector.getCombinedFileFilter(FileFilter[])");
   }
-  
+
   /**
    * Test for {@link FileSelector#getCombinedFileFilter(Iterable)}.
    */
@@ -313,7 +313,7 @@ public class FileSelectorTest
     testFileFilter
       (this.testRoot, combinedFileFilter, prediction, "FileSelector.getCombinedFileFilter(Iterable)");
   }
-  
+
   /**
    * Test for {@link FileSelector#getIntersectionFileFilter(FileFilter[])} and
    * {@link FileSelector#getIntersectionFileFilter(Iterable)}.
@@ -332,7 +332,7 @@ public class FileSelectorTest
     testFileFilter
       (this.testRoot, intersectionFileFilter, prediction, "FileSelector.getIntersectionFileFilter(FileFilter[])");
   }
-  
+
   /**
    * Test for {@link FileSelector#getIntersectionFileFilter(Iterable)}.
    */
@@ -353,7 +353,7 @@ public class FileSelectorTest
     testFileFilter
       (this.testRoot, intersectionFileFilter, prediction, "FileSelector.getIntersectionFileFilter(Iterable)");
   }
-  
+
   /**
    * Test for {@link FileSelector#getUnionFileFilter(FileFilter[])} and
    * {@link FileSelector#getUnionFileFilter(Iterable)}.
@@ -371,7 +371,7 @@ public class FileSelectorTest
     testFileFilter
       (new File(this.testRoot, "a"), unionFileFilter, prediction, "FileSelector.getUnionFileFilter(FileFilter[])");
   }
-  
+
   /**
    * Test for {@link FileSelector#getUnionFileFilter(Iterable)}.
    */
@@ -391,7 +391,7 @@ public class FileSelectorTest
     testFileFilter
       (new File(this.testRoot, "a"), unionFileFilter, prediction, "FileSelector.getUnionFileFilter(Iterable)");
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, Pattern, long, boolean, boolean)} with negative depth.
    */
@@ -400,13 +400,13 @@ public class FileSelectorTest
   {
     final List<File> matchedFiles;
     final Set<File> prediction = new HashSet<File>();
-    
+
     // Should match no files due to depth of -1.
     matchedFiles = FileSelector.selectFiles(this.testRoot, Pattern.compile(".*"), -1, true, true);
     testFilesAgainstPrediction
       (matchedFiles, prediction, "FileSelector.selectFiles(File,Pattern,boolean,boolean); negative depth");
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, Pattern, long, boolean, boolean)} with depth zero.
    */
@@ -415,14 +415,14 @@ public class FileSelectorTest
   {
     final List<File> matchedFiles;
     final Set<File> prediction = new HashSet<File>();
-    
+
     // Should match only root due to depth of 0.
     matchedFiles = FileSelector.selectFiles(this.testRoot, Pattern.compile(".*"), 0, true, true);
     prediction.add(this.testRoot);
     testFilesAgainstPrediction
       (matchedFiles, prediction, "FileSelector.selectFiles(File,Pattern,boolean,boolean); depth zero");
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, Pattern, long, boolean, boolean)} with depth zero and no
    * consideration of base file.
@@ -432,8 +432,8 @@ public class FileSelectorTest
   {
     final List<File> matchedFiles;
     final Set<File> prediction = new HashSet<File>();
-    
-    // Should match nothing due to considerBaseFile=false and depth = 0. 
+
+    // Should match nothing due to considerBaseFile=false and depth = 0.
     matchedFiles = FileSelector.selectFiles(this.testRoot, Pattern.compile(".*"), 0, false, true);
     testFilesAgainstPrediction
       ( matchedFiles
@@ -441,7 +441,7 @@ public class FileSelectorTest
       , "FileSelector.selectFiles(File,Pattern,boolean,boolean); depth zero, no consideration of base file"
       );
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, Pattern, long, boolean, boolean)} for all files at depth one
    * of which the name starts with the name of the root.
@@ -451,7 +451,7 @@ public class FileSelectorTest
   {
     final List<File> matchedFiles;
     final Set<File> prediction;
-    
+
     // Match all files and directories in the root directory that have the same name as the root.
     matchedFiles = FileSelector.selectFiles
       (this.testRoot, FileSelectorTest.getParentDirNameAsFileNamePattern(), 1, false, true);
@@ -465,7 +465,7 @@ public class FileSelectorTest
       + " all files at depth one of which the name starts with the name of the root"
       );
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, Pattern, long, boolean, boolean)} for all files of which the
    * name starts with the name of their parent.
@@ -475,7 +475,7 @@ public class FileSelectorTest
   {
     final List<File> matchedFiles;
     final Set<File> prediction;
-    
+
     // Match all files and directories in the entire tree minus the root that have a name that starts with
     // the name of their parent.
     matchedFiles = FileSelector.selectFiles
@@ -492,7 +492,7 @@ public class FileSelectorTest
       + "all files of which the name starts with the name of the root"
       );
   }
-  
+
   /**
    * Test for {@link FileSelector#selectFiles(File, FileFilter, List, long, boolean, boolean)}.
    */
@@ -505,7 +505,7 @@ public class FileSelectorTest
     final int bound = FileSelectorTest.firstFile + FileSelectorTest.maxFiles;
     for (int index = FileSelectorTest.firstFile; index < bound; index++)
     {
-      prediction.add(new File(this.testRoot, FileSelectorTest.rootFilePrefix + index));      
+      prediction.add(new File(this.testRoot, FileSelectorTest.rootFilePrefix + index));
     }
     prediction.add(new File(this.testRoot, this.testRoot.getName() + "file"));
     prediction.add(new File(this.testRoot, "a" + File.separator + "b3"));
@@ -513,7 +513,7 @@ public class FileSelectorTest
     prediction.add(new File(this.testRoot, "a" + File.separator + "a" + File.separator + "a"));
     prediction.add(new File(this.testRoot, "a" + File.separator + "a" + File.separator + "b3"));
     prediction.add(new File(this.testRoot, "a" + File.separator + "a" + File.separator + "b4"));
-    
+
     // Match all files.
     FileSelector.selectFiles(this.testRoot, filter, matchedFiles, Integer.MAX_VALUE, false, true);
     testFilesAgainstPrediction
@@ -523,7 +523,7 @@ public class FileSelectorTest
       + "all files, but not directories"
       );
   }
-  
+
   /**
    * Test the specified {@link FileFilter}.
    * @param directory The directory where the test must take place.
@@ -540,10 +540,10 @@ public class FileSelectorTest
   {
     // Get the files that matched the filter.
     final File [] matchedFiles = directory.listFiles(filter);
-    
+
     testFilesAgainstPrediction(Arrays.asList(matchedFiles), predictedResult, filterName);
   }
-  
+
   /**
    * Test the specified set of {@link File} instances against the predicted set of instances.
    * @param filesFound The files and directories that were found.
@@ -560,7 +560,7 @@ public class FileSelectorTest
     final Set<File> unmatchedFiles = new HashSet<File>(predictedResult);
     final Set<File> matchedFiles = new HashSet<File>();
     matchedFiles.addAll(filesFound);
-    
+
     // There should be no duplicate files matched. While this is not explicitly guaranteed, it would certainly be
     // highly undesirable.
     Assert.assertEquals
@@ -568,7 +568,7 @@ public class FileSelectorTest
       , filesFound.size()
       , matchedFiles.size()
       );
-    
+
     // All matched files must be in the prediction.
     for (File acceptedFile : filesFound)
     {
@@ -578,11 +578,11 @@ public class FileSelectorTest
         );
       unmatchedFiles.remove(acceptedFile);
     }
-    
+
     for (File unmatchedFile : unmatchedFiles)
     {
       Assert.assertTrue
-        ( methodDescription + " did not match predicted file: '" + unmatchedFile.toString() + "'" 
+        ( methodDescription + " did not match predicted file: '" + unmatchedFile.toString() + "'"
         , false
         );
     }

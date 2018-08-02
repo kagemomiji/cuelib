@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.logging.Logger;
 
@@ -47,7 +47,7 @@ public abstract class MessageImplementation implements Message
    * The message type.
    */
   private String type;
-  
+
   /**
    * Create a new MessageImplementation.
    * @param type The type of the message.
@@ -62,7 +62,7 @@ public abstract class MessageImplementation implements Message
     this.type = type;
     MessageImplementation.logger.exiting(MessageImplementation.class.getCanonicalName(), "MessageImplementation(String)");
   }
-  
+
   /**
    * Create a new MessageImplementation.
    * @param type The type of the message.
@@ -83,7 +83,7 @@ public abstract class MessageImplementation implements Message
     MessageImplementation.logger.exiting
       (MessageImplementation.class.getCanonicalName(), "MessageImplementation(String,LineOfInput,String)");
   }
-  
+
   /**
    * Create a new MessageImplementation.
    * @param type The type of the message.
@@ -110,7 +110,8 @@ public abstract class MessageImplementation implements Message
    * Get a textual representation of this message.
    * @return A textual representation of this message.
    */
-  public String toString()
+  @Override
+public String toString()
   {
     MessageImplementation.logger.entering(MessageImplementation.class.getCanonicalName(), "toString()");
     StringBuilder builder = new StringBuilder(input).append('\n');
@@ -124,7 +125,8 @@ public abstract class MessageImplementation implements Message
    * Get the input that this message applies to.
    * @return The input that this message applies to.
    */
-  public String getInput()
+  @Override
+public String getInput()
   {
     MessageImplementation.logger.entering(MessageImplementation.class.getCanonicalName(), "getInput()");
     MessageImplementation.logger.exiting(MessageImplementation.class.getCanonicalName(), "getInput()", this.input);
@@ -146,7 +148,8 @@ public abstract class MessageImplementation implements Message
    * Get the line number of the input that this message applies to.
    * @return The line number of the input that this message applies to.
    */
-  public int getLineNumber()
+  @Override
+public int getLineNumber()
   {
     MessageImplementation.logger.entering(MessageImplementation.class.getCanonicalName(), "getLineNumber()");
     MessageImplementation.logger.exiting
@@ -170,7 +173,8 @@ public abstract class MessageImplementation implements Message
    * Get the text for this message.
    * @return The text for this message.
    */
-  public String getMessage()
+  @Override
+public String getMessage()
   {
     MessageImplementation.logger.entering(MessageImplementation.class.getCanonicalName(), "getMessage()");
     MessageImplementation.logger.exiting(MessageImplementation.class.getCanonicalName(), "getMessage()", this.message);

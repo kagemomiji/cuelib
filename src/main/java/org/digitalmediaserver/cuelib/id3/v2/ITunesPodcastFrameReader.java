@@ -1,11 +1,11 @@
 /*
  * Created on Aug 31, 2009
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2;
+package org.digitalmediaserver.cuelib.id3.v2;
 
 import java.io.IOException;
 import java.io.InputStream;
-import main.java.org.digitalmediaserver.cuelib.id3.ITunesPodcastFrame;
+import org.digitalmediaserver.cuelib.id3.ITunesPodcastFrame;
 
 public class ITunesPodcastFrameReader implements FrameReader
 {

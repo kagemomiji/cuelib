@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.tools.trackcutter;
+package org.digitalmediaserver.cuelib.tools.trackcutter;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -35,11 +35,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.sound.sampled.AudioFileFormat;
-import main.java.org.digitalmediaserver.cuelib.Position;
-import main.java.org.digitalmediaserver.cuelib.io.FileSelector;
-import main.java.org.digitalmediaserver.cuelib.tools.trackcutter.TrackCutterConfiguration.PregapHandling;
-import main.java.org.digitalmediaserver.cuelib.util.SimpleOptionsParser;
-import main.java.org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
+import org.digitalmediaserver.cuelib.Position;
+import org.digitalmediaserver.cuelib.io.FileSelector;
+import org.digitalmediaserver.cuelib.tools.trackcutter.TrackCutterConfiguration.PregapHandling;
+import org.digitalmediaserver.cuelib.util.LogUtil;
+import org.digitalmediaserver.cuelib.util.SimpleOptionsParser;
+import org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
 
 /**
  * Command line interface for TrackCutter.
@@ -53,7 +54,7 @@ public class TrackCutterCommand
   private TrackCutterConfiguration configuration= new TrackCutterConfiguration();
   /**
    * Whether or not to do any processing. Can be set to false by options such as "-?" to indicate that
-   * no actual processing should be done. 
+   * no actual processing should be done.
    */
   private boolean doProcessing = true;
   /**
@@ -90,14 +91,14 @@ public class TrackCutterCommand
   private final static Logger logger = Logger.getLogger(TrackCutterCommand.class.getCanonicalName());
 
   /**
-   * Create a new TrackCutterCommand instance. 
+   * Create a new TrackCutterCommand instance.
    */
   private TrackCutterCommand()
   {
     TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "TrackCutterCommand()");
     TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "TrackCutterCommand()");
   }
-  
+
   /**
    * Print a help message.
    */
@@ -190,7 +191,7 @@ public class TrackCutterCommand
     System.out.println("Conflicting options may result in unpredictable behaviour.");
     TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "printHelp()");
   }
-  
+
   /**
    * Get a configurated parser for the command line arguments.
    * @return A configurated parser for the command line arguments.
@@ -202,7 +203,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Set selection pattern for file name.
             TrackCutterCommand.this.setFileNameSelectionPattern
@@ -215,7 +217,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Set selection pattern for file path.
             TrackCutterCommand.this.setPathSelectionPattern
@@ -228,7 +231,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Base directory for file selection.
             TrackCutterCommand.this.setSelectionBaseDirectory(new File(options[offset+1]));
@@ -240,7 +244,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Recurse into subdirectories.
             TrackCutterCommand.this.setRecursionDepth(Long.MAX_VALUE);
@@ -252,7 +257,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Recurse into subdirectories.
             TrackCutterCommand.this.setRecursionDepth(Long.parseLong(options[offset+1]));
@@ -264,7 +270,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Base directory for cue sheet processing.
             TrackCutterCommand.this.getConfiguration().setParentDirectory(new File(options[offset+1]));
@@ -276,7 +283,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Read a cue sheet from standard input.
             TrackCutterCommand.this.setReadCueSheetFromStdIn(true);
@@ -288,7 +296,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Create a target file. This implies no streaming to the postprocessor.
             TrackCutterCommand.this.getConfiguration().setRedirectToPostprocessing(false);
@@ -301,7 +310,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             String type = options[offset+1];
             AudioFileFormat.Type audioType = null;
@@ -339,7 +349,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Create a postprocessing command. This implies that we do postprocessing.
             TrackCutterCommand.this.getConfiguration().setDoPostProcessing(true);
@@ -353,7 +364,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Pregap handling
             if ("prepend".equalsIgnoreCase(options[offset + 1]))
@@ -385,7 +397,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Stream to postprocessor
             TrackCutterCommand.this.getConfiguration().setRedirectToPostprocessing(true);
@@ -397,7 +410,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Set frame length threshold for pregap handling.
             Scanner scanner = new Scanner(options[offset+1]).useDelimiter(":");
@@ -412,7 +426,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Redirect standard out.
             TrackCutterCommand.this.getConfiguration().setRedirectStdOut(true);
@@ -424,7 +439,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Redirect err.
             TrackCutterCommand.this.getConfiguration().setRedirectErr(true);
@@ -436,7 +452,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Override logging.
             String level = options[offset+1];
@@ -509,7 +526,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Read configuration from properties file.
             EnhancedProperties properties = new EnhancedProperties();
@@ -546,7 +564,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Write configuration to properties file after configuration has been set.
             TrackCutterCommand.this.setWritePropertiesConfigurationTo(new File(options[offset+1]));
@@ -558,7 +577,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Read configuration from XML file.
             EnhancedProperties properties = new EnhancedProperties();
@@ -595,7 +615,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Write configuration to XML file after configuration has been set.
             TrackCutterCommand.this.setWriteXmlConfigurationTo(new File(options[offset+1]));
@@ -607,7 +628,8 @@ public class TrackCutterCommand
     argumentsParser.registerOption
       ( new SimpleOptionsParser.OptionHandler()
         {
-          public int handleOption(String [] options, int offset)
+          @Override
+		public int handleOption(String [] options, int offset)
           {
             // Display help message.
             TrackCutterCommand.printHelp();
@@ -618,11 +640,11 @@ public class TrackCutterCommand
         }
       , "-?", "--help"
       );
-    
+
     TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getArgumentsParser()", argumentsParser);
     return argumentsParser;
   }
-  
+
   /**
    * Process based on the provided command line arguments.
    * @param args The command line arguments.
@@ -632,9 +654,9 @@ public class TrackCutterCommand
     TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "performProcessing(String[])", args);
     TrackCutter cutter = new TrackCutter(this.getConfiguration());
     SimpleOptionsParser argumentsParser = getArgumentsParser();
-    
+
     int firstFileIndex = argumentsParser.parseOptions(args);
-    
+
     if  (  firstFileIndex == -1                           // Something went wrong with parsing the options.
         || (  firstFileIndex == args.length               // All parameters were parsed.
            && this.getFileNameSelectionPattern() == null  // No files are to be selected based on file name.
@@ -648,7 +670,7 @@ public class TrackCutterCommand
       printHelp();
       return;
     }
-    
+
     // Write properties configuration, if requested.
     if (this.getWritePropertiesConfigurationTo()!=null)
     {
@@ -664,7 +686,7 @@ public class TrackCutterCommand
         LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
       }
     }
-    
+
     // Write XML configuration, if requested.
     if (this.getWriteXmlConfigurationTo()!=null)
     {
@@ -680,18 +702,18 @@ public class TrackCutterCommand
         LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
       }
     }
-    
+
     // Only do processing if this is not disabled. (I.e. by the "-?" command.)
     if (this.getDoProcessing())
     {
       Set<File> fileSet = new HashSet<File>();
-      
+
       // Add the explicitly specified files to the set.
       for (int fileIndex = firstFileIndex; fileIndex < args.length; fileIndex++)
       {
         fileSet.add(new File(args[fileIndex]));
       }
-      
+
       // Add the files based on the specified selection criteria, if applicable.
       List<FileFilter> fileFilters = new ArrayList<FileFilter>();
       // Only select files.
@@ -720,7 +742,7 @@ public class TrackCutterCommand
           );
         fileSet.addAll(fileList);
       }
-      
+
       // Process all specified files.
       for (File cueFile : fileSet)
       {
@@ -733,7 +755,7 @@ public class TrackCutterCommand
           LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
         }
       }
-      
+
       // Process cue sheet from standard input, if specified.
       if (this.readCueSheetFromStdIn)
       {
@@ -747,7 +769,7 @@ public class TrackCutterCommand
         }
       }
     }
-    
+
     // Set doProcessing to true, as someone may want to reuse this instance.
     this.setDoProcessing(true);
     TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "performProcessing(String[])");
@@ -775,7 +797,7 @@ public class TrackCutterCommand
       (TrackCutterCommand.class.getCanonicalName(), "getConfiguration()", this.configuration);
     return this.configuration;
   }
-  
+
   /**
    * Get whether or not to do any processing.
    * @return Whether or not to do any processing.
@@ -918,7 +940,7 @@ public class TrackCutterCommand
       , "setSelectionBaseDirectory(File)"
       );
   }
-  
+
   /**
    * Get whether or not to read a cue sheet from standard input.
    * @return Whether or not to read a cue sheet from standard input.

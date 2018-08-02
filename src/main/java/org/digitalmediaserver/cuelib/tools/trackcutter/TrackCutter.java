@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.tools.trackcutter;
+package org.digitalmediaserver.cuelib.tools.trackcutter;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,17 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import main.java.org.digitalmediaserver.cuelib.CueParser;
-import main.java.org.digitalmediaserver.cuelib.CueSheet;
-import main.java.org.digitalmediaserver.cuelib.FileData;
-import main.java.org.digitalmediaserver.cuelib.Position;
-import main.java.org.digitalmediaserver.cuelib.TrackData;
-import main.java.org.digitalmediaserver.cuelib.io.StreamPiper;
+import org.digitalmediaserver.cuelib.CueParser;
+import org.digitalmediaserver.cuelib.CueSheet;
+import org.digitalmediaserver.cuelib.FileData;
+import org.digitalmediaserver.cuelib.Position;
+import org.digitalmediaserver.cuelib.TrackData;
+import org.digitalmediaserver.cuelib.io.StreamPiper;
+import org.digitalmediaserver.cuelib.util.LogUtil;
 
 /**
  * <p>Class that can cut up files into tracks, based on the information provided by a cue sheet.</p>
@@ -51,12 +51,12 @@ public class TrackCutter
    * The logger for this class.
    */
   private final static Logger logger = Logger.getLogger(TrackCutter.class.getCanonicalName());
-  
+
   /**
    * Configuation for the TrackCutter.
    */
   private TrackCutterConfiguration configuration;
-  
+
   /**
    * Create a new TrackCutter instance, based on the configuration provided.
    * @param configuration
@@ -68,7 +68,7 @@ public class TrackCutter
     this.configuration = configuration;
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "TrackCutter(TrackCutterConfiguration)");
   }
-  
+
   /**
    * Cut the the files specified in the cue sheet into tracks.
    * @param cueFile
@@ -78,16 +78,16 @@ public class TrackCutter
   {
     TrackCutter.logger.entering(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(File)", cueFile);
     TrackCutter.logger.info("Cutting tracks in cue sheet from file '" + cueFile.toString() + "'.");
-    
+
     CueSheet cueSheet = null;
-    
+
     // If no parent directory specified, then set the parent directory of the cue file.
     if (getConfiguration().getParentDirectory()==null)
     {
       getConfiguration().setParentDirectory(cueFile.getParentFile());
       TrackCutter.logger.fine("Have set base directory to directory of File  '" + cueFile.toString() + "'.");
     }
-    
+
     try
     {
       TrackCutter.logger.fine("Parsing cue sheet.");
@@ -102,11 +102,11 @@ public class TrackCutter
       TrackCutter.logger.throwing(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(File)", resultException);
       throw resultException;
     }
-    
+
     cutTracksInCueSheet(cueSheet);
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(File)");
   }
-  
+
   /**
    * Cut the the files specified in the cue sheet that will be read from the InputStream into tracks.
    * @param inputStream
@@ -116,9 +116,9 @@ public class TrackCutter
   {
     TrackCutter.logger.entering(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(InputStream)", inputStream);
     TrackCutter.logger.info("Cutting tracks in cue sheet from InputStream.");
-    
+
     CueSheet cueSheet = null;
-    
+
     try
     {
       TrackCutter.logger.fine("Parsing cue sheet.");
@@ -133,11 +133,11 @@ public class TrackCutter
       TrackCutter.logger.throwing(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(File)", resultException);
       throw resultException;
     }
-    
+
     cutTracksInCueSheet(cueSheet);
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(InputStream)");
   }
-  
+
   /**
    * Cut the the files specified in the cue sheet into tracks.
    * @param cueSheet
@@ -147,7 +147,7 @@ public class TrackCutter
   {
     TrackCutter.logger.entering(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(CueSheet)", cueSheet);
     TrackCutter.logger.info("Cutting tracks in cue sheet.");
-    
+
     // We can process each file in the cue sheet independently.
     for (FileData fileData : cueSheet.getFileData())
     {
@@ -175,7 +175,7 @@ public class TrackCutter
     TrackCutter.logger.info("Done cutting tracks in cue sheet.");
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(CueSheet)");
   }
-  
+
   /**
    * Cut the the files specified in the FileData into tracks.
    * @param fileData
@@ -188,24 +188,24 @@ public class TrackCutter
     TrackCutter.logger.entering(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(FileData)", fileData);
     TrackCutter.logger.info("Cutting tracks from file: '" + fileData.getFile() + "'.");
     AudioInputStream audioInputStream = null;
-    
+
     try
     {
       // Determine the complete path to the audio file.
       TrackCutter.logger.fine("Determining complete path to audio file.");
       File audioFile = getConfiguration().getAudioFile(fileData);
-      
+
       // Open the audio file.
       // Sadly, we can't do much with the file type information from the cue sheet, as javax.sound.sampled
       // needs more information before it can process a specific type of sound file. Best then to let it
       // determine all aspects of the audio type by itself.
       TrackCutter.logger.fine("Opening audio stream.");
       audioInputStream = AudioSystem.getAudioInputStream(audioFile);
-      
+
       // Current position in terms of the frames as per audioInputStream.getFrameLength().
       // Note that these frames need not be equal to cue sheet frames.
       long currentAudioFramePos = 0;
-      
+
       // Process tracks.
       for (TrackCutterProcessingAction processAction : getProcessActionList(fileData))
       {
@@ -227,7 +227,7 @@ public class TrackCutter
     }
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "cutTracksInCueSheet(FileData)");
   }
-  
+
   /**
    * Get a list of ProcessActions based on the specified FileData.
    * @param fileData
@@ -239,7 +239,7 @@ public class TrackCutter
     TrackCutter.logger.fine("Determining processing actions for file: '" + fileData.getFile() + "'.");
     List<TrackCutterProcessingAction> result = new ArrayList<TrackCutterProcessingAction>();
     TrackData previousTrackData = null;
-    
+
     // Process all tracks in turn.
     for (TrackData currentTrackData : fileData.getTrackData())
     {
@@ -256,22 +256,22 @@ public class TrackCutter
       }
       previousTrackData = currentTrackData;
     }
-    
+
     // Handle last track, if any.
     if (previousTrackData != null)
     {
       addProcessActions(previousTrackData, null, result);
     }
-    
+
     TrackCutter.logger.exiting(TrackCutter.class.getCanonicalName(), "getProcessActionList(FileData)", result);
     return result;
   }
-  
+
   /**
    * Add ProcesAction instances for the specified TrackData.
    * @param trackData
    * @param nextPosition The first position after the current track, or null if there is no next position.
-   * (Track continues until the end of data.) 
+   * (Track continues until the end of data.)
    * @param processActions A list of ProcessAction instances to which the actions for this TrackData
    * will be added.
    */
@@ -381,7 +381,7 @@ public class TrackCutter
       , "addProcessActions(TrackData,Position,List<TrackCutterProcessingAction>)"
       );
   }
-  
+
   /**
    * Perform the specified ProcessAction.
    * @param processAction
@@ -405,29 +405,29 @@ public class TrackCutter
       + (processAction.getIsPregap()?"pregap of ":"") + "track #"
       + processAction.getTrackData().getNumber() + "."
       );
-    
+
     // Skip positions in the audioInputStream until we are at our starting position.
     long fromAudioFramePos = skipToPosition (processAction.getStartPosition(), audioInputStream, currentAudioFramePos);
-    
+
     // Determine the position to which we should read from the input.
     long toAudioFramePos = audioInputStream.getFrameLength();
     if (processAction.getEndPosition() != null)
     {
       toAudioFramePos = getAudioFormatFrames(processAction.getEndPosition(), audioInputStream.getFormat());
     }
-    
+
     performProcessAction
       ( processAction
       , new AudioInputStream(audioInputStream, audioInputStream.getFormat(), toAudioFramePos - fromAudioFramePos)
       );
-    
+
     TrackCutter.logger.exiting
       ( TrackCutter.class.getCanonicalName()
       , "performProcessAction(TrackCutterProcessingAction,AudioInputStream,long)"
       );
     return toAudioFramePos;
   }
-  
+
   /**
    * Perform the specified ProcessAction.
    * @param processAction
@@ -447,18 +447,18 @@ public class TrackCutter
       ( "Performing processing action for " + (processAction.getIsPregap()?"pregap of ":"")
       + "track #" + processAction.getTrackData().getNumber() + "."
       );
-    
+
     if (!getConfiguration().getRedirectToPostprocessing())
     {
       // We're going to create target files, so make sure there's a directory for them.
       TrackCutter.logger.fine("Creating directory for target files.");
       processAction.getCutFile().getParentFile().mkdirs();
     }
-    
+
     if (configuration.getDoPostProcessing() && configuration.getRedirectToPostprocessing())
     {
       OutputStream audioOutputStream = null;
-      
+
       try
       {
         TrackCutter.logger.fine("Writing audio to postprocessor.");
@@ -479,20 +479,20 @@ public class TrackCutter
     {
       TrackCutter.logger.fine("Writing audio to file.");
       AudioSystem.write(audioInputStream, configuration.getTargetType(), processAction.getCutFile());
-      
+
       if (configuration.getDoPostProcessing())
       {
         TrackCutter.logger.fine("Performing postprocessing.");
         this.createPostProcessingProcess(processAction);
       }
     }
-    
+
     TrackCutter.logger.exiting
       ( TrackCutter.class.getCanonicalName()
       , "performProcessAction(TrackCutterProcessingAction,AudioInputStream)"
       );
   }
-  
+
   /**
    * Create the specified post-processing process.
    * @param processAction
@@ -511,18 +511,18 @@ public class TrackCutter
     TrackCutter.logger.fine("Creating post-processing process for command: " + processAction.getPostProcessCommand());
     processAction.getPostProcessFile().getParentFile().mkdirs();
     Process process = Runtime.getRuntime().exec(processAction.getPostProcessCommand());
-    
+
     StreamPiper.pipeStream(process.getInputStream(), processAction.getStdOutRedirectFile());
     StreamPiper.pipeStream(process.getErrorStream(), processAction.getErrRedirectFile());
-    
+
     TrackCutter.logger.exiting
       (TrackCutter.class.getCanonicalName(), "performProcessAction(TrackCutterProcessingAction)", process);
     return process;
   }
-  
+
   /**
    * Get the number of AudioFormat frames represented by the specified Position. Note that an AudioFormat
-   * frame may represent a longer or shorter time than a cue sheet frame. 
+   * frame may represent a longer or shorter time than a cue sheet frame.
    * @param position
    * @param audioFileFormat
    * @return The number of AudioFormat frames represented by the specified Position. Note that an AudioFormat
@@ -544,7 +544,7 @@ public class TrackCutter
       );
     return result;
   }
-  
+
   /**
    * Skip to the specified position in the audio data.
    * @param toPosition The position to skip to.
@@ -570,7 +570,7 @@ public class TrackCutter
       (TrackCutter.class.getCanonicalName(), "skipToPosition(Position,AudioInputStream,long)", toAudioFramePos);
     return toAudioFramePos;
   }
-  
+
   /**
    * Get the configuration for this TrackCutter.
    * @return The configuration for this TrackCutter.

@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2009 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.util;
+package org.digitalmediaserver.cuelib.id3.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ public class FieldReader
   {
     // No need to instantiate.
   }
-  
+
   public static String readUntilNul(final InputStream input, final int length, final Charset charset) throws IOException
   {
     final boolean singleNul;
@@ -58,10 +58,10 @@ public class FieldReader
     {
       throw new IllegalArgumentException("Encoding not supported: " + charset.toString());
     }
-    
+
     final byte [] b = new byte[length];
     int previousValue = -1;
-    
+
     for (int index = 0; index < length; index++)
     {
       byte currentValue = (byte) input.read();
@@ -78,7 +78,7 @@ public class FieldReader
     }
     return new String(b, charset);
   }
-  
+
   public static String readField(final InputStream input, final int length, final Charset charset) throws IOException
   {
     // Read entire field, but throw away everything after first nul character.

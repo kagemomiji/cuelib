@@ -16,10 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.util.properties;
+package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
-import main.java.org.digitalmediaserver.cuelib.util.NullUtil;
+import org.digitalmediaserver.cuelib.util.NullUtil;
 import java.util.logging.Logger;
 
 /**

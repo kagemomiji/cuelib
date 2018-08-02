@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,18 +11,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * Class for serializing a {@link main.java.org.digitalmediaserver.cuelib.CueSheet CueSheet} back to a string representation. Does the
+ * Class for serializing a {@link org.digitalmediaserver.cuelib.CueSheet CueSheet} back to a string representation. Does the
  * inverse job of CueParser.
  * @author jwbroek
  */
@@ -45,7 +45,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.entering(CueSheetSerializer.class.getCanonicalName(), "CueSheetSerializer()");
     CueSheetSerializer.logger.exiting(CueSheetSerializer.class.getCanonicalName(), "CueSheetSerializer()");
   }
-  
+
   /**
    * Create a CueSheetSerializer with the specified indentationValue.
    * @param indentationValue This String will be used for indentation.
@@ -58,28 +58,28 @@ public class CueSheetSerializer
     this.indentationValue = indentationValue;
     CueSheetSerializer.logger.exiting(CueSheetSerializer.class.getCanonicalName(), "CueSheetSerializer(String)");
   }
-  
+
   /**
    * Get a textual representation of the cue sheet. If the cue sheet was parsed, then the output
    * of this method is not necessarily identical to the parsed sheet, though it will contain the
    * same data. Fields may appear in a different order, whitespace may change, comments may be
    * gone, etc.
    * @param cueSheet The CueSheet to serialize.
-   * @return A textual representation of the cue sheet. 
+   * @return A textual representation of the cue sheet.
    */
   public String serializeCueSheet(final CueSheet cueSheet)
   {
     CueSheetSerializer.logger.entering
       (CueSheetSerializer.class.getCanonicalName(), "serializeCueSheet(CueSheet)", cueSheet);
     StringBuilder builder = new StringBuilder();
-    
+
     serializeCueSheet(builder, cueSheet, "");
-    
+
     String result = builder.toString();
     CueSheetSerializer.logger.exiting(CueSheetSerializer.class.getCanonicalName(), "serializeCueSheet(CueSheet)", result);
     return result;
   }
-  
+
   /**
    * Serialize the CueSheet.
    * @param builder The StringBuilder to serialize to.
@@ -105,7 +105,7 @@ public class CueSheetSerializer
     addField(builder, "TITLE", indentation, cueSheet.getTitle());
     addField(builder, "SONGWRITER", indentation, cueSheet.getSongwriter());
     addField(builder, "CDTEXTFILE", indentation, cueSheet.getCdTextFile());
-    
+
     for (FileData fileData : cueSheet.getFileData())
     {
       serializeFileData(builder, fileData, indentation);
@@ -114,7 +114,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.exiting
       (CueSheetSerializer.class.getCanonicalName(), "serializeCueSheet(StringBuilder,CueSheet,String)");
   }
-  
+
   /**
    * Serialize the FileData.
    * @param builder The StringBuilder to serialize to.
@@ -130,19 +130,19 @@ public class CueSheetSerializer
       );
     
     builder.append(indentation).append("FILE");
-    
+
     if (fileData.getFile() != null)
     {
       builder.append(' ').append(quoteIfNecessary(fileData.getFile()));
     }
-                
+
     if (fileData.getFileType() != null)
     {
       builder.append(' ').append(quoteIfNecessary(fileData.getFileType()));
     }
 
     builder.append('\n');
-    
+
     for (TrackData trackData : fileData.getTrackData())
     {
       serializeTrackData(builder, trackData, indentation + this.getIndentationValue());
@@ -170,19 +170,19 @@ public class CueSheetSerializer
       );
     
     builder.append(indentation).append("TRACK");
-    
+
     if (trackData.getNumber() > -1)
     {
       builder.append(' ').append(String.format("%1$02d", trackData.getNumber()));
     }
-                
+
     if (trackData.getDataType() != null)
     {
       builder.append(' ').append(quoteIfNecessary(trackData.getDataType()));
     }
-    
+
     builder.append('\n');
-    
+
     String childIndentation = indentation + this.getIndentationValue();
 
     addField(builder, "ISRC", childIndentation, trackData.getIsrcCode());
@@ -191,12 +191,12 @@ public class CueSheetSerializer
     addField(builder, "SONGWRITER", childIndentation, trackData.getSongwriter());
     addField(builder, "PREGAP", childIndentation, trackData.getPregap());
     addField(builder, "POSTGAP", childIndentation, trackData.getPostgap());
-    
+
     if (trackData.getFlags().size() > 0)
     {
       serializeFlags(builder, trackData.getFlags(), childIndentation);
     }
-    
+
     for (Index index : trackData.getIndices())
     {
       serializeIndex(builder, index, childIndentation);
@@ -207,7 +207,7 @@ public class CueSheetSerializer
       , "serializeTrackData(StringBuilder,TrackData,String)"
       );
   }
-  
+
   /**
    * Serialize the flags.
    * @param builder The StringBuilder to serialize to.
@@ -232,7 +232,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.exiting
       (CueSheetSerializer.class.getCanonicalName(), "serializeFlags(StringBuilder,Set<String>,String)");
   }
-  
+
   /**
    * Serialize the index.
    * @param builder The StringBuilder to serialize to.
@@ -257,13 +257,13 @@ public class CueSheetSerializer
     {
       builder.append(' ').append(formatPosition(index.getPosition()));
     }
-    
+
     builder.append('\n');
     
     CueSheetSerializer.logger.exiting
       (CueSheetSerializer.class.getCanonicalName(), "serializeIndex(StringBuilder,Index,String)");
   }
-  
+
   /**
    * Format the specified position.
    * @param position
@@ -277,7 +277,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.exiting(CueSheetSerializer.class.getCanonicalName(), "formatPosition(Position)", result);
     return result;
   }
-  
+
   /**
    * Add a field to the builder. The field is only added if the value is != null.
    * @param cueBuilder
@@ -341,7 +341,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.exiting
       (CueSheetSerializer.class.getCanonicalName(), "addField(StringBuilder,String,String,String)");
   }
-  
+
   /**
    * Add a field to the builder. The field is only added if the value is > -1.
    * @param cueBuilder
@@ -373,7 +373,7 @@ public class CueSheetSerializer
     CueSheetSerializer.logger.exiting
       (CueSheetSerializer.class.getCanonicalName(), "addField(StringBuilder,String,String,int)");
   }
-  
+
   /**
    * Enclose the string in double quotes if it contains whitespace.
    * @param input

@@ -16,11 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.tools.trackcutter;
+package org.digitalmediaserver.cuelib.tools.trackcutter;
 
 import java.io.File;
-import main.java.org.digitalmediaserver.cuelib.Position;
-import main.java.org.digitalmediaserver.cuelib.TrackData;
+import org.digitalmediaserver.cuelib.Position;
+import org.digitalmediaserver.cuelib.TrackData;
 import java.util.logging.Logger;
 
 /**

@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.tools.trackcutter;
+package org.digitalmediaserver.cuelib.tools.trackcutter;
 
 import java.io.File;
 import java.util.HashMap;
@@ -24,14 +24,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioFileFormat;
-import main.java.org.digitalmediaserver.cuelib.CueSheet;
-import main.java.org.digitalmediaserver.cuelib.FileData;
-import main.java.org.digitalmediaserver.cuelib.TrackData;
-import main.java.org.digitalmediaserver.cuelib.tools.genrenormalizer.GenreNormalizer;
-import main.java.org.digitalmediaserver.cuelib.util.StringReplacer;
-import main.java.org.digitalmediaserver.cuelib.util.properties.AudioFileFormatTypePropertyHandler;
-import main.java.org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
-import main.java.org.digitalmediaserver.cuelib.util.properties.FilePropertyHandler;
+import org.digitalmediaserver.cuelib.CueSheet;
+import org.digitalmediaserver.cuelib.FileData;
+import org.digitalmediaserver.cuelib.TrackData;
+import org.digitalmediaserver.cuelib.tools.genrenormalizer.GenreNormalizer;
+import org.digitalmediaserver.cuelib.util.StringReplacer;
+import org.digitalmediaserver.cuelib.util.properties.AudioFileFormatTypePropertyHandler;
+import org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
+import org.digitalmediaserver.cuelib.util.properties.FilePropertyHandler;
 
 /**
  * This class represents a configuration for a TrackCutter instance. It takes care of much of the bookkeeping,

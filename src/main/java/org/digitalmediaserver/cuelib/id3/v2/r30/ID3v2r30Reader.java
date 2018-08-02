@@ -16,18 +16,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2.r30;
+package org.digitalmediaserver.cuelib.id3.v2.r30;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Reader;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Tag;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Version;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.UnsynchedInputStream;
+import org.digitalmediaserver.cuelib.id3.ID3Reader;
+import org.digitalmediaserver.cuelib.id3.ID3Tag;
+import org.digitalmediaserver.cuelib.id3.ID3Version;
+import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
+import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
+import org.digitalmediaserver.cuelib.id3.v2.UnsynchedInputStream;
 
 public class ID3v2r30Reader implements ID3Reader
 {

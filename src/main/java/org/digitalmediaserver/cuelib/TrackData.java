@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,18 +11,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import main.java.org.digitalmediaserver.cuelib.CueSheet.MetaDataField;
+import org.digitalmediaserver.cuelib.CueSheet.MetaDataField;
 import java.util.logging.Logger;
 
 /**
@@ -82,7 +82,7 @@ public class TrackData
    * The file data that this track data belongs to.
    */
   private FileData parent;
-  
+
   /**
    * Create a new TrackData instance.
    * @param parent The file data that this track data belongs to. Should not be null.
@@ -93,7 +93,7 @@ public class TrackData
     this.parent = parent;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "TrackData(FileData)");
   }
-  
+
   /**
    * Create a new TrackData instance.
    * @param parent The file data that this track data belongs to. Should not be null.
@@ -112,7 +112,7 @@ public class TrackData
     this.dataType = dataType;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "TrackData(FileData,int,String)");
   }
-  
+
   /**
    * Convenience method for getting metadata from the cue sheet. If a certain metadata field is not set, the method
    * will return the empty string. When a field is ambiguous (such as the track number on a cue sheet instead of on a
@@ -170,7 +170,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getDataType()", this.dataType);
     return this.dataType;
   }
-  
+
   /**
    * Set the data type of this track. Null signifies that it has not been set.
    * @param dataType The data type of this track. Null signifies that it has not been set.
@@ -181,7 +181,7 @@ public class TrackData
     this.dataType = dataType;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setDataType(String)");
   }
-  
+
   /**
    * Get the ISRC code of this track. Null signifies that it has not been set.
    * @return The ISRC code of this track. Null signifies that it has not been set.
@@ -192,7 +192,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIsrcCode()", this.isrcCode);
     return this.isrcCode;
   }
-  
+
   /**
    * Set the ISRC code of this track. Null signifies that it has not been set.
    * @param isrcCode The ISRC code of this track. Null signifies that it has not been set.
@@ -203,7 +203,7 @@ public class TrackData
     this.isrcCode = isrcCode;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setIsrcCode(String)");
   }
-  
+
   /**
    * Get the track number. -1 signifies that it has not been set.
    * @return The track number. -1 signifies that it has not been set.
@@ -214,7 +214,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getNumber()", this.number);
     return this.number;
   }
-  
+
   /**
    * Set the track number. -1 signifies that it has not been set.
    * @param number The track number. -1 signifies that it has not been set.
@@ -225,7 +225,7 @@ public class TrackData
     this.number = number;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setNumber(int)");
   }
-  
+
   /**
    * Get the performer of this track. Null signifies that it has not been set.
    * @return The performer of this track. Null signifies that it has not been set.
@@ -236,7 +236,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPerformer()", this.performer);
     return this.performer;
   }
-  
+
   /**
    * Set the performer of this track. Null signifies that it has not been set.
    * @param performer The performer of this track. Null signifies that it has not been set. Should be a maximum of 80
@@ -248,7 +248,7 @@ public class TrackData
     this.performer = performer;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPerformer(String)");
   }
-  
+
   /**
    * Get the postgap of this track. Null signifies that it has not been set.
    * @return The postgap of this track. Null signifies that it has not been set.
@@ -259,7 +259,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPostgap()", this.postgap);
     return this.postgap;
   }
-  
+
   /**
    * Set the postgap of this track. Null signifies that it has not been set.
    * @param postgap The postgap of this track. Null signifies that it has not been set.
@@ -270,7 +270,7 @@ public class TrackData
     this.postgap = postgap;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPostgap(Position)");
   }
-  
+
   /**
    * Get the pregap of this track. Null signifies that it has not been set.
    * @return The pregap of this track. Null signifies that it has not been set.
@@ -281,7 +281,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPregap()", this.pregap);
     return this.pregap;
   }
-  
+
   /**
    * Set the pregap of this track. Null signifies that it has not been set.
    * @param pregap The pregap of this track. Null signifies that it has not been set.
@@ -292,10 +292,10 @@ public class TrackData
     this.pregap = pregap;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPregap(Position)");
   }
-  
+
   /**
    * Get the songwriter of this track. Null signifies that it has not been set.
-   * @return The songwriter of this track. Null signifies that it has not been set. 
+   * @return The songwriter of this track. Null signifies that it has not been set.
    */
   public String getSongwriter()
   {
@@ -303,7 +303,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getSongwriter()", this.songwriter);
     return this.songwriter;
   }
-  
+
   /**
    * Set the songwriter of this track. Null signifies that it has not been set. Should be a maximum of 80
    * characters if you want to burn to CD-TEXT.
@@ -316,10 +316,10 @@ public class TrackData
     this.songwriter = songwriter;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setSongwriter(String)");
   }
-  
+
   /**
    * Get the title of this track. Null signifies that it has not been set.
-   * @return The title of this track. Null signifies that it has not been set. 
+   * @return The title of this track. Null signifies that it has not been set.
    */
   public String getTitle()
   {
@@ -327,7 +327,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getTitle()", this.title);
     return this.title;
   }
-  
+
   /**
    * Set the title of this track. Null signifies that it has not been set. Should be a maximum of 80
    * characters if you want to burn to CD-TEXT.
@@ -340,7 +340,7 @@ public class TrackData
     this.title = title;
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setTitle(String)");
   }
-  
+
   /**
    * Get the index with the specified number, or null if there is no such index.
    * @param number The number of the desired index.
@@ -351,7 +351,7 @@ public class TrackData
     TrackData.logger.entering(TrackData.class.getCanonicalName(), "getIndex(int)");
     
     Index result = null;
-    
+
     // Note: we have to pass all indices until we've found the right one, as we don't enforce that indices are sorted.
     // Normally, this shouldn't be a problem, as there are generally very few indices. (Only rarely more than 2).
     indexLoop:
@@ -367,7 +367,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIndex(int)", result);
     return result;
   }
-  
+
   /**
    * Get the indices for this track data.
    * @return The indices for this track data.
@@ -378,7 +378,7 @@ public class TrackData
     TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIndices()", this.indices);
     return this.indices;
   }
-  
+
   /**
    * Get the flags for this track data.
    * @return The flags for this track data.

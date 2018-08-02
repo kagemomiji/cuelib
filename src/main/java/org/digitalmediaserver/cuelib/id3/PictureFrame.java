@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2009 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3;
+package org.digitalmediaserver.cuelib.id3;
 
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
@@ -35,13 +35,13 @@ public class PictureFrame implements ID3Frame
   //"PNG", "JPG" for 2.0, MIME for later version. Can also be "-->", in which case the payload is a hyperlink
   // to the image.
   // TODO Tidy up for usecase when hyperlink is used.
-  private String imageType; 
+  private String imageType;
   private byte[] imageData;
-  
+
   public PictureFrame()
   {
   }
-  
+
   @Override
   public String toString()
   {
@@ -55,35 +55,38 @@ public class PictureFrame implements ID3Frame
             ;
     return builder.toString();
   }
-  
+
   public void setPictureType(final PictureType pictureType)
   {
     this.pictureType = pictureType;
     this.pictureNumber = pictureType.getNumber();
   }
-  
+
   public int getPictureNumber()
   {
     return this.pictureNumber;
   }
-  
+
   public void setPictureNumber(final int number)
   {
     this.pictureNumber = number;
     this.pictureType = PictureType.getPictureType(number);
   }
 
-  public CanonicalFrameType getCanonicalFrameType()
+  @Override
+public CanonicalFrameType getCanonicalFrameType()
   {
     return CanonicalFrameType.PICTURE;
   }
 
-  public Properties getFlags()
+  @Override
+public Properties getFlags()
   {
     return this.flags;
   }
 
-  public int getTotalFrameSize()
+  @Override
+public int getTotalFrameSize()
   {
     return this.totalFrameSize;
   }
@@ -92,7 +95,7 @@ public class PictureFrame implements ID3Frame
   {
     this.totalFrameSize = totalFrameSize;
   }
-  
+
   /**
    * @return the charset
    */
@@ -108,7 +111,7 @@ public class PictureFrame implements ID3Frame
   {
     this.charset = charset;
   }
-  
+
   /**
    * Get the description of this PictureFrame.
    * @return The description of this PictureFrame.
@@ -162,7 +165,7 @@ public class PictureFrame implements ID3Frame
   {
     this.imageData = imageData;
   }
-  
+
   public enum PictureType
   {
     OTHER(0),
@@ -187,9 +190,9 @@ public class PictureFrame implements ID3Frame
     BAND_OR_ARTIST_LOGOTYPE(19),
     PUBLISHER_OR_STUDIO_LOGOTYPE(20),
     UNOFFICIAL(21);  // Needs additional info.
-    
+
     private static Map<Integer,PictureType> numberToType = new HashMap<Integer,PictureType>();
-    
+
     static
     {
       for (int index = 0; index < PictureType.values().length; index++)
@@ -197,19 +200,19 @@ public class PictureFrame implements ID3Frame
         PictureType.numberToType.put(PictureType.values()[index].getNumber(), PictureType.values()[index]);
       }
     }
-    
+
     private int number;
-    
+
     PictureType(final int number)
     {
       this.number = number;
     }
-    
+
     public int getNumber()
     {
       return this.number;
     }
-    
+
     public static PictureType getPictureType(final int number)
     {
       PictureType result = PictureType.numberToType.get(number);

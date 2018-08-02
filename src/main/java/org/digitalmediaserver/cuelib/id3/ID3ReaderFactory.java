@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2009 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,30 +11,30 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3;
+package org.digitalmediaserver.cuelib.id3;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-import main.java.org.digitalmediaserver.cuelib.id3.v1.ID3v1Reader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.r00.ID3v2r00Reader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.r30.ID3v2r30Reader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.r40.ID3v2r40Reader;
+import org.digitalmediaserver.cuelib.id3.v1.ID3v1Reader;
+import org.digitalmediaserver.cuelib.id3.v2.r00.ID3v2r00Reader;
+import org.digitalmediaserver.cuelib.id3.v2.r30.ID3v2r30Reader;
+import org.digitalmediaserver.cuelib.id3.v2.r40.ID3v2r40Reader;
 
 public class ID3ReaderFactory
 {
   public ID3ReaderFactory()
   {
-    
+
   }
-  
+
   public ID3Reader getReader(final ID3Version version)
   {
     switch(version)
@@ -60,7 +60,7 @@ public class ID3ReaderFactory
   {
     return this.getReader(this.getVersion(file));
   }
-  
+
   /**
    * Get the ID3v2 version for this file. Will be null if no supported ID3 tag is found.
    * @param input
@@ -70,7 +70,7 @@ public class ID3ReaderFactory
   private ID3Version getID3v2Version(final RandomAccessFile input) throws IOException
   {
     ID3Version result = null;
-    
+
     if  ( input.read() == 'I'
       && input.read() == 'D'
       && input.read() == '3'
@@ -92,7 +92,7 @@ public class ID3ReaderFactory
     }
     return result;
   }
-  
+
   /**
    * Get the ID3v1 version for this file. Will be null if no supported ID3 tag is found.
    * @param input
@@ -102,7 +102,7 @@ public class ID3ReaderFactory
   private ID3Version getID3v1Version(final RandomAccessFile input) throws IOException
   {
     ID3Version result = null;
-    
+
     if (input.length() >= 128)
     {
       input.seek(input.length()-128);
@@ -132,7 +132,7 @@ public class ID3ReaderFactory
     }
     return result;
   }
-  
+
   /**
    * Get the ID3 version for this file. Will be null if no supported ID3 tag is found. Will be the highest supported
    * version if multiple tags are present.
@@ -143,21 +143,21 @@ public class ID3ReaderFactory
   public ID3Version getVersion(final File file) throws IOException
   {
     // TODO Support the difference between no ID3 & unsupported version of ID3. Are currently both mapped by null.
-    
+
     final RandomAccessFile input = new RandomAccessFile(file, "r");
     try
     {
       ID3Version result = null;
-      
+
       // First look for a V2 style tag.
       result = this.getID3v2Version(input);
-      
+
       // If we have no result, check for a V1 style tag.
       if (result == null)
       {
         result = this.getID3v1Version(input);
       }
-      
+
       return result;
     }
     finally
@@ -165,7 +165,7 @@ public class ID3ReaderFactory
       input.close();
     }
   }
-  
+
   /**
    * Get the ID3 versions for this file. Unsupported versions will not be reported.
    * @param file
@@ -176,7 +176,7 @@ public class ID3ReaderFactory
   {
     // TODO Support the difference between no ID3 & unsupported version of ID3. Are currently both mapped by null.
     final List<ID3Version> result = new ArrayList<ID3Version>();
-    
+
     final RandomAccessFile input = new RandomAccessFile(file, "r");
     try
     {
@@ -185,13 +185,13 @@ public class ID3ReaderFactory
       {
         result.add(v2result);
       }
-      
+
       final ID3Version v1result = this.getID3v1Version(input);
       if (v1result != null)
       {
         result.add(v1result);
       }
-      
+
       return result;
     }
     finally
@@ -199,7 +199,7 @@ public class ID3ReaderFactory
       input.close();
     }
   }
-  
+
   public static void main(String ... param)
   {
     try
@@ -207,7 +207,7 @@ public class ID3ReaderFactory
       // For testing purposes...
       final ID3ReaderFactory rf = new ID3ReaderFactory();
       final File file1 = new File("C:\\tmp\\mp3\\Anaal Nathrakh\\Rock Tribune CD Sampler Juli 2009\\12_The Lucifer Effect.mp3");
-      
+
       for (ID3Version id3Version: rf.getVersions(file1))
       {
         System.out.println(id3Version);

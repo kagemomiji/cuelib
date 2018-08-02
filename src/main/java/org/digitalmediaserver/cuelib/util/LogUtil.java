@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package jwbroek.util;
+package org.digitalmediaserver.cuelib.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -37,9 +37,9 @@ public final class LogUtil
    * The logger for this class.
    */
   private final static Logger logger = Logger.getLogger(LogUtil.class.getCanonicalName());
-  
+
   /**
-   * This constructor need never be called as all members of this class are static.  
+   * This constructor need never be called as all members of this class are static.
    */
   private LogUtil()
   {
@@ -48,7 +48,7 @@ public final class LogUtil
     LogUtil.logger.warning("jwbroek.util.LogUtil should not be instantiated.");
     LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
   }
-  
+
   /**
    * Convenience method to log the stack trace of a Throwable to the specified Logger at the specified Level.
    * @param logger Logger to log to.
@@ -62,7 +62,7 @@ public final class LogUtil
       , "logStacktrace(Logger,Level,Throwable)"
       , new Object[] {logger, level, throwable}
       );
-    
+
     // No need to do anything if the message isn't loggable.
     if (logger.isLoggable(level))
     {
@@ -70,10 +70,10 @@ public final class LogUtil
       throwable.printStackTrace(new PrintWriter(sw));
       logger.log(level, sw.toString());
     }
-    
+
     LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)");
   }
-  
+
   /**
    * Get the Level that is currently active on the specified Logger. Will search though parent Logger as necessary.
    * @param logger The Logger to determine the Level of.
@@ -82,14 +82,14 @@ public final class LogUtil
   public static Level getActiveLoggingLevel(Logger logger)
   {
     LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", logger);
-    
+
     Logger currentLogger = logger;
     Level result = null;
-    
-    do 
+
+    do
     {
       result = logger.getLevel();
-      
+
       if (currentLogger.getUseParentHandlers())
       {
         currentLogger = currentLogger.getParent();
@@ -99,11 +99,11 @@ public final class LogUtil
         currentLogger = null;
       }
     } while (result==null && currentLogger != null);
-    
+
     LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", result);
     return result;
   }
-  
+
   /**
    * Get whether or not the information that is logged at the specified Level to the specified Logger
    * will be handled by a Handler that is an instance of the specified class. Note that since loggers
@@ -123,10 +123,10 @@ public final class LogUtil
       , "hasHandlerActive(Logger,Level,Class)"
       , new Object[] {logger, level, handlerClass}
       );
-    
+
     Logger currentLogger = logger;
     boolean result = false;
-    
+
     loopOverLoggers:
     while (currentLogger != null && currentLogger.isLoggable(level))
     {
@@ -141,7 +141,7 @@ public final class LogUtil
           break loopOverLoggers;
         }
       }
-      
+
       if (currentLogger.getUseParentHandlers())
       {
         currentLogger = currentLogger.getParent();
@@ -151,11 +151,11 @@ public final class LogUtil
         currentLogger = null;
       }
     }
-    
+
     LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", result);
     return result;
   }
-  
+
   /**
    * Get a list of all currently active Handlers on the specified Logger. Note that handlers can be
    * dynamically added and removed, so this information is not guaranteed to be correct at any moment.
@@ -166,9 +166,9 @@ public final class LogUtil
   {
     LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", logger);
     final Set<Handler> handlers = new HashSet<Handler>();
-    
+
     Logger currentLogger = logger;
-    
+
     while (currentLogger != null)
     {
       handlers.addAll(Arrays.asList(currentLogger.getHandlers()));
@@ -181,7 +181,7 @@ public final class LogUtil
         currentLogger = null;
       }
     }
-    
+
     LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", handlers);
     return handlers;
   }

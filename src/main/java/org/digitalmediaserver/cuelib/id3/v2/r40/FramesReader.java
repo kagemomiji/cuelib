@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2.r40;
+package org.digitalmediaserver.cuelib.id3.v2.r40;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,21 +25,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import main.java.org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Frame;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Tag;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.COMFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.FrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.ITunesPodcastFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.MCIFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.PICFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.TXXFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.TextFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.UFIFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.URLFrameReader;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
-import main.java.org.digitalmediaserver.cuelib.id3.v2.WXXFrameReader;
+import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
+import org.digitalmediaserver.cuelib.id3.ID3Frame;
+import org.digitalmediaserver.cuelib.id3.ID3Tag;
+import org.digitalmediaserver.cuelib.id3.v2.COMFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.FrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.ITunesPodcastFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.MCIFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
+import org.digitalmediaserver.cuelib.id3.v2.PICFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.TXXFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.TextFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.UFIFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.URLFrameReader;
+import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
+import org.digitalmediaserver.cuelib.id3.v2.WXXFrameReader;
 
 public class FramesReader
 {

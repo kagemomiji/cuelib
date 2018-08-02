@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class FileData
    * The CueSheet that this FileData belongs to.
    */
   private CueSheet parent;
-  
+
   /**
    * Create a new FileData instance.
    * @param parent The CueSheet that this FileData is associated with.
@@ -59,7 +59,7 @@ public class FileData
     this.parent = parent;
     FileData.logger.exiting(FileData.class.getCanonicalName(), "FileData(CueSheet)");
   }
-  
+
   /**
    * Create a new FileData instance.
    * @param parent The CueSheet that this FileData is associated with.
@@ -88,7 +88,7 @@ public class FileData
   {
     FileData.logger.entering(FileData.class.getCanonicalName(), "getAllIndices()");
     List<Index> allIndices = new ArrayList<Index>();
-    
+
     for (TrackData trackData: this.trackData)
     {
       allIndices.addAll(trackData.getIndices());
@@ -97,7 +97,7 @@ public class FileData
     FileData.logger.exiting(FileData.class.getCanonicalName(), "getAllIndices()", allIndices);
     return allIndices;
   }
-  
+
   /**
    * Get the file that this FileData applies to. May be null, though this is not compliant.
    * @return The file that this FileData applies to. May be null, though this is not compliant.
@@ -108,7 +108,7 @@ public class FileData
     FileData.logger.exiting(FileData.class.getCanonicalName(), "getFile()", this.file);
     return this.file;
   }
-  
+
   /**
    * Set the file that this FileData applies to. May be null, though this is not compliant.
    * @param file The file that this FileData applies to. May be null, though this is not compliant.
@@ -119,7 +119,7 @@ public class FileData
     this.file = file;
     FileData.logger.exiting(FileData.class.getCanonicalName(), "setFile(String)");
   }
-  
+
   /**
    * Get the file type for this FileData. May be null, or any string value, though this is not necessarily
    * compliant.
@@ -132,7 +132,7 @@ public class FileData
     FileData.logger.exiting(FileData.class.getCanonicalName(), "getFileType()", this.fileType);
     return this.fileType;
   }
-  
+
   /**
    * Set the file type for this FileData. May be null, or any string value, though this is not necessarily
    * compliant.
@@ -145,7 +145,7 @@ public class FileData
     this.fileType = fileType;
     FileData.logger.exiting(FileData.class.getCanonicalName(), "setFileType(String)");
   }
-  
+
   /**
    * Get the track data for this file data.
    * @return The track data for this file data.
@@ -156,7 +156,7 @@ public class FileData
     FileData.logger.exiting(FileData.class.getCanonicalName(), "getTrackData()", this.trackData);
     return this.trackData;
   }
-  
+
   /**
    * Get the CueSheet that this FileData belongs to.
    * @return The CueSheet that this FileData belongs to.

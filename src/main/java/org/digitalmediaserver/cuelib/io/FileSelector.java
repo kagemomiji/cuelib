@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.io;
+package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.FileFilter;

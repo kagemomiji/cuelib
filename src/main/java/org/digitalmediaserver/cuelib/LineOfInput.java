@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.logging.Logger;
 
@@ -42,7 +42,7 @@ public class LineOfInput
    * The CueSheet associated with this input.
    */
   private final CueSheet associatedSheet;
-  
+
   /**
    * Create a new LineOfInput.
    * @param lineNumber Number of this line.
@@ -61,7 +61,7 @@ public class LineOfInput
     this.associatedSheet = associatedSheet;
     LineOfInput.logger.exiting(Index.class.getCanonicalName(), "LineOfInput(int,String,CueSheet)");
   }
-  
+
   /**
    * Get the CueSheet associated with this input.
    * @return The CueSheet associated with this input.

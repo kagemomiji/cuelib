@@ -16,11 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2.r00;
+package org.digitalmediaserver.cuelib.id3.v2.r00;
 
 import java.util.HashMap;
 import java.util.Map;
-import main.java.org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
+import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
 
 public class FrameDictionary
 {

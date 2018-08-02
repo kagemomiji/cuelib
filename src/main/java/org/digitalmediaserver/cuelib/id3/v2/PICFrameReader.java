@@ -16,16 +16,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2;
+package org.digitalmediaserver.cuelib.id3.v2;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import main.java.org.digitalmediaserver.cuelib.id3.CommentFrame;
-import main.java.org.digitalmediaserver.cuelib.id3.ID3Frame;
-import main.java.org.digitalmediaserver.cuelib.id3.PictureFrame;
-import main.java.org.digitalmediaserver.cuelib.id3.util.FieldReader;
-import main.java.org.digitalmediaserver.cuelib.io.ByteCountInputStream;
+import org.digitalmediaserver.cuelib.id3.CommentFrame;
+import org.digitalmediaserver.cuelib.id3.ID3Frame;
+import org.digitalmediaserver.cuelib.id3.PictureFrame;
+import org.digitalmediaserver.cuelib.id3.util.FieldReader;
+import org.digitalmediaserver.cuelib.io.ByteCountInputStream;
 
 public class PICFrameReader implements FrameReader
 {

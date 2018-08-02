@@ -16,14 +16,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.id3.v2;
+package org.digitalmediaserver.cuelib.id3.v2;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import main.java.org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
-import main.java.org.digitalmediaserver.cuelib.id3.TextFrame;
-import main.java.org.digitalmediaserver.cuelib.id3.util.FieldReader;
+import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
+import org.digitalmediaserver.cuelib.id3.TextFrame;
+import org.digitalmediaserver.cuelib.id3.util.FieldReader;
 
 public class TextFrameReader implements FrameReader
 {

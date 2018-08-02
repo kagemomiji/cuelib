@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib;
+package org.digitalmediaserver.cuelib;
 
 import java.util.logging.Logger;
 
@@ -42,7 +42,7 @@ public class Position
    * The number of frames in this position. Must be >= 0. Should be < 75.
    */
   private int frames = 0;
-  
+
   /**
    * Create a new Position.
    */
@@ -51,7 +51,7 @@ public class Position
     Position.logger.entering(Position.class.getCanonicalName(), "Position()");
     Position.logger.exiting(Position.class.getCanonicalName(), "Position()");
   }
-  
+
   /**
    * Create a new Position.
    * @param minutes The number of minutes in this position. Must be >= 0. Should be < 60.
@@ -70,7 +70,7 @@ public class Position
     this.frames = frames;
     Position.logger.exiting(Position.class.getCanonicalName(), "Position(int,int,int)");
   }
-  
+
   /**
    * Get the total number of frames represented by this position. This is equal to
    * frames + (75 * (seconds + 60 * minutes)).
@@ -83,7 +83,7 @@ public class Position
     Position.logger.exiting(Position.class.getCanonicalName(), "getTotalFrames()", result);
     return result;
   }
-  
+
   /**
    * Get the number of frames in this position. Must be >= 0. Should be < 75.
    * @return The number of frames in this position. Must be >= 0. Should be < 75.

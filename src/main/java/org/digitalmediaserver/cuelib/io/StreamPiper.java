@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2008 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,12 +11,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package main.java.org.digitalmediaserver.cuelib.io;
+package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,8 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import jwbroek.util.LogUtil;
+import org.digitalmediaserver.cuelib.util.LogUtil;
 
 /**
  * Utility class for piping data from an InputStream to an OutputStream, or to nowhere. This class is particularly useful
@@ -51,7 +50,7 @@ public class StreamPiper implements Runnable
    * The logger for this class.
    */
   private final static Logger logger = Logger.getLogger(StreamPiper.class.getCanonicalName());
-  
+
   /**
    * Pipe all input from the InputStream to the OutputStream. The OutputStream is explicitly allowed to be null.
    * In such a case, all input will be discarded. In any case, the OutputStream will not be closed by StreamPiper,
@@ -66,7 +65,7 @@ public class StreamPiper implements Runnable
       (StreamPiper.class.getCanonicalName(), "StreamPiper(InputStream,OutputStream)", new Object[] {from, to});
     StreamPiper.logger.exiting(StreamPiper.class.getCanonicalName(), "StreamPiper(InputStream,OutputStream)");
   }
-  
+
   /**
    * Pipe all input from the InputStream to the OutputStream. The OutputStream is explicitly allowed to be null.
    * In such a case, all input will be discarded. In any case, the OutputStream will only be closed by StreamPiper if
@@ -87,7 +86,7 @@ public class StreamPiper implements Runnable
     this.closeOutput = closeOutput;
     StreamPiper.logger.exiting(StreamPiper.class.getCanonicalName(), "StreamPiper(InputStream,OutputStream,boolean)");
   }
-  
+
   /**
    * Pipe the contents of the specified input stream to the specified file, or throw it away if the file is
    * null.
@@ -107,11 +106,12 @@ public class StreamPiper implements Runnable
     new Thread(new StreamPiper(from, out, true)).start();
     StreamPiper.logger.exiting(StreamPiper.class.getCanonicalName(), "pipeStream(InputStream,File)");
   }
-  
+
   /**
    * Perform the data piping.
    */
-  public void run()
+  @Override
+public void run()
   {
     StreamPiper.logger.entering(StreamPiper.class.getCanonicalName(), "run()");
     try
