@@ -18,35 +18,31 @@
  */
 package org.digitalmediaserver.cuelib.id3;
 
-public enum ID3Version
-{
-  ID3v1(1,0),
-  ID3v1r0(1,0),
-  ID3v1r1(1,1),
-  ID3v2(2,0),
-  ID3v2r0(2,0),
-  ID3v2r2(2,2),
-  ID3v2r3(2,3),
-  ID3v2r4(3,3);
+public enum ID3Version {
+	ID3v1(1, 0),
+	ID3v1r0(1, 0),
+	ID3v1r1(1, 1),
+	ID3v2(2, 0),
+	ID3v2r0(2, 0),
+	ID3v2r2(2, 2),
+	ID3v2r3(2, 3),
+	ID3v2r4(3, 3);
 
-  private int majorVersion;
-  private int minorVersion;
+	private int majorVersion;
+	private int minorVersion;
 
-  ID3Version(final int majorVersion, final int minorVersion)
-  {
-    this.majorVersion = majorVersion;
-    this.minorVersion = minorVersion;
-  }
+	ID3Version(final int majorVersion, final int minorVersion) {
+		this.majorVersion = majorVersion;
+		this.minorVersion = minorVersion;
+	}
 
-  public int getMajorVersion()
-  {
-    return this.majorVersion;
-  }
+	public int getMajorVersion() {
+		return this.majorVersion;
+	}
 
-  public int getMinorVersion()
-  {
-    return this.minorVersion;
-  }
+	public int getMinorVersion() {
+		return this.minorVersion;
+	}
 
-  // TODO Provide better ordering.
+	// TODO Provide better ordering.
 }

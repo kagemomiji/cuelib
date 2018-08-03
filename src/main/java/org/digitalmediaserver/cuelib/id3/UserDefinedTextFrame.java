@@ -21,110 +21,97 @@ package org.digitalmediaserver.cuelib.id3;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
-public class UserDefinedTextFrame implements ID3Frame
-{
-  private String description;
-  private String text;
-  private int totalFrameSize;
-  private Charset charset = Charset.forName("ISO-8859-1");
-  private Properties flags = new Properties();
+public class UserDefinedTextFrame implements ID3Frame {
 
-  /**
-   * @return the flags
-   */
-  @Override
-public Properties getFlags()
-  {
-    return flags;
-  }
+	private String description;
+	private String text;
+	private int totalFrameSize;
+	private Charset charset = Charset.forName("ISO-8859-1");
+	private Properties flags = new Properties();
 
-  public UserDefinedTextFrame()
-  {
-  }
+	/**
+	 * @return the flags
+	 */
+	@Override
+	public Properties getFlags() {
+		return flags;
+	}
 
-  @Override
-  public String toString()
-  {
-    final StringBuilder builder = new StringBuilder();
-    builder .append("User defined text frame [").append(this.totalFrameSize).append("] ")
-            .append(this.charset.toString()).append('\n')
-            .append("Flags: ").append(this.flags.toString()).append('\n')
-            .append("Description: ").append(this.description).append('\n')
-            .append("Text: ").append(this.text)
-            ;
-    return builder.toString();
-  }
+	public UserDefinedTextFrame() {
+	}
 
-  /**
-   *
-   * @param charset
-   */
-  public void setCharset(final Charset charset)
-  {
-    this.charset = charset;
-  }
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("User defined text frame [").append(this.totalFrameSize).append("] ")
+			.append(this.charset.toString()).append('\n')
+			.append("Flags: ").append(this.flags.toString()).append('\n')
+			.append("Description: ").append(this.description).append('\n')
+			.append("Text: ").append(this.text);
+		return builder.toString();
+	}
 
-  /**
-   *
-   * @return
-   */
-  public Charset getCharset()
-  {
-    return this.charset;
-  }
+	/**
+	 *
+	 * @param charset
+	 */
+	public void setCharset(final Charset charset) {
+		this.charset = charset;
+	}
 
-  /**
-   * @return the declaredSize
-   */
-  @Override
-public int getTotalFrameSize()
-  {
-    return totalFrameSize;
-  }
+	/**
+	 *
+	 * @return
+	 */
+	public Charset getCharset() {
+		return this.charset;
+	}
 
-  /**
-   * @param totalFrameSize the totalFrameSize to set
-   */
-  public void setTotalFrameSize(final int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	/**
+	 * @return the declaredSize
+	 */
+	@Override
+	public int getTotalFrameSize() {
+		return totalFrameSize;
+	}
 
-  /**
-   * @return the text
-   */
-  public String getText()
-  {
-    return text;
-  }
+	/**
+	 * @param totalFrameSize the totalFrameSize to set
+	 */
+	public void setTotalFrameSize(final int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  /**
-   * @param text the text to set
-   */
-  public void setText(String text)
-  {
-    this.text = text;
-  }
+	/**
+	 * @return the text
+	 */
+	public String getText() {
+		return text;
+	}
 
-  /**
-   * @return the description
-   */
-  public String getDescription()
-  {
-    return description;
-  }
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
 
-  /**
-   * @param description the description to set
-   */
-  public void setDescription(String name)
-  {
-    this.description = name;
-  }
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-  @Override
-public CanonicalFrameType getCanonicalFrameType()
-  {
-    return CanonicalFrameType.USER_DEFINED_TEXT;
-  }
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public CanonicalFrameType getCanonicalFrameType() {
+		return CanonicalFrameType.USER_DEFINED_TEXT;
+	}
 }

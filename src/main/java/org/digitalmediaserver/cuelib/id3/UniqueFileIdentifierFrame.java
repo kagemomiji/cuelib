@@ -20,79 +20,68 @@ package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
-public class UniqueFileIdentifierFrame implements ID3Frame
-{
-  // TODO Change to byte array?
-  private String hexIdentifier;
-  private String ownerIdentifier;
-  private int totalFrameSize;
-  private Properties flags = new Properties();
+public class UniqueFileIdentifierFrame implements ID3Frame {
 
-  /**
-   * @return the flags
-   */
-  @Override
-public Properties getFlags()
-  {
-    return flags;
-  }
+	// TODO Change to byte array?
+	private String hexIdentifier;
+	private String ownerIdentifier;
+	private int totalFrameSize;
+	private Properties flags = new Properties();
 
-  public UniqueFileIdentifierFrame()
-  {
-  }
+	/**
+	 * @return the flags
+	 */
+	@Override
+	public Properties getFlags() {
+		return flags;
+	}
 
-  @Override
-  public String toString()
-  {
-    final StringBuilder builder = new StringBuilder();
-    builder .append("Unique File Identifier frame: [").append(this.totalFrameSize).append("]\n")
-            .append("Flags: ").append(this.flags.toString()).append('\n')
-            .append("Owner identifier: ").append(this.ownerIdentifier).append('\n')
-            .append("Identifier: ").append(this.hexIdentifier)
-            ;
-    return builder.toString();
-  }
+	public UniqueFileIdentifierFrame() {
+	}
 
-  /**
-   * @return the declaredSize
-   */
-  @Override
-public int getTotalFrameSize()
-  {
-    return totalFrameSize;
-  }
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Unique File Identifier frame: [").append(this.totalFrameSize).append("]\n")
+			.append("Flags: ").append(this.flags.toString()).append('\n')
+			.append("Owner identifier: ").append(this.ownerIdentifier).append('\n')
+			.append("Identifier: ").append(this.hexIdentifier);
+		return builder.toString();
+	}
 
-  /**
-   * @param totalFrameSize the totalFrameSize to set
-   */
-  public void setTotalFrameSize(final int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	/**
+	 * @return the declaredSize
+	 */
+	@Override
+	public int getTotalFrameSize() {
+		return totalFrameSize;
+	}
 
-  public String getOwnerIdentifier()
-  {
-    return this.ownerIdentifier;
-  }
+	/**
+	 * @param totalFrameSize the totalFrameSize to set
+	 */
+	public void setTotalFrameSize(final int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  public void setOwnerIdentifier (final String ownerIdentifier)
-  {
-    this.ownerIdentifier = ownerIdentifier;
-  }
+	public String getOwnerIdentifier() {
+		return this.ownerIdentifier;
+	}
 
-  public String getHexIdentifier()
-  {
-    return this.hexIdentifier;
-  }
+	public void setOwnerIdentifier(final String ownerIdentifier) {
+		this.ownerIdentifier = ownerIdentifier;
+	}
 
-  public void setHexIdentifier (final String hexIdentifier)
-  {
-    this.hexIdentifier = hexIdentifier;
-  }
+	public String getHexIdentifier() {
+		return this.hexIdentifier;
+	}
 
-  @Override
-public CanonicalFrameType getCanonicalFrameType()
-  {
-    return CanonicalFrameType.MUSIC_CD_IDENTIFIER;
-  }
+	public void setHexIdentifier(final String hexIdentifier) {
+		this.hexIdentifier = hexIdentifier;
+	}
+
+	@Override
+	public CanonicalFrameType getCanonicalFrameType() {
+		return CanonicalFrameType.MUSIC_CD_IDENTIFIER;
+	}
 }

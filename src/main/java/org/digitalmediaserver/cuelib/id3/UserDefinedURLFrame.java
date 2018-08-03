@@ -22,119 +22,105 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
-public class UserDefinedURLFrame implements ID3Frame
-{
-  // TODO Use proper URL.
-  private String url;
-  private int totalFrameSize;
-  private String description;
-  private Charset charset = Charset.forName("ISO-8859-1");
-  private Properties flags = new Properties();
+public class UserDefinedURLFrame implements ID3Frame {
 
-  /**
-   * @return the flags
-   */
-  @Override
-public Properties getFlags()
-  {
-    return flags;
-  }
+	// TODO Use proper URL.
+	private String url;
+	private int totalFrameSize;
+	private String description;
+	private Charset charset = Charset.forName("ISO-8859-1");
+	private Properties flags = new Properties();
 
-  public UserDefinedURLFrame()
-  {
-  }
+	/**
+	 * @return the flags
+	 */
+	@Override
+	public Properties getFlags() {
+		return flags;
+	}
 
-  @Override
-  public String toString()
-  {
-    final StringBuilder builder = new StringBuilder();
-    builder .append("User defined URL frame: ").append(" [").append(this.totalFrameSize).append("]\n")
-            .append("Flags: ").append(this.flags.toString()).append('\n')
-            .append("Description: ").append(this.description).append('\n')
-            .append("URL: ").append(this.url)
-            ;
-    return builder.toString();
-  }
+	public UserDefinedURLFrame() {
+	}
 
-  /**
-   *
-   * @param url
-   */
-  public void setUrl(final URL url)
-  {
-    this.url = url.toString();
-  }
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("User defined URL frame: ").append(" [").append(this.totalFrameSize).append("]\n")
+			.append("Flags: ").append(this.flags.toString()).append('\n')
+			.append("Description: ").append(this.description).append('\n')
+			.append("URL: ").append(this.url);
+		return builder.toString();
+	}
 
-  /**
-   *
-   * @param url
-   */
-  public void setUrl(final String url)
-  {
-    this.url = url;
-  }
+	/**
+	 *
+	 * @param url
+	 */
+	public void setUrl(final URL url) {
+		this.url = url.toString();
+	}
 
-  /**
-   *
-   * @return
-   */
-  public String getUrl()
-  {
-    return this.url;
-  }
+	/**
+	 *
+	 * @param url
+	 */
+	public void setUrl(final String url) {
+		this.url = url;
+	}
 
-  /**
-   * @return the declaredSize
-   */
-  @Override
-public int getTotalFrameSize()
-  {
-    return totalFrameSize;
-  }
+	/**
+	 *
+	 * @return
+	 */
+	public String getUrl() {
+		return this.url;
+	}
 
-  /**
-   * @param totalFrameSize the totalFrameSize to set
-   */
-  public void setTotalFrameSize(final int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	/**
+	 * @return the declaredSize
+	 */
+	@Override
+	public int getTotalFrameSize() {
+		return totalFrameSize;
+	}
 
-  @Override
-public CanonicalFrameType getCanonicalFrameType()
-  {
-    return CanonicalFrameType.USER_DEFINED_URL;
-  }
+	/**
+	 * @param totalFrameSize the totalFrameSize to set
+	 */
+	public void setTotalFrameSize(final int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  /**
-   * @return the description
-   */
-  public String getDescription()
-  {
-    return description;
-  }
+	@Override
+	public CanonicalFrameType getCanonicalFrameType() {
+		return CanonicalFrameType.USER_DEFINED_URL;
+	}
 
-  /**
-   * @param description the description to set
-   */
-  public void setDescription(String description)
-  {
-    this.description = description;
-  }
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-  /**
-   * @return the charset
-   */
-  public Charset getCharset()
-  {
-    return charset;
-  }
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  /**
-   * @param charset the charset to set
-   */
-  public void setCharset(Charset charset)
-  {
-    this.charset = charset;
-  }
+	/**
+	 * @return the charset
+	 */
+	public Charset getCharset() {
+		return charset;
+	}
+
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(Charset charset) {
+		this.charset = charset;
+	}
 }

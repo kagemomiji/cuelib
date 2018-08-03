@@ -18,212 +18,187 @@
  */
 package org.digitalmediaserver.cuelib.id3;
 
-import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class PictureFrame implements ID3Frame
-{
-  private int totalFrameSize;
-  private Charset charset = Charset.forName("ISO-8859-1");
-  private Properties flags = new Properties();
-  private PictureType pictureType = PictureType.OTHER;
-  private int pictureNumber = pictureType.getNumber();
-  private String description;
-  //"PNG", "JPG" for 2.0, MIME for later version. Can also be "-->", in which case the payload is a hyperlink
-  // to the image.
-  // TODO Tidy up for usecase when hyperlink is used.
-  private String imageType;
-  private byte[] imageData;
+public class PictureFrame implements ID3Frame {
 
-  public PictureFrame()
-  {
-  }
+	private int totalFrameSize;
+	private Charset charset = Charset.forName("ISO-8859-1");
+	private Properties flags = new Properties();
+	private PictureType pictureType = PictureType.OTHER;
+	private int pictureNumber = pictureType.getNumber();
+	private String description;
+	// "PNG", "JPG" for 2.0, MIME for later version. Can also be "-->", in which case the payload is a hyperlink to the image.
+	// TODO Tidy up for usecase when hyperlink is used.
+	private String imageType;
+	private byte[] imageData;
 
-  @Override
-  public String toString()
-  {
-    final StringBuilder builder = new StringBuilder();
-    builder .append("Picture frame: [").append(this.totalFrameSize).append("] ")
-            .append(this.charset.toString()).append('\n')
-            .append("Flags: ").append(this.flags.toString()).append('\n')
-            .append("Type: ").append(this.pictureType.toString()).append(" (").append(this.pictureNumber).append(")\n")
-            .append("Format: ").append(this.imageType).append(")\n")
-            .append("Description: ").append(this.description)
-            ;
-    return builder.toString();
-  }
+	public PictureFrame() {
+	}
 
-  public void setPictureType(final PictureType pictureType)
-  {
-    this.pictureType = pictureType;
-    this.pictureNumber = pictureType.getNumber();
-  }
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Picture frame: [").append(this.totalFrameSize).append("] ").append(this.charset.toString()).append('\n')
+			.append("Flags: ").append(this.flags.toString()).append('\n').append("Type: ").append(this.pictureType.toString()).append(" (")
+			.append(this.pictureNumber).append(")\n").append("Format: ").append(this.imageType).append(")\n").append("Description: ")
+			.append(this.description);
+		return builder.toString();
+	}
 
-  public int getPictureNumber()
-  {
-    return this.pictureNumber;
-  }
+	public void setPictureType(final PictureType pictureType) {
+		this.pictureType = pictureType;
+		this.pictureNumber = pictureType.getNumber();
+	}
 
-  public void setPictureNumber(final int number)
-  {
-    this.pictureNumber = number;
-    this.pictureType = PictureType.getPictureType(number);
-  }
+	public int getPictureNumber() {
+		return this.pictureNumber;
+	}
 
-  @Override
-public CanonicalFrameType getCanonicalFrameType()
-  {
-    return CanonicalFrameType.PICTURE;
-  }
+	public void setPictureNumber(final int number) {
+		this.pictureNumber = number;
+		this.pictureType = PictureType.getPictureType(number);
+	}
 
-  @Override
-public Properties getFlags()
-  {
-    return this.flags;
-  }
+	@Override
+	public CanonicalFrameType getCanonicalFrameType() {
+		return CanonicalFrameType.PICTURE;
+	}
 
-  @Override
-public int getTotalFrameSize()
-  {
-    return this.totalFrameSize;
-  }
+	@Override
+	public Properties getFlags() {
+		return this.flags;
+	}
 
-  public void setTotalFrameSize(final int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	@Override
+	public int getTotalFrameSize() {
+		return this.totalFrameSize;
+	}
 
-  /**
-   * @return the charset
-   */
-  public Charset getCharset()
-  {
-    return charset;
-  }
+	public void setTotalFrameSize(final int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  /**
-   * @param charset the charset to set
-   */
-  public void setCharset(Charset charset)
-  {
-    this.charset = charset;
-  }
+	/**
+	 * @return the charset
+	 */
+	public Charset getCharset() {
+		return charset;
+	}
 
-  /**
-   * Get the description of this PictureFrame.
-   * @return The description of this PictureFrame.
-   */
-  public String getDescription()
-  {
-    return description;
-  }
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(Charset charset) {
+		this.charset = charset;
+	}
 
-  /**
-   * Set the description of this PictureFrame.
-   * @param description The description of this PictureFrame.
-   */
-  public void setDescription(String description)
-  {
-    this.description = description;
-  }
+	/**
+	 * Get the description of this PictureFrame.
+	 *
+	 * @return The description of this PictureFrame.
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-  /**
-   * Get the imageType of this PictureFrame.
-   * @return The imageType of this PictureFrame.
-   */
-  public String getImageType()
-  {
-    return imageType;
-  }
+	/**
+	 * Set the description of this PictureFrame.
+	 *
+	 * @param description The description of this PictureFrame.
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  /**
-   * Set the imageType of this PictureFrame.
-   * @param imageType The imageType of this PictureFrame.
-   */
-  public void setImageType(String imageType)
-  {
-    this.imageType = imageType;
-  }
+	/**
+	 * Get the imageType of this PictureFrame.
+	 *
+	 * @return The imageType of this PictureFrame.
+	 */
+	public String getImageType() {
+		return imageType;
+	}
 
-  /**
-   * Get the imageData of this PictureFrame.
-   * @return The imageData of this PictureFrame.
-   */
-  public byte[] getImageData()
-  {
-    return imageData;
-  }
+	/**
+	 * Set the imageType of this PictureFrame.
+	 *
+	 * @param imageType The imageType of this PictureFrame.
+	 */
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
+	}
 
-  /**
-   * Set the imageData of this PictureFrame.
-   * @param imageData The imageData of this PictureFrame.
-   */
-  public void setImageData(byte[] imageData)
-  {
-    this.imageData = imageData;
-  }
+	/**
+	 * Get the imageData of this PictureFrame.
+	 *
+	 * @return The imageData of this PictureFrame.
+	 */
+	public byte[] getImageData() {
+		return imageData;
+	}
 
-  public enum PictureType
-  {
-    OTHER(0),
-    FILE_ICON_32X32(1),
-    OTHER_FILE_ICON(2),
-    FRONT_COVER(3),
-    BACK_COVER(4),
-    LEAFLET_PAGE(5),
-    MEDIA(6),
-    LEAD_PERFORMER(7),
-    PERFORMER(8),
-    CONDUCTOR(9),
-    BAND_OR_ORCHESTRA(10),
-    COMPOSER(11),
-    LYRICIST(12),
-    RECORDING_LOCATION(13),
-    DURING_RECORDING(14),
-    DURING_PERFORMANCE(15),
-    MOVIE_CAPTURE(16),
-    A_BRIGHT_COLOURED_FISH(17),  // Not a joke. Actually in spec.
-    ILLUSTRATION(18),
-    BAND_OR_ARTIST_LOGOTYPE(19),
-    PUBLISHER_OR_STUDIO_LOGOTYPE(20),
-    UNOFFICIAL(21);  // Needs additional info.
+	/**
+	 * Set the imageData of this PictureFrame.
+	 *
+	 * @param imageData The imageData of this PictureFrame.
+	 */
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
 
-    private static Map<Integer,PictureType> numberToType = new HashMap<Integer,PictureType>();
+	public enum PictureType {
+		OTHER(0),
+		FILE_ICON_32X32(1),
+		OTHER_FILE_ICON(2),
+		FRONT_COVER(3),
+		BACK_COVER(4),
+		LEAFLET_PAGE(5),
+		MEDIA(6),
+		LEAD_PERFORMER(7),
+		PERFORMER(8),
+		CONDUCTOR(9),
+		BAND_OR_ORCHESTRA(10),
+		COMPOSER(11),
+		LYRICIST(12),
+		RECORDING_LOCATION(13),
+		DURING_RECORDING(14),
+		DURING_PERFORMANCE(15),
+		MOVIE_CAPTURE(16),
+		A_BRIGHT_COLOURED_FISH(17),  // Not a joke. Actually in spec.
+		ILLUSTRATION(18),
+		BAND_OR_ARTIST_LOGOTYPE(19),
+		PUBLISHER_OR_STUDIO_LOGOTYPE(20),
+		UNOFFICIAL(21);  // Needs additional info.
 
-    static
-    {
-      for (int index = 0; index < PictureType.values().length; index++)
-      {
-        PictureType.numberToType.put(PictureType.values()[index].getNumber(), PictureType.values()[index]);
-      }
-    }
+		private static Map<Integer, PictureType> numberToType = new HashMap<Integer, PictureType>();
 
-    private int number;
+		static {
+			for (int index = 0; index < PictureType.values().length; index++) {
+				PictureType.numberToType.put(PictureType.values()[index].getNumber(), PictureType.values()[index]);
+			}
+		}
 
-    PictureType(final int number)
-    {
-      this.number = number;
-    }
+		private int number;
 
-    public int getNumber()
-    {
-      return this.number;
-    }
+		PictureType(final int number) {
+			this.number = number;
+		}
 
-    public static PictureType getPictureType(final int number)
-    {
-      PictureType result = PictureType.numberToType.get(number);
-      if (result == null)
-      {
-        return PictureType.UNOFFICIAL;
-      }
-      else
-      {
-        return result;
-      }
-    }
-  }
+		public int getNumber() {
+			return this.number;
+		}
+
+		public static PictureType getPictureType(final int number) {
+			PictureType result = PictureType.numberToType.get(number);
+			if (result == null) {
+				return PictureType.UNOFFICIAL;
+			} else {
+				return result;
+			}
+		}
+	}
 }

@@ -23,8 +23,9 @@ import java.io.IOException;
 import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
 import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
 
-public interface ID3Reader
-{
-  public boolean hasTag(final File file) throws IOException;
-  public ID3Tag read(final File file) throws IOException, UnsupportedEncodingException, MalformedFrameException;
+public interface ID3Reader {
+
+	public boolean hasTag(final File file) throws IOException;
+
+	public ID3Tag read(final File file) throws IOException, UnsupportedEncodingException, MalformedFrameException;
 }

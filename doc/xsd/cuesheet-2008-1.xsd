@@ -2,17 +2,17 @@
 <!--
   Cuelib library for manipulating cue sheets.
   Copyright (C) 2007-2008 Jan-Willem van den Broek
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
-  
+
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,9 +23,9 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	>
-	
+
 	<xsd:element name="cuesheet" type="tns:cuesheet"/>
-	
+
 	<xsd:complexType name="cuesheet">
 		<xsd:sequence>
 			<xsd:element name="file" type="tns:file" minOccurs="0" maxOccurs="unbounded"/>
@@ -40,7 +40,7 @@
 		<xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
 		<xsd:attribute name="cdtextfile" type="xsd:string" use="optional"/>
 	</xsd:complexType>
-	
+
 	<xsd:complexType name="file">
 		<xsd:sequence>
 			<xsd:element name="track" type="tns:track" minOccurs="0" maxOccurs="unbounded"/>
@@ -48,7 +48,7 @@
 		<xsd:attribute name="file" type="xsd:string" use="optional"/>
 		<xsd:attribute name="type" type="xsd:string" use="optional"/>
 	</xsd:complexType>
-	
+
 	<xsd:complexType name="track">
 		<xsd:sequence>
 			<xsd:element name="pregap" type="tns:position" minOccurs="0"/>
@@ -63,19 +63,19 @@
 		<xsd:attribute name="title" type="xsd:string" use="optional"/>
 		<xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
 	</xsd:complexType>
-	
+
 	<xsd:complexType name="position">
 		<xsd:attribute name="minutes" type="xsd:integer"/>
 		<xsd:attribute name="seconds" type="xsd:integer"/>
 		<xsd:attribute name="frames" type="xsd:integer"/>
 	</xsd:complexType>
-	
+
 	<xsd:complexType name="flags">
 		<xsd:sequence>
 			<xsd:element name="flag" type="xsd:string" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	
+
 	<xsd:complexType name="index">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -88,5 +88,5 @@
 		<xsd:attribute name="frames" type="xsd:integer" use="optional"/>
 		<xsd:attribute name="number" type="xsd:integer" use="optional"/>
 	</xsd:complexType>
-	
+
 </xsd:schema>

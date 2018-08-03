@@ -20,33 +20,38 @@ package org.digitalmediaserver.cuelib;
 
 /**
  * Interface for messages such as warnings and errors. For use by CueSheet.
+ *
  * @author jwbroek
  */
-public interface Message
-{
-  /**
-   * Get the message text.
-   * @return The message text.
-   */
-  public String getMessage();
+public interface Message {
 
-  /**
-   * Get the line number that this message applies to.
-   * @return The line number that this message applies to.
-   */
-  public int getLineNumber();
+	/**
+	 * Get the message text.
+	 *
+	 * @return The message text.
+	 */
+	public String getMessage();
 
-  /**
-   * Get the input that this message applies to.
-   * @return The input that this message applies to.
-   */
-  public String getInput();
+	/**
+	 * Get the line number that this message applies to.
+	 *
+	 * @return The line number that this message applies to.
+	 */
+	public int getLineNumber();
 
-  /**
-   * Get a textual representation of this Message. It is highly desirable to have an informative
-   * String representation.
-   * @return Aa textual representation of this Message.
-   */
-  @Override
-public String toString();
+	/**
+	 * Get the input that this message applies to.
+	 *
+	 * @return The input that this message applies to.
+	 */
+	public String getInput();
+
+	/**
+	 * Get a textual representation of this Message. It is highly desirable to
+	 * have an informative String representation.
+	 *
+	 * @return Aa textual representation of this Message.
+	 */
+	@Override
+	public String toString();
 }

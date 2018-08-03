@@ -23,130 +23,110 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class InvolvedPeopleFrame implements ID3Frame
-{
-  private int totalFrameSize;
-  private Charset charset = Charset.forName("ISO-8859-1");
-  private final List<InvolvedPeopleFrame.InvolvedPerson>  involvedPeopleList
-    = new ArrayList<InvolvedPeopleFrame.InvolvedPerson>();
-  private Properties flags = new Properties();
+public class InvolvedPeopleFrame implements ID3Frame {
 
-  /**
-   * @return the flags
-   */
-  @Override
-public Properties getFlags()
-  {
-    return flags;
-  }
+	private int totalFrameSize;
+	private Charset charset = Charset.forName("ISO-8859-1");
+	private final List<InvolvedPeopleFrame.InvolvedPerson> involvedPeopleList = new ArrayList<InvolvedPeopleFrame.InvolvedPerson>();
+	private Properties flags = new Properties();
 
-  /**
-   * @return the charset
-   */
-  public Charset getCharset()
-  {
-    return charset;
-  }
+	/**
+	 * @return the flags
+	 */
+	@Override
+	public Properties getFlags() {
+		return flags;
+	}
 
-  /**
-   * @param charset the charset to set
-   */
-  public void setCharset(Charset charset)
-  {
-    this.charset = charset;
-  }
+	/**
+	 * @return the charset
+	 */
+	public Charset getCharset() {
+		return charset;
+	}
 
-  public InvolvedPeopleFrame()
-  {
-  }
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(Charset charset) {
+		this.charset = charset;
+	}
 
-  public InvolvedPeopleFrame(int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	public InvolvedPeopleFrame() {
+	}
 
-  @Override
-public CanonicalFrameType getCanonicalFrameType()
-  {
-    return CanonicalFrameType.INVOLVED_PEOPLE_LIST;
-  }
+	public InvolvedPeopleFrame(int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  @Override
-public int getTotalFrameSize()
-  {
-    return this.totalFrameSize;
-  }
+	@Override
+	public CanonicalFrameType getCanonicalFrameType() {
+		return CanonicalFrameType.INVOLVED_PEOPLE_LIST;
+	}
 
-  public void setTotalFrameSize(final int totalFrameSize)
-  {
-    this.totalFrameSize = totalFrameSize;
-  }
+	@Override
+	public int getTotalFrameSize() {
+		return this.totalFrameSize;
+	}
 
-  @Override
-  public String toString()
-  {
-    final StringBuilder builder = new StringBuilder();
-    builder .append("Involved People frame: ").append(" [").append(this.totalFrameSize).append("] ")
-            .append(this.charset.toString()).append('\n')
-            .append("Flags: ").append(this.flags.toString()).append('\n')
-            ;
-    for (InvolvedPeopleFrame.InvolvedPerson involvedPerson : this.involvedPeopleList)
-    {
-      builder .append("Involvee: ").append(involvedPerson.getInvolvee())
-              .append("Involvement: ").append(involvedPerson.getInvolvement())
-              .append('\n')
-              ;
-    }
-    return builder.toString();
-  }
+	public void setTotalFrameSize(final int totalFrameSize) {
+		this.totalFrameSize = totalFrameSize;
+	}
 
-  public static class InvolvedPerson
-  {
-    private String involvee;
-    private String involvement;
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Involved People frame: ").append(" [").append(this.totalFrameSize).append("] ")
+			.append(this.charset.toString()).append('\n')
+			.append("Flags: ").append(this.flags.toString()).append('\n');
+		for (InvolvedPeopleFrame.InvolvedPerson involvedPerson : this.involvedPeopleList) {
+			builder.append("Involvee: ").append(involvedPerson.getInvolvee())
+				.append("Involvement: ").append(involvedPerson.getInvolvement()).append('\n');
+		}
+		return builder.toString();
+	}
 
-    public InvolvedPerson()
-    {
-    }
+	public static class InvolvedPerson {
 
-    /**
-     * @return the involvee
-     */
-    public String getInvolvee()
-    {
-      return involvee;
-    }
+		private String involvee;
+		private String involvement;
 
-    /**
-     * @param involvee the involvee to set
-     */
-    public void setInvolvee(String involvee)
-    {
-      this.involvee = involvee;
-    }
+		public InvolvedPerson() {
+		}
 
-    /**
-     * @return the involvement
-     */
-    public String getInvolvement()
-    {
-      return involvement;
-    }
+		/**
+		 * @return the involvee
+		 */
+		public String getInvolvee() {
+			return involvee;
+		}
 
-    /**
-     * @param involvement the involvement to set
-     */
-    public void setInvolvement(String involvement)
-    {
-      this.involvement = involvement;
-    }
-  }
+		/**
+		 * @param involvee the involvee to set
+		 */
+		public void setInvolvee(String involvee) {
+			this.involvee = involvee;
+		}
 
-  /**
-   * @return the involvedPeopleList
-   */
-  public List<InvolvedPeopleFrame.InvolvedPerson> getInvolvedPeopleList()
-  {
-    return involvedPeopleList;
-  }
+		/**
+		 * @return the involvement
+		 */
+		public String getInvolvement() {
+			return involvement;
+		}
+
+		/**
+		 * @param involvement the involvement to set
+		 */
+		public void setInvolvement(String involvement) {
+			this.involvement = involvement;
+		}
+	}
+
+	/**
+	 * @return the involvedPeopleList
+	 */
+	public List<InvolvedPeopleFrame.InvolvedPerson> getInvolvedPeopleList() {
+		return involvedPeopleList;
+	}
 }

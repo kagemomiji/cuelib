@@ -1,7 +1,7 @@
 /*
  * Cuelib library for manipulating cue sheets.
  * Copyright (C) 2007-2009 Jan-Willem van den Broek
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,37 +11,30 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package org.digitalmediaserver.cuelib.id3.v2;
 
-public class MalformedFrameException extends Exception
-{
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 6928538930151585090L;
+public class MalformedFrameException extends Exception {
 
-  public MalformedFrameException()
-  {
-    super();
-  }
+	private static final long serialVersionUID = 6928538930151585090L;
 
-  public MalformedFrameException(String message)
-  {
-    super(message);
-  }
+	public MalformedFrameException() {
+		super();
+	}
 
-  public MalformedFrameException(String message, Throwable cause)
-  {
-    super(message, cause);
-  }
+	public MalformedFrameException(String message) {
+		super(message);
+	}
 
-  public MalformedFrameException(Throwable cause)
-  {
-    super(cause);
-  }
+	public MalformedFrameException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public MalformedFrameException(Throwable cause) {
+		super(cause);
+	}
 }

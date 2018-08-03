@@ -29,160 +29,141 @@ import java.util.logging.Logger;
 
 /**
  * Class containing utility methods related to logging.
+ *
  * @author jwbroek
  */
-public final class LogUtil
-{
-  /**
-   * The logger for this class.
-   */
-  private final static Logger logger = Logger.getLogger(LogUtil.class.getCanonicalName());
+public final class LogUtil {
 
-  /**
-   * This constructor need never be called as all members of this class are static.
-   */
-  private LogUtil()
-  {
-    // Intentionally empty (except for logging). This class does not need to be instantiated.
-    LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
-    LogUtil.logger.warning("jwbroek.util.LogUtil should not be instantiated.");
-    LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
-  }
+	/**
+	 * The logger for this class.
+	 */
+	private final static Logger logger = Logger.getLogger(LogUtil.class.getCanonicalName());
 
-  /**
-   * Convenience method to log the stack trace of a Throwable to the specified Logger at the specified Level.
-   * @param logger Logger to log to.
-   * @param level Level to log at.
-   * @param throwable Throwable to log the stack strace of.
-   */
-  public static void logStacktrace(final Logger logger, final Level level, final Throwable throwable)
-  {
-    LogUtil.logger.entering
-      ( LogUtil.class.getCanonicalName()
-      , "logStacktrace(Logger,Level,Throwable)"
-      , new Object[] {logger, level, throwable}
-      );
+	/**
+	 * This constructor need never be called as all members of this class are
+	 * static.
+	 */
+	private LogUtil() {
+		// Intentionally empty (except for logging). This class does not need to be instantiated.
+		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
+		LogUtil.logger.warning("jwbroek.util.LogUtil should not be instantiated.");
+		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
+	}
 
-    // No need to do anything if the message isn't loggable.
-    if (logger.isLoggable(level))
-    {
-      final StringWriter sw = new StringWriter();
-      throwable.printStackTrace(new PrintWriter(sw));
-      logger.log(level, sw.toString());
-    }
+	/**
+	 * Convenience method to log the stack trace of a Throwable to the specified
+	 * Logger at the specified Level.
+	 *
+	 * @param logger Logger to log to.
+	 * @param level Level to log at.
+	 * @param throwable Throwable to log the stack strace of.
+	 */
+	public static void logStacktrace(final Logger logger, final Level level, final Throwable throwable) {
+		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)", new Object[] { logger, level, throwable });
 
-    LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)");
-  }
+		// No need to do anything if the message isn't loggable.
+		if (logger.isLoggable(level)) {
+			final StringWriter sw = new StringWriter();
+			throwable.printStackTrace(new PrintWriter(sw));
+			logger.log(level, sw.toString());
+		}
 
-  /**
-   * Get the Level that is currently active on the specified Logger. Will search though parent Logger as necessary.
-   * @param logger The Logger to determine the Level of.
-   * @return The Level that is currently active on the specified Logger.
-   */
-  public static Level getActiveLoggingLevel(Logger logger)
-  {
-    LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", logger);
+		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)");
+	}
 
-    Logger currentLogger = logger;
-    Level result = null;
+	/**
+	 * Get the Level that is currently active on the specified Logger. Will
+	 * search though parent Logger as necessary.
+	 *
+	 * @param logger The Logger to determine the Level of.
+	 * @return The Level that is currently active on the specified Logger.
+	 */
+	public static Level getActiveLoggingLevel(Logger logger) {
+		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", logger);
 
-    do
-    {
-      result = logger.getLevel();
+		Logger currentLogger = logger;
+		Level result = null;
 
-      if (currentLogger.getUseParentHandlers())
-      {
-        currentLogger = currentLogger.getParent();
-      }
-      else
-      {
-        currentLogger = null;
-      }
-    } while (result==null && currentLogger != null);
+		do {
+			result = logger.getLevel();
 
-    LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", result);
-    return result;
-  }
+			if (currentLogger.getUseParentHandlers()) {
+				currentLogger = currentLogger.getParent();
+			} else {
+				currentLogger = null;
+			}
+		} while (result == null && currentLogger != null);
 
-  /**
-   * Get whether or not the information that is logged at the specified Level to the specified Logger
-   * will be handled by a Handler that is an instance of the specified class. Note that since loggers
-   * may be added and removed at any time, this information is not guaranteed to be correct at any moment.
-   * Also, even when this method return true, messages logged to the specified logger, at the specified level,
-   * may still not be logged by a handler of the specified type due to Filters that are configured.
-   * @param logger The Logger to check for.
-   * @param level The level to check for.
-   * @param handlerClass The class of Handler to check for.
-   * @return Whether or not the information that is logged at the specified Level to the specified Logger
-   * will be handled by a Handler that is an instance of the specified class.
-   */
-  public static boolean hasHandlerActive(final Logger logger, final Level level, final Class<?> handlerClass)
-  {
-    LogUtil.logger.entering
-      ( LogUtil.class.getCanonicalName()
-      , "hasHandlerActive(Logger,Level,Class)"
-      , new Object[] {logger, level, handlerClass}
-      );
+		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", result);
+		return result;
+	}
 
-    Logger currentLogger = logger;
-    boolean result = false;
+	/**
+	 * Get whether or not the information that is logged at the specified Level
+	 * to the specified Logger will be handled by a Handler that is an instance
+	 * of the specified class. Note that since loggers may be added and removed
+	 * at any time, this information is not guaranteed to be correct at any
+	 * moment. Also, even when this method return true, messages logged to the
+	 * specified logger, at the specified level, may still not be logged by a
+	 * handler of the specified type due to Filters that are configured.
+	 *
+	 * @param logger The Logger to check for.
+	 * @param level The level to check for.
+	 * @param handlerClass The class of Handler to check for.
+	 * @return Whether or not the information that is logged at the specified
+	 *         Level to the specified Logger will be handled by a Handler that
+	 *         is an instance of the specified class.
+	 */
+	public static boolean hasHandlerActive(final Logger logger, final Level level, final Class<?> handlerClass) {
+		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", new Object[] { logger, level, handlerClass });
 
-    loopOverLoggers:
-    while (currentLogger != null && currentLogger.isLoggable(level))
-    {
-      for (Handler handler : currentLogger.getHandlers())
-      {
-        // Handler is correct type of class and has low enough logging level.
-        if  ( handlerClass.isInstance(handler)
-            && handler.getLevel().intValue() <= level.intValue()
-            )
-        {
-          result = true;
-          break loopOverLoggers;
-        }
-      }
+		Logger currentLogger = logger;
+		boolean result = false;
 
-      if (currentLogger.getUseParentHandlers())
-      {
-        currentLogger = currentLogger.getParent();
-      }
-      else
-      {
-        currentLogger = null;
-      }
-    }
+		loopOverLoggers: while (currentLogger != null && currentLogger.isLoggable(level)) {
+			for (Handler handler : currentLogger.getHandlers()) {
+				// Handler is correct type of class and has low enough logging level.
+				if (handlerClass.isInstance(handler) && handler.getLevel().intValue() <= level.intValue()) {
+					result = true;
+					break loopOverLoggers;
+				}
+			}
 
-    LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", result);
-    return result;
-  }
+			if (currentLogger.getUseParentHandlers()) {
+				currentLogger = currentLogger.getParent();
+			} else {
+				currentLogger = null;
+			}
+		}
 
-  /**
-   * Get a list of all currently active Handlers on the specified Logger. Note that handlers can be
-   * dynamically added and removed, so this information is not guaranteed to be correct at any moment.
-   * @param logger
-   * @return A list of all currently active Handlers on the specified Logger.
-   */
-  public static Set<Handler> getAllActiveHandlers(final Logger logger)
-  {
-    LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", logger);
-    final Set<Handler> handlers = new HashSet<Handler>();
+		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", result);
+		return result;
+	}
 
-    Logger currentLogger = logger;
+	/**
+	 * Get a list of all currently active Handlers on the specified Logger. Note
+	 * that handlers can be dynamically added and removed, so this information
+	 * is not guaranteed to be correct at any moment.
+	 *
+	 * @param logger
+	 * @return A list of all currently active Handlers on the specified Logger.
+	 */
+	public static Set<Handler> getAllActiveHandlers(final Logger logger) {
+		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", logger);
+		final Set<Handler> handlers = new HashSet<Handler>();
 
-    while (currentLogger != null)
-    {
-      handlers.addAll(Arrays.asList(currentLogger.getHandlers()));
-      if (currentLogger.getUseParentHandlers())
-      {
-        currentLogger = currentLogger.getParent();
-      }
-      else
-      {
-        currentLogger = null;
-      }
-    }
+		Logger currentLogger = logger;
 
-    LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", handlers);
-    return handlers;
-  }
+		while (currentLogger != null) {
+			handlers.addAll(Arrays.asList(currentLogger.getHandlers()));
+			if (currentLogger.getUseParentHandlers()) {
+				currentLogger = currentLogger.getParent();
+			} else {
+				currentLogger = null;
+			}
+		}
+
+		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", handlers);
+		return handlers;
+	}
 }
