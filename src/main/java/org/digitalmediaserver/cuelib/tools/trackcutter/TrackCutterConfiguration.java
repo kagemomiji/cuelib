@@ -118,7 +118,7 @@ public class TrackCutterConfiguration
   /**
    * Replacer for the template values.
    */
-  private static final StringReplacer templateReplacer =
+  public static final StringReplacer templateReplacer =
     new StringReplacer(getHumanReadableToFormatStringReplacements());
   
   /**
@@ -278,8 +278,8 @@ public class TrackCutterConfiguration
   {
     TrackCutterConfiguration.logger.entering
       (TrackCutterConfiguration.class.getCanonicalName(), "normalizeFileName(String)", fileName);
-    final StringBuilder builder = new StringBuilder(fileName.length());
-    final int length = fileName.length();
+    StringBuilder builder = new StringBuilder(fileName.length());
+    int length = fileName.length();
     for (int index = 0; index < length; index++)
     {
       char currentChar = fileName.charAt(index);
@@ -309,7 +309,7 @@ public class TrackCutterConfiguration
         }
       }
     }
-    final String result = builder.toString();
+    String result = builder.toString();
     TrackCutterConfiguration.logger.exiting
       (TrackCutterConfiguration.class.getCanonicalName(), "normalizeFileName(String)", result);
     return result;
@@ -357,8 +357,8 @@ public class TrackCutterConfiguration
       , "getExpandedFileName(TrackData, String)"
       , new Object [] {trackData, fileNameTemplate}
       );
-    final String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
-    final String result = String.format
+    String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
+    String result = String.format
       ( this.getTemplateReplacer().replace(fileNameTemplate)
       , normalizeFileName(""+trackData.getMetaData(CueSheet.MetaDataField.TITLE))
       , normalizeFileName(""+trackData.getMetaData(CueSheet.MetaDataField.PERFORMER))
@@ -396,8 +396,8 @@ public class TrackCutterConfiguration
       , "getExpandedFileName(TrackData, String, String, String)"
       , new Object [] {trackData, processCommandTemplate, cutFileName, processFileName}
       );
-    final String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
-    final String result = String.format
+    String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
+    String result = String.format
       ( this.getTemplateReplacer().replace(processCommandTemplate)
       , trackData.getMetaData(CueSheet.MetaDataField.TITLE)
       , trackData.getMetaData(CueSheet.MetaDataField.PERFORMER)

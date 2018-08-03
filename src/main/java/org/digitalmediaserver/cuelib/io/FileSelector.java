@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * Convenience class for selecting files based on some criterium.
  * @author jwbroek
  */
-final public class FileSelector
+public class FileSelector
 {
   /**
    * The logger for this class.
@@ -167,7 +167,7 @@ final public class FileSelector
   public static FileFilter getFileNamePatternFilter(final Pattern pattern)
   {
     FileSelector.logger.entering(FileSelector.class.getCanonicalName(), "getFileNamePatternFilter(Pattern)", pattern);
-    final FileFilter result = new FileFilter()
+    FileFilter result = new FileFilter()
     {
       public boolean accept(final File file)
       {
@@ -202,9 +202,11 @@ final public class FileSelector
   @Deprecated
   public static FileFilter getCombinedFileFilter(final FileFilter ... fileFilters)
   {
+    // The FileFilter ... parameter has lower (implicit) priority than Iterable<FileFilter>, so there is no
+    // (directly) recursive call here.
     FileSelector.logger.entering
       (FileSelector.class.getCanonicalName(), "getCombinedFileFilter(FileFilter[])", fileFilters);
-    final FileFilter result = FileSelector.getIntersectionFileFilter(fileFilters);
+    FileFilter result = FileSelector.getIntersectionFileFilter(fileFilters);
     FileSelector.logger.exiting(FileSelector.class.getCanonicalName(), "getCombinedFileFilter(FileFilter[])", result);
     return result;
   }
@@ -222,7 +224,7 @@ final public class FileSelector
   {
     FileSelector.logger.entering
     (FileSelector.class.getCanonicalName(), "getIntersectionFileFilter(Iterable<FileFilter>)", fileFilters);
-    final FileFilter result = FileSelector.getIntersectionFileFilter(fileFilters);
+    FileFilter result = FileSelector.getIntersectionFileFilter(fileFilters);
     FileSelector.logger.exiting(FileSelector.class.getCanonicalName(), "getCombinedFileFilter(FileFilter[])", result);
     return result;
   }

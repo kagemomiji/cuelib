@@ -191,9 +191,9 @@ final public class CueParser
   public static CueSheet parse(final InputStream inputStream) throws IOException
   {
     CueParser.logger.entering(CueParser.class.getCanonicalName(), "parse(InputStream)", inputStream);
-
-    final CueSheet result = CueParser.parse(new LineNumberReader(new InputStreamReader(inputStream)));
-
+    LineNumberReader lnReader = new LineNumberReader(new InputStreamReader(inputStream));
+    final CueSheet result = CueParser.parse(lnReader);
+    lnReader.close();
     CueParser.logger.exiting(CueParser.class.getCanonicalName(), "parse(InputStream)", result);
 
     return result;
