@@ -18,8 +18,6 @@
  */
 package org.digitalmediaserver.cuelib;
 
-import java.util.logging.Logger;
-
 /**
  * Simple representation for a position field in a cue sheet.
  *
@@ -28,17 +26,15 @@ import java.util.logging.Logger;
 public class Position {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(Position.class.getCanonicalName());
-	/**
 	 * The number of minutes in this position. Must be >= 0. Should be < 60.
 	 */
 	private int minutes = 0;
+
 	/**
 	 * The number of seconds in this position. Must be >= 0. Should be < 60.
 	 */
 	private int seconds = 0;
+
 	/**
 	 * The number of frames in this position. Must be >= 0. Should be < 75.
 	 */
@@ -48,8 +44,6 @@ public class Position {
 	 * Create a new Position.
 	 */
 	public Position() {
-		Position.logger.entering(Position.class.getCanonicalName(), "Position()");
-		Position.logger.exiting(Position.class.getCanonicalName(), "Position()");
 	}
 
 	/**
@@ -63,11 +57,9 @@ public class Position {
 	 *            be < 75.
 	 */
 	public Position(final int minutes, final int seconds, final int frames) {
-		Position.logger.entering(Position.class.getCanonicalName(), "LineOfInput(int,int,int)", new Object[] { minutes, seconds, frames });
 		this.minutes = minutes;
 		this.seconds = seconds;
 		this.frames = frames;
-		Position.logger.exiting(Position.class.getCanonicalName(), "Position(int,int,int)");
 	}
 
 	/**
@@ -77,10 +69,7 @@ public class Position {
 	 * @return The total number of frames represented by this position.
 	 */
 	public int getTotalFrames() {
-		Position.logger.entering(Position.class.getCanonicalName(), "getTotalFrames()");
-		int result = frames + (75 * (seconds + 60 * minutes));
-		Position.logger.exiting(Position.class.getCanonicalName(), "getTotalFrames()", result);
-		return result;
+		return frames + (75 * (seconds + 60 * minutes));
 	}
 
 	/**
@@ -90,8 +79,6 @@ public class Position {
 	 *         75.
 	 */
 	public int getFrames() {
-		Position.logger.entering(Position.class.getCanonicalName(), "getFrames()");
-		Position.logger.exiting(Position.class.getCanonicalName(), "getFrames()", this.frames);
 		return this.frames;
 	}
 
@@ -102,9 +89,7 @@ public class Position {
 	 *            be < 75.
 	 */
 	public void setFrames(final int frames) {
-		Position.logger.entering(Position.class.getCanonicalName(), "setFrames(int)", frames);
 		this.frames = frames;
-		Position.logger.exiting(Position.class.getCanonicalName(), "setFrames(int)");
 	}
 
 	/**
@@ -114,8 +99,6 @@ public class Position {
 	 *         60.
 	 */
 	public int getMinutes() {
-		Position.logger.entering(Position.class.getCanonicalName(), "getMinutes()");
-		Position.logger.exiting(Position.class.getCanonicalName(), "getMinutes()", this.minutes);
 		return this.minutes;
 	}
 
@@ -126,9 +109,7 @@ public class Position {
 	 *            Should be < 60.
 	 */
 	public void setMinutes(final int minutes) {
-		Position.logger.entering(Position.class.getCanonicalName(), "setMinutes(int)", minutes);
 		this.minutes = minutes;
-		Position.logger.exiting(Position.class.getCanonicalName(), "setMinutes(int)");
 	}
 
 	/**
@@ -138,8 +119,6 @@ public class Position {
 	 *         < 60.
 	 */
 	public int getSeconds() {
-		Position.logger.entering(Position.class.getCanonicalName(), "getSeconds()");
-		Position.logger.exiting(Position.class.getCanonicalName(), "getSeconds()", this.seconds);
 		return this.seconds;
 	}
 
@@ -150,8 +129,6 @@ public class Position {
 	 *            Should be < 60.
 	 */
 	public void setSeconds(final int seconds) {
-		Position.logger.entering(Position.class.getCanonicalName(), "setSeconds(int)", seconds);
 		this.seconds = seconds;
-		Position.logger.exiting(Position.class.getCanonicalName(), "setSeconds(int)");
 	}
 }

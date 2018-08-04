@@ -19,7 +19,6 @@
 package org.digitalmediaserver.cuelib.util.properties;
 
 import java.io.File;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 
 /**
@@ -31,10 +30,6 @@ import javax.sound.sampled.AudioFileFormat;
 public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(PropertyHandlerFactoryImpl.class.getCanonicalName());
-	/**
 	 * The singleton instance of this class.
 	 */
 	private final static PropertyHandlerFactoryImpl instance = new PropertyHandlerFactoryImpl();
@@ -45,8 +40,6 @@ public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 	 */
 	private PropertyHandlerFactoryImpl() {
 		super();
-		PropertyHandlerFactoryImpl.logger.entering(PropertyHandlerFactoryImpl.class.getCanonicalName(), "PropertyHandlerFactoryImpl()");
-		PropertyHandlerFactoryImpl.logger.exiting(PropertyHandlerFactoryImpl.class.getCanonicalName(), "PropertyHandlerFactoryImpl()");
 	}
 
 	/**
@@ -55,8 +48,6 @@ public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 	 * @return An instance of PropertyHandlerFactoryImpl.
 	 */
 	public static PropertyHandlerFactoryImpl getInstance() {
-		PropertyHandlerFactoryImpl.logger.entering(PropertyHandlerFactoryImpl.class.getCanonicalName(), "PropertyHandlerFactoryImpl.getInstance()");
-		PropertyHandlerFactoryImpl.logger.exiting(PropertyHandlerFactoryImpl.class.getCanonicalName(), "PropertyHandlerFactoryImpl.getInstance()", PropertyHandlerFactoryImpl.instance);
 		return PropertyHandlerFactoryImpl.instance;
 	}
 
@@ -70,8 +61,6 @@ public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 	 */
 	@Override
 	public <T> PropertyHandler<T> getPropertyHandler(Class<T> propertyType) throws UnsupportedOperationException {
-		PropertyHandlerFactoryImpl.logger.entering(PropertyHandlerFactoryImpl.class.getCanonicalName(), "getPropertyHandler(Class<T>)", propertyType);
-
 		final PropertyHandler result;
 
 		if (propertyType.equals(AudioFileFormat.Type.class)) {
@@ -83,12 +72,9 @@ public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 		} else if (propertyType.equals(Long.class)) {
 			result = LongPropertyHandler.getInstance();
 		} else {
-			final UnsupportedOperationException exception = new UnsupportedOperationException("Unsupported type: '" + propertyType.toString() + "'");
-			PropertyHandlerFactoryImpl.logger.throwing(PropertyHandlerFactoryImpl.class.getCanonicalName(), "getPropertyHandler(Class<T>)", exception);
-			throw exception;
+			throw new UnsupportedOperationException("Unsupported type: '" + propertyType.toString() + "'");
 		}
 
-		PropertyHandlerFactoryImpl.logger.exiting(PropertyHandlerFactoryImpl.class.getCanonicalName(), "getPropertyHandler(Class<T>)", result);
 		// Unsafe operation, but there is no way around this (apart from doing lots of safe casts in the "if" blocks).
 		return result;
 	}

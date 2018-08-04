@@ -20,7 +20,6 @@ package org.digitalmediaserver.cuelib;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Simple representation of a FILE block in a cue sheet.
@@ -30,22 +29,21 @@ import java.util.logging.Logger;
 public class FileData {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(FileData.class.getCanonicalName());
-	/**
 	 * The track data for this file data.
 	 */
 	private final List<TrackData> trackData = new ArrayList<TrackData>();
+
 	/**
 	 * The file for this file data. May be null, though this is not compliant.
 	 */
 	private String file = null;
+
 	/**
 	 * The file type for this file data. May be null, or any string value,
 	 * though this is not necessarily compliant.
 	 */
 	private String fileType = null;
+
 	/**
 	 * The CueSheet that this FileData belongs to.
 	 */
@@ -57,9 +55,7 @@ public class FileData {
 	 * @param parent The CueSheet that this FileData is associated with.
 	 */
 	public FileData(final CueSheet parent) {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "FileData(CueSheet)", parent);
 		this.parent = parent;
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "FileData(CueSheet)");
 	}
 
 	/**
@@ -72,11 +68,9 @@ public class FileData {
 	 *            string value, though this is not necessarily compliant.
 	 */
 	public FileData(final CueSheet parent, final String file, final String fileType) {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "FileData(CueSheet,String,String)", new Object[] { parent, file, fileType });
 		this.parent = parent;
 		this.file = file;
 		this.fileType = fileType;
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "FileData(CueSheet,String,String)");
 	}
 
 	/**
@@ -85,14 +79,12 @@ public class FileData {
 	 * @return All indices of all tracks that belong to this file data.
 	 */
 	public List<Index> getAllIndices() {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "getAllIndices()");
 		List<Index> allIndices = new ArrayList<Index>();
 
 		for (TrackData trackData : this.trackData) {
 			allIndices.addAll(trackData.getIndices());
 		}
 
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "getAllIndices()", allIndices);
 		return allIndices;
 	}
 
@@ -104,8 +96,6 @@ public class FileData {
 	 *         is not compliant.
 	 */
 	public String getFile() {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "getFile()");
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "getFile()", this.file);
 		return this.file;
 	}
 
@@ -117,9 +107,7 @@ public class FileData {
 	 *            this is not compliant.
 	 */
 	public void setFile(final String file) {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "setFile(String)", file);
 		this.file = file;
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "setFile(String)");
 	}
 
 	/**
@@ -130,8 +118,6 @@ public class FileData {
 	 *         value, though this is not necessarily compliant.
 	 */
 	public String getFileType() {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "getFileType()");
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "getFileType()", this.fileType);
 		return this.fileType;
 	}
 
@@ -143,9 +129,7 @@ public class FileData {
 	 *            string value, though this is not necessarily compliant.
 	 */
 	public void setFileType(final String fileType) {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "setFileType(String)", fileType);
 		this.fileType = fileType;
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "setFileType(String)");
 	}
 
 	/**
@@ -154,8 +138,6 @@ public class FileData {
 	 * @return The track data for this file data.
 	 */
 	public List<TrackData> getTrackData() {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "getTrackData()");
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "getTrackData()", this.trackData);
 		return this.trackData;
 	}
 
@@ -165,8 +147,6 @@ public class FileData {
 	 * @return The CueSheet that this FileData belongs to.
 	 */
 	public CueSheet getParent() {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "getParent()");
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "getParent()", this.parent);
 		return this.parent;
 	}
 
@@ -176,8 +156,6 @@ public class FileData {
 	 * @param parent The CueSheet that this FileData belongs to.
 	 */
 	public void setParent(final CueSheet parent) {
-		FileData.logger.entering(FileData.class.getCanonicalName(), "setParent(CueSheet)", parent);
 		this.parent = parent;
-		FileData.logger.exiting(FileData.class.getCanonicalName(), "setParent(CueSheet)");
 	}
 }

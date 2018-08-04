@@ -54,61 +54,61 @@ public class TrackCutterCommand {
 	 * command line arguments.
 	 */
 	private TrackCutterConfiguration configuration = new TrackCutterConfiguration();
+
 	/**
 	 * Whether or not to do any processing. Can be set to false by options such
 	 * as "-?" to indicate that no actual processing should be done.
 	 */
 	private boolean doProcessing = true;
+
 	/**
 	 * Recursion depth for file selection.
 	 */
 	private long recursionDepth = 1;
+
 	/**
 	 * Pattern that paths of files must match in order for the file to be
 	 * selected..
 	 */
 	private Pattern pathSelectionPattern = null;
+
 	/**
 	 * Pattern that file names must match in order for the file to be selected.
 	 */
 	private Pattern fileNameSelectionPattern = null;
+
 	/**
 	 * Base directory for file selection. Default is the directory from which
 	 * the java VM was started.
 	 */
 	private File selectionBaseDirectory = new File(System.getProperty("user.dir"));
+
 	/**
 	 * Whether or not to read a cue sheet from standard input.
 	 */
 	private boolean readCueSheetFromStdIn = false;
+
 	/**
 	 * File to write the properties configuration to. If null, no configuration
 	 * will be written.
 	 */
 	private File writePropertiesConfigurationTo = null;
+
 	/**
 	 * File to write the XML configuration to. If null, no configuration will be
 	 * written.
 	 */
 	private File writeXmlConfigurationTo = null;
+
 	/**
 	 * The logger for this class.
 	 */
 	private final static Logger logger = Logger.getLogger(TrackCutterCommand.class.getCanonicalName());
 
 	/**
-	 * Create a new TrackCutterCommand instance.
-	 */
-	private TrackCutterCommand() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "TrackCutterCommand()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "TrackCutterCommand()");
-	}
-
-	/**
 	 * Print a help message.
 	 */
 	private static void printHelp() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "printHelp()");
 		System.out.println("Syntax: [options] [cuefiles]");
 		System.out.println("cuefiles need not be specified if the -fp, -pp, or -i option is used.");
 		System.out.println("Options:");
@@ -193,7 +193,6 @@ public class TrackCutterCommand {
 		System.out.println("No guarantees are made as to the order in which files are processed. Some effort is made");
 		System.out.println("to provent files from being processed more than once per run.");
 		System.out.println("Conflicting options may result in unpredictable behaviour.");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "printHelp()");
 	}
 
 	/**
@@ -202,7 +201,6 @@ public class TrackCutterCommand {
 	 * @return A configurated parser for the command line arguments.
 	 */
 	private SimpleOptionsParser getArgumentsParser() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getArgumentsParser()");
 		SimpleOptionsParser argumentsParser = new SimpleOptionsParser();
 		argumentsParser.registerOption(new SimpleOptionsParser.OptionHandler() {
 
@@ -499,7 +497,6 @@ public class TrackCutterCommand {
 			}
 		}, "-?", "--help");
 
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getArgumentsParser()", argumentsParser);
 		return argumentsParser;
 	}
 
@@ -509,7 +506,6 @@ public class TrackCutterCommand {
 	 * @param args The command line arguments.
 	 */
 	public void performProcessing(final String[] args) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "performProcessing(String[])", args);
 		TrackCutter cutter = new TrackCutter(this.getConfiguration());
 		SimpleOptionsParser argumentsParser = getArgumentsParser();
 
@@ -594,7 +590,6 @@ public class TrackCutterCommand {
 
 		// Set doProcessing to true, as someone may want to reuse this instance.
 		this.setDoProcessing(true);
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "performProcessing(String[])");
 	}
 
 	/**
@@ -603,9 +598,7 @@ public class TrackCutterCommand {
 	 * @param args Command line arguments.
 	 */
 	public static void main(final String[] args) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "main(String[])", args);
 		new TrackCutterCommand().performProcessing(args);
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "main(String[])");
 	}
 
 	/**
@@ -614,8 +607,6 @@ public class TrackCutterCommand {
 	 * @return The configuration for the TrackCutter.
 	 */
 	private TrackCutterConfiguration getConfiguration() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getConfiguration()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getConfiguration()", this.configuration);
 		return this.configuration;
 	}
 
@@ -625,8 +616,6 @@ public class TrackCutterCommand {
 	 * @return Whether or not to do any processing.
 	 */
 	private boolean getDoProcessing() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getDoProcessing()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getDoProcessing()", this.doProcessing);
 		return this.doProcessing;
 	}
 
@@ -636,9 +625,7 @@ public class TrackCutterCommand {
 	 * @param doProcessing Whether or not to do any processing.
 	 */
 	private void setDoProcessing(final boolean doProcessing) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "setDoProcessing(boolean)", doProcessing);
 		this.doProcessing = doProcessing;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setDoProcessing(boolean)", this.doProcessing);
 	}
 
 	/**
@@ -649,8 +636,6 @@ public class TrackCutterCommand {
 	 *         selected.
 	 */
 	private Pattern getFileNameSelectionPattern() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getFileNameSelectionPattern()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getFileNameSelectionPattern()", this.fileNameSelectionPattern);
 		return this.fileNameSelectionPattern;
 	}
 
@@ -662,9 +647,7 @@ public class TrackCutterCommand {
 	 *            order for the file to be selected.
 	 */
 	private void setFileNameSelectionPattern(final Pattern fileNameSelectionPattern) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "setFileNameSelectionPattern(Pattern)", fileNameSelectionPattern);
 		this.fileNameSelectionPattern = fileNameSelectionPattern;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setFileNameSelectionPattern(Pattern)");
 	}
 
 	/**
@@ -675,8 +658,6 @@ public class TrackCutterCommand {
 	 *         selected.
 	 */
 	private Pattern getPathSelectionPattern() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getPathSelectionPattern()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getPathSelectionPattern()", this.pathSelectionPattern);
 		return this.pathSelectionPattern;
 	}
 
@@ -688,9 +669,7 @@ public class TrackCutterCommand {
 	 *            the file to be selected.
 	 */
 	private void setPathSelectionPattern(final Pattern pathSelectionPattern) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getPathSelectionPattern(Pattern)", pathSelectionPattern);
 		this.pathSelectionPattern = pathSelectionPattern;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getPathSelectionPattern(Pattern)");
 	}
 
 	/**
@@ -699,8 +678,6 @@ public class TrackCutterCommand {
 	 * @return The recursion depth for file selection.
 	 */
 	private long getRecursionDepth() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getRecursionDepth()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getRecursionDepth()", this.recursionDepth);
 		return this.recursionDepth;
 	}
 
@@ -712,9 +689,7 @@ public class TrackCutterCommand {
 	 *      boolean)
 	 */
 	private void setRecursionDepth(final long recursionDepth) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "setRecursionDepth(long)", recursionDepth);
 		this.recursionDepth = recursionDepth;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setRecursionDepth(long)");
 	}
 
 	/**
@@ -725,8 +700,6 @@ public class TrackCutterCommand {
 	 *      boolean)
 	 */
 	private File getSelectionBaseDirectory() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getSelectionBaseDirectory()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getSelectionBaseDirectory()", this.selectionBaseDirectory);
 		return this.selectionBaseDirectory;
 	}
 
@@ -736,9 +709,7 @@ public class TrackCutterCommand {
 	 * @param selectionBaseDirectory The base directory for file selection.
 	 */
 	private void setSelectionBaseDirectory(final File selectionBaseDirectory) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "setSelectionBaseDirectory(File)", selectionBaseDirectory);
 		this.selectionBaseDirectory = selectionBaseDirectory;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setSelectionBaseDirectory(File)");
 	}
 
 	/**
@@ -747,8 +718,6 @@ public class TrackCutterCommand {
 	 * @return Whether or not to read a cue sheet from standard input.
 	 */
 	private boolean getReadCueSheetFromStdIn() {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "getReadCueSheetFromStdIn()");
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getReadCueSheetFromStdIn()", this.readCueSheetFromStdIn);
 		return this.readCueSheetFromStdIn;
 	}
 
@@ -759,9 +728,7 @@ public class TrackCutterCommand {
 	 *            standard input.
 	 */
 	private void setReadCueSheetFromStdIn(final boolean readCueSheetFromStdIn) {
-		TrackCutterCommand.logger.entering(TrackCutterCommand.class.getCanonicalName(), "setReadCueSheetFromStdIn(boolean)");
 		this.readCueSheetFromStdIn = readCueSheetFromStdIn;
-		TrackCutterCommand.logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setReadCueSheetFromStdIn(boolean)", this.readCueSheetFromStdIn);
 	}
 
 	/**
@@ -772,8 +739,6 @@ public class TrackCutterCommand {
 	 *         configuration will be written.
 	 */
 	private File getWritePropertiesConfigurationTo() {
-		logger.entering(TrackCutterCommand.class.getCanonicalName(), "getWritePropertiesConfigurationTo()");
-		logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getWritePropertiesConfigurationTo()", writePropertiesConfigurationTo);
 		return writePropertiesConfigurationTo;
 	}
 
@@ -785,9 +750,7 @@ public class TrackCutterCommand {
 	 *            configuration to. If null, no configuration will be written.
 	 */
 	private void setWritePropertiesConfigurationTo(File writePropertiesConfigurationTo) {
-		logger.entering(TrackCutterCommand.class.getCanonicalName(), "setWritePropertiesConfigurationTo()", writePropertiesConfigurationTo);
 		this.writePropertiesConfigurationTo = writePropertiesConfigurationTo;
-		logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setWritePropertiesConfigurationTo()");
 	}
 
 	/**
@@ -798,8 +761,6 @@ public class TrackCutterCommand {
 	 *         configuration will be written.
 	 */
 	private File getWriteXmlConfigurationTo() {
-		logger.entering(TrackCutterCommand.class.getCanonicalName(), "getWriteXmlConfigurationTo()");
-		logger.exiting(TrackCutterCommand.class.getCanonicalName(), "getWriteXmlConfigurationTo()", writeXmlConfigurationTo);
 		return writeXmlConfigurationTo;
 	}
 
@@ -811,8 +772,6 @@ public class TrackCutterCommand {
 	 *            to. If null, no configuration will be written.
 	 */
 	private void setWriteXmlConfigurationTo(File writeXmlConfigurationTo) {
-		logger.entering(TrackCutterCommand.class.getCanonicalName(), "setWriteXmlConfigurationTo()", writeXmlConfigurationTo);
 		this.writeXmlConfigurationTo = writeXmlConfigurationTo;
-		logger.exiting(TrackCutterCommand.class.getCanonicalName(), "setWriteXmlConfigurationTo()");
 	}
 }

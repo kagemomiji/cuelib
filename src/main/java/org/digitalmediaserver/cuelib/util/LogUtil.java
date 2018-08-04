@@ -35,19 +35,10 @@ import java.util.logging.Logger;
 public final class LogUtil {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(LogUtil.class.getCanonicalName());
-
-	/**
 	 * This constructor need never be called as all members of this class are
 	 * static.
 	 */
 	private LogUtil() {
-		// Intentionally empty (except for logging). This class does not need to be instantiated.
-		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
-		LogUtil.logger.warning("jwbroek.util.LogUtil should not be instantiated.");
-		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "TrackCutterCommand()");
 	}
 
 	/**
@@ -59,16 +50,12 @@ public final class LogUtil {
 	 * @param throwable Throwable to log the stack strace of.
 	 */
 	public static void logStacktrace(final Logger logger, final Level level, final Throwable throwable) {
-		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)", new Object[] { logger, level, throwable });
-
 		// No need to do anything if the message isn't loggable.
 		if (logger.isLoggable(level)) {
 			final StringWriter sw = new StringWriter();
 			throwable.printStackTrace(new PrintWriter(sw));
 			logger.log(level, sw.toString());
 		}
-
-		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "logStacktrace(Logger,Level,Throwable)");
 	}
 
 	/**
@@ -79,8 +66,6 @@ public final class LogUtil {
 	 * @return The Level that is currently active on the specified Logger.
 	 */
 	public static Level getActiveLoggingLevel(Logger logger) {
-		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", logger);
-
 		Logger currentLogger = logger;
 		Level result = null;
 
@@ -94,7 +79,6 @@ public final class LogUtil {
 			}
 		} while (result == null && currentLogger != null);
 
-		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getActiveLoggingLevel(Logger)", result);
 		return result;
 	}
 
@@ -115,8 +99,6 @@ public final class LogUtil {
 	 *         is an instance of the specified class.
 	 */
 	public static boolean hasHandlerActive(final Logger logger, final Level level, final Class<?> handlerClass) {
-		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", new Object[] { logger, level, handlerClass });
-
 		Logger currentLogger = logger;
 		boolean result = false;
 
@@ -136,7 +118,6 @@ public final class LogUtil {
 			}
 		}
 
-		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "hasHandlerActive(Logger,Level,Class)", result);
 		return result;
 	}
 
@@ -149,7 +130,6 @@ public final class LogUtil {
 	 * @return A list of all currently active Handlers on the specified Logger.
 	 */
 	public static Set<Handler> getAllActiveHandlers(final Logger logger) {
-		LogUtil.logger.entering(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", logger);
 		final Set<Handler> handlers = new HashSet<Handler>();
 
 		Logger currentLogger = logger;
@@ -163,7 +143,6 @@ public final class LogUtil {
 			}
 		}
 
-		LogUtil.logger.exiting(LogUtil.class.getCanonicalName(), "getAllActiveHandlers(Logger)", handlers);
 		return handlers;
 	}
 }

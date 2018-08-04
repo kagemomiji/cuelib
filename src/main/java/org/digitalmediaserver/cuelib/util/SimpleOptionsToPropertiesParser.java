@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * Simple parser for putting arguments (typically command line arguments) into a
@@ -34,19 +33,9 @@ import java.util.logging.Logger;
 public class SimpleOptionsToPropertiesParser {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(SimpleOptionsToPropertiesParser.class.getCanonicalName());
-	/**
 	 * Map from option key to a list of property keys.
 	 */
 	private Map<String, List<String>> argumentData = new HashMap<String, List<String>>();
-
-	public SimpleOptionsToPropertiesParser() {
-		// Nothing to do. Could have used the default constructor, but I like to be explicit.
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "SimpleOptionsToPropertiesParser()");
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "SimpleOptionsToPropertiesParser()");
-	}
 
 	/**
 	 * <p>
@@ -67,10 +56,7 @@ public class SimpleOptionsToPropertiesParser {
 	 * @param propertyKeys The property keys to set when the option is parsed.
 	 */
 	public void registerOption(String optionKey, String... propertyKeys) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(),
-			"registerOption(String,String[])", new Object[] { optionKey, propertyKeys });
 		this.argumentData.put(optionKey, Arrays.asList(propertyKeys));
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String,String[])");
 	}
 
 	/**
@@ -92,9 +78,7 @@ public class SimpleOptionsToPropertiesParser {
 	 * @param propertyKeys The property keys to set when the option is parsed.
 	 */
 	public void registerOption(String optionKey, List<String> propertyKeys) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String,List<String>)", new Object[] { optionKey, propertyKeys });
 		this.argumentData.put(optionKey, propertyKeys);
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String,List<String>)");
 	}
 
 	/**
@@ -118,11 +102,9 @@ public class SimpleOptionsToPropertiesParser {
 	 * @param propertyKeys The property keys to set when the option is parsed.
 	 */
 	public void registerOption(List<String> optionKeyAlternatives, List<String> propertyKeys) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(List<String>,List<String>)", new Object[] { optionKeyAlternatives, propertyKeys });
 		for (String optionKey : optionKeyAlternatives) {
 			registerOption(optionKey, propertyKeys);
 		}
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(List<String>,List<String>)");
 	}
 
 	/**
@@ -146,11 +128,9 @@ public class SimpleOptionsToPropertiesParser {
 	 * @param propertyKeys The property keys to set when the option is parsed.
 	 */
 	public void registerOption(String[] optionKeyAlternatives, String... propertyKeys) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String[],String [])", new Object[] { optionKeyAlternatives, propertyKeys });
 		for (String optionKey : optionKeyAlternatives) {
 			registerOption(optionKey, propertyKeys);
 		}
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String[],String [])");
 	}
 
 	/**
@@ -165,9 +145,7 @@ public class SimpleOptionsToPropertiesParser {
 	 *         problem.
 	 */
 	public int parseOptions(String[] options, Properties properties) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String[],Properties)", new Object[] { options, properties });
 		int result = parseOptions(options, 0, options.length, properties);
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "registerOption(String[],Properties)", result);
 		return result;
 	}
 
@@ -184,7 +162,6 @@ public class SimpleOptionsToPropertiesParser {
 	 *         if everything was matched, or -1 if there was a problem.
 	 */
 	public int parseOptions(String[] options, int beginIndex, int endIndex, Properties properties) {
-		SimpleOptionsToPropertiesParser.logger.entering(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "parseOptions(String[],int,int,Properties)", new Object[] { options, beginIndex, endIndex, properties });
 		int result = endIndex;
 
 		loopOverOptions: for (int optionIndex = beginIndex; optionIndex < endIndex; optionIndex++) {
@@ -216,7 +193,6 @@ public class SimpleOptionsToPropertiesParser {
 			}
 		}
 
-		SimpleOptionsToPropertiesParser.logger.exiting(SimpleOptionsToPropertiesParser.class.getCanonicalName(), "parseOptions(String[],int,int,Properties)", result);
 		return result;
 	}
 }

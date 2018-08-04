@@ -20,9 +20,8 @@ package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.digitalmediaserver.cuelib.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for creating temporary files.
@@ -34,7 +33,7 @@ final public class TemporaryFileCreator {
 	/**
 	 * The logger for this class.
 	 */
-	private final static Logger logger = Logger.getLogger(TemporaryFileCreator.class.getCanonicalName());
+	private final static Logger LOGGER = LoggerFactory.getLogger(TemporaryFileCreator.class);
 	/**
 	 * Counter for added to the names of temporary files and directories.
 	 */
@@ -56,10 +55,7 @@ final public class TemporaryFileCreator {
 	 *             does not allow the temporary directory to be created.
 	 */
 	public static File createTemporaryDirectory() throws IOException, SecurityException {
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory()");
-		final File result = TemporaryFileCreator.createTemporaryDirectory(null);
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory()", result);
-		return result;
+		return createTemporaryDirectory(null);
 	}
 
 	/**
@@ -75,10 +71,7 @@ final public class TemporaryFileCreator {
 	 *             does not allow the temporary directory to be created.
 	 */
 	public static File createTemporaryDirectory(File baseDir) throws IOException, SecurityException {
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory(File)");
-		final File result = TemporaryFileCreator.createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, true, false, 5);
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryDirectory(File)", result);
-		return result;
+		return createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, true, false, 5);
 	}
 
 	/**
@@ -94,10 +87,7 @@ final public class TemporaryFileCreator {
 	 *             does not allow the temporary file to be created.
 	 */
 	public static File createTemporaryFile() throws IOException, SecurityException {
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile()");
-		final File result = TemporaryFileCreator.createTemporaryFile(null);
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile()", result);
-		return result;
+		return createTemporaryFile(null);
 	}
 
 	/**
@@ -114,10 +104,7 @@ final public class TemporaryFileCreator {
 	 *             does not allow the temporary file to be created.
 	 */
 	public static File createTemporaryFile(File baseDir) throws IOException, SecurityException {
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile(File)");
-		final File result = TemporaryFileCreator.createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, false, false, 5);
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), "createTemporaryFile(File)", result);
-		return result;
+		return createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, false, false, 5);
 	}
 
 	/**
@@ -152,17 +139,13 @@ final public class TemporaryFileCreator {
 	 */
 	public static File createTemporaryFileOrDirectory(final String prefix, final String suffix, final File directory,
 		final boolean createDirectory, final boolean exactName, final int maxAttempts) throws IOException, IllegalArgumentException, SecurityException {
-		final String methodName = "createTemporaryFileOrDirectory(String,String,File,boolean,int)";
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), methodName, new Object[] { prefix, suffix, directory, maxAttempts, createDirectory });
 
 		IOException ioException = null;
 		File result = null;
 
 		if (maxAttempts < 1) {
 			// TODO This error message should come from a ResourceBundle.
-			IllegalArgumentException tooFewAttemptsException = new IllegalArgumentException("maxAttempts must be at least 1.");
-			TemporaryFileCreator.logger.throwing(TemporaryFileCreator.class.getCanonicalName(), methodName, tooFewAttemptsException);
-			throw tooFewAttemptsException;
+			throw new IllegalArgumentException("maxAttempts must be at least 1.");
 		}
 
 		// The filename consists of the prefix, a random number in hex, and a number from the counter.
@@ -182,18 +165,15 @@ final public class TemporaryFileCreator {
 			} catch (IOException e) {
 				// Save the exception, in case this is the last allowed attempt.
 				ioException = e;
-				LogUtil.logStacktrace(TemporaryFileCreator.logger, Level.FINE, ioException);
+				LOGGER.trace("", e);
 			}
 		}
 
-		// If we have no result, then that must be because an exception was
-		// thrown. We'll rethrow it.
-		if (result == null) {
-			TemporaryFileCreator.logger.throwing(TemporaryFileCreator.class.getCanonicalName(), methodName, ioException);
+		// If we have no result, then that must be because an exception was thrown. We'll rethrow it.
+		if (result == null && ioException != null) {
 			throw ioException;
 		}
 
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), methodName, result);
 		return result;
 	}
 
@@ -221,8 +201,6 @@ final public class TemporaryFileCreator {
 	 */
 	public static File createNamedTemporaryFileOrDirectory(final String name, final String suffix, final File directory,
 		final boolean createDirectory, final boolean exactName) throws IOException, IllegalArgumentException, SecurityException {
-		final String methodName = "createNamedTemporaryFileOrDirectory(String,String,File,boolean,boolean)";
-		TemporaryFileCreator.logger.entering(TemporaryFileCreator.class.getCanonicalName(), methodName, new Object[] { name, suffix, directory, createDirectory });
 
 		File result = null;
 
@@ -240,9 +218,7 @@ final public class TemporaryFileCreator {
 			if (!result.mkdir()) {
 				// There was a problem creating the file.
 				// TODO This error message should come from a ResourceBundle.
-				IOException couldNotCreateDirException = new IOException("Could not create directory: '" + result.toString() + "'");
-				TemporaryFileCreator.logger.throwing(TemporaryFileCreator.class.getCanonicalName(), methodName, couldNotCreateDirException);
-				throw couldNotCreateDirException;
+				throw new IOException("Could not create directory: '" + result.toString() + "'");
 			}
 		} else {
 			// We need to create a temporary file.
@@ -257,7 +233,6 @@ final public class TemporaryFileCreator {
 		// Request that the file is deleted after the VM ends.
 		result.deleteOnExit();
 
-		TemporaryFileCreator.logger.exiting(TemporaryFileCreator.class.getCanonicalName(), methodName, result);
 		return result;
 	}
 }

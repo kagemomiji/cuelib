@@ -18,8 +18,6 @@
  */
 package org.digitalmediaserver.cuelib;
 
-import java.util.logging.Logger;
-
 /**
  * Simple representation of an INDEX datum in a cue sheet.
  *
@@ -28,13 +26,10 @@ import java.util.logging.Logger;
 public class Index {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(Index.class.getCanonicalName());
-	/**
 	 * The index number. -1 signifies that the number was not specified.
 	 */
 	private int number = -1;
+
 	/**
 	 * The position of this index. Null signifies that it was not specified.
 	 */
@@ -44,8 +39,6 @@ public class Index {
 	 * Create a new Index.
 	 */
 	public Index() {
-		Index.logger.entering(Index.class.getCanonicalName(), "Index()");
-		Index.logger.exiting(Index.class.getCanonicalName(), "Index()");
 	}
 
 	/**
@@ -57,10 +50,8 @@ public class Index {
 	 *            not specified.
 	 */
 	public Index(final int number, final Position position) {
-		Index.logger.entering(Index.class.getCanonicalName(), "Index(int,Position)", new Object[] { number, position });
 		this.number = number;
 		this.position = position;
-		Index.logger.exiting(Index.class.getCanonicalName(), "Index(int,Position)");
 	}
 
 	/**
@@ -69,8 +60,6 @@ public class Index {
 	 * @return The number of this index. -1 signifies that it was not specified.
 	 */
 	public int getNumber() {
-		Index.logger.entering(Index.class.getCanonicalName(), "getNumber()");
-		Index.logger.exiting(Index.class.getCanonicalName(), "getNumber()", this.number);
 		return this.number;
 	}
 
@@ -81,9 +70,7 @@ public class Index {
 	 *            specified.
 	 */
 	public void setNumber(final int number) {
-		Index.logger.entering(Index.class.getCanonicalName(), "setNumber()", number);
 		this.number = number;
-		Index.logger.exiting(Index.class.getCanonicalName(), "setNumber()");
 	}
 
 	/**
@@ -93,8 +80,6 @@ public class Index {
 	 *         specified.
 	 */
 	public Position getPosition() {
-		Index.logger.entering(Index.class.getCanonicalName(), "getPosition()");
-		Index.logger.exiting(Index.class.getCanonicalName(), "getPosition()", this.position);
 		return this.position;
 	}
 
@@ -105,8 +90,6 @@ public class Index {
 	 *            not specified.
 	 */
 	public void setPosition(final Position position) {
-		Index.logger.entering(Index.class.getCanonicalName(), "setPosition(Position)", position);
 		this.position = position;
-		Index.logger.exiting(Index.class.getCanonicalName(), "setPosition(Position)");
 	}
 }

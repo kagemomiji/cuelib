@@ -19,7 +19,6 @@
 package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * PropertyHandler for {@link Long}s.
@@ -28,10 +27,6 @@ import java.util.logging.Logger;
  */
 final public class LongPropertyHandler implements PropertyHandler<Long> {
 
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(LongPropertyHandler.class.getCanonicalName());
 	/**
 	 * The singleton instance of this class.
 	 */
@@ -42,8 +37,6 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 * itself, as LongPropertyHandler is a singleton class.
 	 */
 	private LongPropertyHandler() {
-		LongPropertyHandler.logger.entering(LongPropertyHandler.class.getCanonicalName(), "LongPropertyHandler()");
-		LongPropertyHandler.logger.exiting(LongPropertyHandler.class.getCanonicalName(), "LongPropertyHandler()");
 	}
 
 	/**
@@ -52,8 +45,6 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 * @return An instance of this class.
 	 */
 	public static LongPropertyHandler getInstance() {
-		LongPropertyHandler.logger.entering(LongPropertyHandler.class.getCanonicalName(), "getInstance()");
-		LongPropertyHandler.logger.exiting(LongPropertyHandler.class.getCanonicalName(), "getInstance()", LongPropertyHandler.instance);
 		return LongPropertyHandler.instance;
 	}
 
@@ -67,10 +58,7 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 */
 	@Override
 	public String toProperty(final Long value) {
-		LongPropertyHandler.logger.entering(LongPropertyHandler.class.getCanonicalName(), "toProperty(Long)", value);
-		final String result = value.toString();
-		LongPropertyHandler.logger.exiting(LongPropertyHandler.class.getCanonicalName(), "toProperty(Long)", result);
-		return result;
+		return value.toString();
 	}
 
 	/**
@@ -83,9 +71,6 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 */
 	@Override
 	public Long fromProperty(final String value) {
-		LongPropertyHandler.logger.entering(LongPropertyHandler.class.getCanonicalName(), "fromProperty(String)", value);
-		final Long result = new Long(value);
-		LongPropertyHandler.logger.exiting(LongPropertyHandler.class.getCanonicalName(), "fromProperty(String)", result);
-		return result;
+		return new Long(value);
 	}
 }

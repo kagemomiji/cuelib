@@ -37,8 +37,12 @@ import org.digitalmediaserver.cuelib.id3.v2.UFIFrameReader;
 import org.digitalmediaserver.cuelib.id3.v2.URLFrameReader;
 import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
 import org.digitalmediaserver.cuelib.id3.v2.WXXFrameReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FramesReader {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FramesReader.class);
 
 	// TODO Make sure we can handle unexpected EOFs.
 
@@ -262,16 +266,16 @@ public class FramesReader {
 				return FramesReader.FRAME_HEADER_LENGTH;
 			} else if (frameName.charAt(0) == 'T') {
 				// TODO: Add option to enable/disable this behaviour.
-				System.out.println("Encountered unknown text frame: " + frameName);
+				LOGGER.warn("Encountered unknown text frame: \"{}\"", frameName);
 				tag.getFrames().add(
 					new TextFrameReader(CanonicalFrameType.USER_DEFINED_TEXT, FramesReader.FRAME_HEADER_LENGTH).readFrameBody(frameName, frameSize, input));
 			} else if (frameName.charAt(0) == 'W') {
 				// TODO: Add option to enable/disable this behaviour.
-				System.out.println("Encountered unknown URL frame: " + frameName);
+				LOGGER.warn("Encountered unknown URL frame: \"{}\"", frameName);
 				tag.getFrames().add(
 					new URLFrameReader(CanonicalFrameType.USER_DEFINED_URL, FramesReader.FRAME_HEADER_LENGTH).readFrameBody(frameName, frameSize, input));
 			} else {
-				System.out.println("Encountered unsupported frame type: " + frameName + " of length " + frameSize);
+				LOGGER.warn("Encountered unsupported frame type: \"{}\" of length {}", frameName, frameSize);
 				input.skip(frameSize);
 				// TODO Handle
 			}

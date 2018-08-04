@@ -20,7 +20,6 @@ package org.digitalmediaserver.cuelib.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Simple parser for options (typically command line arguments).
@@ -28,11 +27,6 @@ import java.util.logging.Logger;
  * @author jwbroek
  */
 public class SimpleOptionsParser {
-
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(SimpleOptionsParser.class.getCanonicalName());
 
 	/**
 	 * Interface that you must implement if you want to handle options.
@@ -63,14 +57,6 @@ public class SimpleOptionsParser {
 	private Map<String, OptionHandler> optionHandlers = new HashMap<String, OptionHandler>();
 
 	/**
-	 * Create a new SimpleOptionsParser.
-	 */
-	public SimpleOptionsParser() {
-		SimpleOptionsParser.logger.entering(SimpleOptionsParser.class.getCanonicalName(), "SimpleOptionsParser()");
-		SimpleOptionsParser.logger.exiting(SimpleOptionsParser.class.getCanonicalName(), "SimpleOptionsParser()");
-	}
-
-	/**
 	 * <p>
 	 * Register an option with the parser. If the option is found, then the
 	 * specified handler will be called.
@@ -84,9 +70,7 @@ public class SimpleOptionsParser {
 	 */
 	@Deprecated
 	public void registerOption(String optionKey, OptionHandler handler) {
-		SimpleOptionsParser.logger.entering(SimpleOptionsParser.class.getCanonicalName(), "registerOption(String,OptionHandler)", new Object[] { optionKey, handler });
 		this.optionHandlers.put(optionKey, handler);
-		SimpleOptionsParser.logger.exiting(SimpleOptionsParser.class.getCanonicalName(), "registerOption(String,OptionHandler)");
 	}
 
 	/**
@@ -100,13 +84,9 @@ public class SimpleOptionsParser {
 	 * @param handler The handler to handle these options.
 	 */
 	public void registerOption(OptionHandler handler, String... optionKeys) {
-		SimpleOptionsParser.logger.entering(SimpleOptionsParser.class.getCanonicalName(), "registerOption(OptionHandler,String[])", new Object[] { handler, optionKeys });
-
 		for (String optionKey : optionKeys) {
 			this.optionHandlers.put(optionKey, handler);
 		}
-
-		SimpleOptionsParser.logger.exiting(SimpleOptionsParser.class.getCanonicalName(), "registerOption(OptionHandler,String[])");
 	}
 
 	/**
@@ -118,10 +98,7 @@ public class SimpleOptionsParser {
 	 *         options.length if everything was matched.
 	 */
 	public int parseOptions(final String[] options) {
-		SimpleOptionsParser.logger.entering(SimpleOptionsParser.class.getCanonicalName(), "parseOptions(String[])", new Object[] { options });
-		int result = parseOptions(options, 0);
-		SimpleOptionsParser.logger.exiting(SimpleOptionsParser.class.getCanonicalName(), "registerOption(OptionHandler,String[])", result);
-		return result;
+		return parseOptions(options, 0);
 	}
 
 	/**
@@ -134,8 +111,6 @@ public class SimpleOptionsParser {
 	 *         options.length if everything was matched.
 	 */
 	public int parseOptions(final String[] options, final int offset) {
-		SimpleOptionsParser.logger.entering(SimpleOptionsParser.class.getCanonicalName(), "parseOptions(String[],int)", new Object[] {options, offset });
-
 		int currentOffset = offset;
 		OptionHandler currentHandler = null;
 
@@ -152,22 +127,17 @@ public class SimpleOptionsParser {
 			// Handler did not handle at least the first option. This is an exception state, as it would lead
 			// to an infinite loop.
 			if (nextOffset == currentOffset) {
-				IllegalStateException e = new IllegalStateException("Handler registered for option \"" + options[currentOffset] + "\" did not handle it.");
-				SimpleOptionsParser.logger.throwing(SimpleOptionsParser.class.getCanonicalName(), "parseOptions(String[],int)", e);
-				throw e;
+				throw new IllegalStateException("Handler registered for option \"" + options[currentOffset] + "\" did not handle it.");
 			}
 
 			// Handler claims to have handled more options than actually exist.
 			if (nextOffset > options.length) {
-				IllegalStateException e = new IllegalStateException("Handler registered for option \"" + options[currentOffset] + "\" claims to have handled more options than are existent.");
-				SimpleOptionsParser.logger.throwing(SimpleOptionsParser.class.getCanonicalName(), "parseOptions(String[],int)", e);
-				throw e;
+				throw new IllegalStateException("Handler registered for option \"" + options[currentOffset] + "\" claims to have handled more options than are existent.");
 			}
 
 			currentOffset = nextOffset;
 		}
 
-		SimpleOptionsParser.logger.exiting(SimpleOptionsParser.class.getCanonicalName(), "parseOptions(String[],int)", currentOffset);
 		return currentOffset;
 	}
 }

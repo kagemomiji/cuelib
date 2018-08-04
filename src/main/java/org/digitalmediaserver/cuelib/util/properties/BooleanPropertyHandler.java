@@ -19,7 +19,6 @@
 package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * PropertyHandler for {@link Boolean}s.
@@ -28,10 +27,6 @@ import java.util.logging.Logger;
  */
 final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(BooleanPropertyHandler.class.getCanonicalName());
 	/**
 	 * The singleton instance of this class.
 	 */
@@ -42,8 +37,6 @@ final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 	 * itself, as BooleanPropertyHandler is a singleton class.
 	 */
 	private BooleanPropertyHandler() {
-		BooleanPropertyHandler.logger.entering(BooleanPropertyHandler.class.getCanonicalName(), "BooleanPropertyHandler()");
-		BooleanPropertyHandler.logger.exiting(BooleanPropertyHandler.class.getCanonicalName(), "BooleanPropertyHandler()");
 	}
 
 	/**
@@ -52,8 +45,6 @@ final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 	 * @return An instance of this class.
 	 */
 	public static BooleanPropertyHandler getInstance() {
-		BooleanPropertyHandler.logger.entering(BooleanPropertyHandler.class.getCanonicalName(), "getInstance()");
-		BooleanPropertyHandler.logger.exiting(BooleanPropertyHandler.class.getCanonicalName(), "getInstance()", BooleanPropertyHandler.instance);
 		return BooleanPropertyHandler.instance;
 	}
 
@@ -67,9 +58,7 @@ final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 	 */
 	@Override
 	public String toProperty(final Boolean value) {
-		BooleanPropertyHandler.logger.entering(BooleanPropertyHandler.class.getCanonicalName(), "toProperty(Boolean)", value);
 		final String result = value.toString();
-		BooleanPropertyHandler.logger.exiting(BooleanPropertyHandler.class.getCanonicalName(), "toProperty(Boolean)", result);
 		return result;
 	}
 
@@ -83,9 +72,7 @@ final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 	 */
 	@Override
 	public Boolean fromProperty(final String value) {
-		BooleanPropertyHandler.logger.entering(BooleanPropertyHandler.class.getCanonicalName(), "fromProperty(String)", value);
 		final Boolean result = Boolean.valueOf(value);
-		BooleanPropertyHandler.logger.exiting(BooleanPropertyHandler.class.getCanonicalName(), "fromProperty(String)", result);
 		return result;
 	}
 }

@@ -18,8 +18,6 @@
  */
 package org.digitalmediaserver.cuelib;
 
-import java.util.logging.Logger;
-
 /**
  * Simple representation of a line of input for use by CueParser.
  *
@@ -28,17 +26,15 @@ import java.util.logging.Logger;
 public class LineOfInput {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(LineOfInput.class.getCanonicalName());
-	/**
 	 * Number of this line.
 	 */
 	private final int lineNumber;
+
 	/**
 	 * Input at this line.
 	 */
 	private final String input;
+
 	/**
 	 * The CueSheet associated with this input.
 	 */
@@ -52,11 +48,9 @@ public class LineOfInput {
 	 * @param associatedSheet The CueSheet associated with this input.
 	 */
 	public LineOfInput(final int lineNumber, final String input, final CueSheet associatedSheet) {
-		LineOfInput.logger.entering(LineOfInput.class.getCanonicalName(), "LineOfInput(int,String,CueSheet)", new Object[] { lineNumber, input, associatedSheet });
 		this.lineNumber = lineNumber;
 		this.input = input;
 		this.associatedSheet = associatedSheet;
-		LineOfInput.logger.exiting(Index.class.getCanonicalName(), "LineOfInput(int,String,CueSheet)");
 	}
 
 	/**
@@ -65,8 +59,6 @@ public class LineOfInput {
 	 * @return The CueSheet associated with this input.
 	 */
 	public CueSheet getAssociatedSheet() {
-		LineOfInput.logger.entering(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()");
-		LineOfInput.logger.exiting(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()", this.associatedSheet);
 		return this.associatedSheet;
 	}
 
@@ -76,8 +68,6 @@ public class LineOfInput {
 	 * @return The input at this line.
 	 */
 	public String getInput() {
-		LineOfInput.logger.entering(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()");
-		LineOfInput.logger.exiting(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()", this.input);
 		return this.input;
 	}
 
@@ -87,8 +77,6 @@ public class LineOfInput {
 	 * @return The number of this line.
 	 */
 	public int getLineNumber() {
-		LineOfInput.logger.entering(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()");
-		LineOfInput.logger.exiting(LineOfInput.class.getCanonicalName(), "getAssociatedSheet()", this.lineNumber);
 		return this.lineNumber;
 	}
 }

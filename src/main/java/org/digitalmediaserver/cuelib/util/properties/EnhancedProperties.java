@@ -20,7 +20,6 @@ package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
 import org.digitalmediaserver.cuelib.util.NullUtil;
-import java.util.logging.Logger;
 
 /**
  * Properties implementation that has been enhanced with utility methods for
@@ -43,10 +42,7 @@ public class EnhancedProperties extends Properties {
 	 * {@linkplain java.io.Serializable}.
 	 */
 	private static final long serialVersionUID = 4279677865735630015L;
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(EnhancedProperties.class.getCanonicalName());
+
 	/**
 	 * The PropertyHandlerFactory for handling property conversions.
 	 */
@@ -57,9 +53,7 @@ public class EnhancedProperties extends Properties {
 	 */
 	public EnhancedProperties() {
 		super();
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties()");
 		this.propertyHandlerFactory = PropertyHandlerFactoryImpl.getInstance();
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties()");
 	}
 
 	/**
@@ -70,9 +64,7 @@ public class EnhancedProperties extends Properties {
 	 */
 	public EnhancedProperties(final Properties properties) {
 		super(properties);
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 		this.propertyHandlerFactory = PropertyHandlerFactoryImpl.getInstance();
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 	}
 
 	/**
@@ -84,9 +76,7 @@ public class EnhancedProperties extends Properties {
 	 */
 	public EnhancedProperties(final PropertyHandlerFactory propertyHandlerFactory) {
 		super();
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 		this.propertyHandlerFactory = propertyHandlerFactory;
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 	}
 
 	/**
@@ -99,9 +89,7 @@ public class EnhancedProperties extends Properties {
 	 */
 	public EnhancedProperties(final Properties properties, final PropertyHandlerFactory propertyHandlerFactory) {
 		super(properties);
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 		this.propertyHandlerFactory = propertyHandlerFactory;
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "EnhancedProperties(Properties)");
 	}
 
 	/**
@@ -114,7 +102,6 @@ public class EnhancedProperties extends Properties {
 	 *         guaranteed to have been a Enum.
 	 */
 	public <T extends Enum<T>> T setProperty(final String key, final T value) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Enum)");
 		final String previousValue;
 		if (value == null) {
 			previousValue = (String) super.remove(key);
@@ -122,7 +109,6 @@ public class EnhancedProperties extends Properties {
 			previousValue = (String) super.setProperty(key, value.toString());
 		}
 		final T result = NullUtil.toEnum(previousValue, value.getDeclaringClass());
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Enum)", result);
 		return result;
 	}
 
@@ -134,9 +120,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as an Enum instance.
 	 */
 	public <T extends Enum<T>> T getProperty(final String key, final Class<T> enumType) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsEnum(String,Class)");
 		final T result = NullUtil.toEnum(super.getProperty(key), enumType);
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsEnum(String,Class)", result);
 		return result;
 	}
 
@@ -149,9 +133,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as an Enum instance.
 	 */
 	public <T extends Enum<T>> T getProperty(final String key, final T defaultValue) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsEnum(String,Enum)");
 		final T result = NullUtil.nullValue(NullUtil.toEnum(super.getProperty(key), defaultValue.getDeclaringClass()), defaultValue);
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsEnum(String,Enum)", result);
 		return result;
 	}
 
@@ -166,7 +148,6 @@ public class EnhancedProperties extends Properties {
 	 *         value was previously stored.
 	 */
 	public <T> T setProperty(final String key, final T value, final PropertyHandler<T> handler) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Object,PropertyHandler)");
 		final Object previousValue;
 		if (value == null) {
 			previousValue = super.remove(key);
@@ -174,7 +155,6 @@ public class EnhancedProperties extends Properties {
 			previousValue = super.setProperty(key, handler.toProperty(value));
 		}
 		final T result = previousValue == null ? null : handler.fromProperty(previousValue.toString());
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Object,PropertyHandler)", result);
 		return result;
 	}
 
@@ -186,9 +166,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as some desired type.
 	 */
 	public <T> T getProperty(final String key, final PropertyHandler<T> handler) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getProperty(String,PropertyHandler)");
 		final T result = this.getProperty(key, null, handler);
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getProperty(String,PropertyHandler)", result);
 		return result;
 	}
 
@@ -202,10 +180,8 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as some desired type.
 	 */
 	public <T> T getProperty(final String key, final T defaultValue, final PropertyHandler<T> handler) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getProperty(String,Object,PropertyHandler)");
 		final String value = super.getProperty(key);
 		final T result = value == null ? defaultValue : handler.fromProperty(value);
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getProperty(String,Object,PropertyHandler)", result);
 		return result;
 	}
 
@@ -219,9 +195,7 @@ public class EnhancedProperties extends Properties {
 	 *         value was previously stored.
 	 */
 	public Boolean setProperty(final String key, final Boolean value) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Boolean)");
 		final Boolean result = this.setProperty(key, value, this.propertyHandlerFactory.getPropertyHandler(Boolean.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Boolean)", result);
 		return result;
 	}
 
@@ -232,9 +206,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as a Boolean.
 	 */
 	public Boolean getPropertyAsBoolean(final String key) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsBoolean(String)");
 		final Boolean result = this.getProperty(key, this.propertyHandlerFactory.getPropertyHandler(Boolean.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsBoolean(String)", result);
 		return result;
 	}
 
@@ -247,9 +219,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as a Boolean.
 	 */
 	public Boolean getPropertyAsBoolean(final String key, final Boolean defaultValue) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsBoolean(String,Boolean)");
 		final Boolean result = this.getProperty(key, defaultValue, this.propertyHandlerFactory.getPropertyHandler(Boolean.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsBoolean(String,Boolean)", result);
 		return result;
 	}
 
@@ -262,9 +232,7 @@ public class EnhancedProperties extends Properties {
 	 *         value was previously stored.
 	 */
 	public Long setProperty(final String key, final Long value) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Long)");
 		final Long result = this.setProperty(key, value, this.propertyHandlerFactory.getPropertyHandler(Long.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "setProperty(String,Long)", result);
 		return result;
 	}
 
@@ -275,9 +243,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as a Long.
 	 */
 	public Long getPropertyAsLong(final String key) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsLong(String)");
 		final Long result = this.getProperty(key, this.propertyHandlerFactory.getPropertyHandler(Long.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsLong(String)", result);
 		return result;
 	}
 
@@ -290,9 +256,7 @@ public class EnhancedProperties extends Properties {
 	 * @return The value stored under the specified key as a Long.
 	 */
 	public Long getPropertyAsLong(final String key, final Long defaultValue) {
-		EnhancedProperties.logger.entering(EnhancedProperties.class.getCanonicalName(), "getPropertyAsLong(String,Long)");
 		final Long result = this.getProperty(key, defaultValue, this.propertyHandlerFactory.getPropertyHandler(Long.class));
-		EnhancedProperties.logger.exiting(EnhancedProperties.class.getCanonicalName(), "getPropertyAsLong(String,Long)", result);
 		return result;
 	}
 }

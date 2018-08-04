@@ -20,7 +20,6 @@ package org.digitalmediaserver.cuelib.util.properties;
 
 import java.io.File;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * PropertyHandler for {@link File}s.
@@ -29,10 +28,6 @@ import java.util.logging.Logger;
  */
 final public class FilePropertyHandler implements PropertyHandler<File> {
 
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(FilePropertyHandler.class.getCanonicalName());
 	/**
 	 * The singleton instance of this class.
 	 */
@@ -44,8 +39,6 @@ final public class FilePropertyHandler implements PropertyHandler<File> {
 	 */
 	private FilePropertyHandler() {
 		super();
-		FilePropertyHandler.logger.entering(FilePropertyHandler.class.getCanonicalName(), "FilePropertyHandler()");
-		FilePropertyHandler.logger.exiting(FilePropertyHandler.class.getCanonicalName(), "FilePropertyHandler()");
 	}
 
 	/**
@@ -54,8 +47,6 @@ final public class FilePropertyHandler implements PropertyHandler<File> {
 	 * @return An instance of this class.
 	 */
 	public static FilePropertyHandler getInstance() {
-		FilePropertyHandler.logger.entering(FilePropertyHandler.class.getCanonicalName(), "FilePropertyHandler.getInstance()");
-		FilePropertyHandler.logger.exiting(FilePropertyHandler.class.getCanonicalName(), "FilePropertyHandler.getInstance()", FilePropertyHandler.instance);
 		return FilePropertyHandler.instance;
 	}
 
@@ -69,9 +60,7 @@ final public class FilePropertyHandler implements PropertyHandler<File> {
 	 */
 	@Override
 	public String toProperty(final File value) {
-		FilePropertyHandler.logger.entering(FilePropertyHandler.class.getCanonicalName(), "toProperty(File)", value);
 		final String result = value.getPath();
-		FilePropertyHandler.logger.exiting(FilePropertyHandler.class.getCanonicalName(), "toProperty(File)", result);
 		return result;
 	}
 
@@ -85,9 +74,7 @@ final public class FilePropertyHandler implements PropertyHandler<File> {
 	 */
 	@Override
 	public File fromProperty(final String value) {
-		FilePropertyHandler.logger.entering(FilePropertyHandler.class.getCanonicalName(), "fromProperty(String)", value);
 		final File result = new File(value);
-		FilePropertyHandler.logger.exiting(FilePropertyHandler.class.getCanonicalName(), "fromProperty(String)", result);
 		return result;
 	}
 }

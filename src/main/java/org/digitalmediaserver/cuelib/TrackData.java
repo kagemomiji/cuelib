@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import org.digitalmediaserver.cuelib.CueSheet.MetaDataField;
-import java.util.logging.Logger;
 
 /**
  * Simple representation of a TRACK block of a cue sheet.
@@ -33,52 +32,58 @@ import java.util.logging.Logger;
 public class TrackData {
 
 	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(TrackData.class.getCanonicalName());
-	/**
 	 * The indices in this track,
 	 */
 	private final List<Index> indices = new ArrayList<Index>();
+
 	/**
 	 * The flags for this track.
 	 */
 	private final Set<String> flags = new TreeSet<String>();
+
 	/**
 	 * The track number. -1 signifies that it has not been set.
 	 */
 	private int number = -1;
+
 	/**
 	 * The data type of this track. Null signifies that it has not been set.
 	 */
 	private String dataType = null;
+
 	/**
 	 * The ISRC code of this track. Null signifies that it has not been set.
 	 */
 	private String isrcCode = null;
+
 	/**
 	 * The performer of this track. Null signifies that it has not been set.
 	 * Should be a maximum of 80 characters if you want to burn to CD-TEXT.
 	 */
 	private String performer = null;
+
 	/**
 	 * The title of this track. Null signifies that it has not been set. Should
 	 * be a maximum of 80 characters if you want to burn to CD-TEXT.
 	 */
 	private String title = null;
+
 	/**
 	 * The pregap of this track. Null signifies that it has not been set.
 	 */
 	private Position pregap = null;
+
 	/**
 	 * The postgap of this track. Null signifies that it has not been set.
 	 */
 	private Position postgap = null;
+
 	/**
 	 * The songwriter of this track. Null signifies that it has not been set.
 	 * Should be a maximum of 80 characters if you want to burn to CD-TEXT.
 	 */
 	private String songwriter = null;
+
 	/**
 	 * The file data that this track data belongs to.
 	 */
@@ -91,9 +96,7 @@ public class TrackData {
 	 *            be null.
 	 */
 	public TrackData(final FileData parent) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "TrackData(FileData)", parent);
 		this.parent = parent;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "TrackData(FileData)");
 	}
 
 	/**
@@ -106,11 +109,9 @@ public class TrackData {
 	 *            not been set.
 	 */
 	public TrackData(final FileData parent, final int number, final String dataType) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "TrackData(FileData,int,String)", new Object[] { parent, number, dataType });
 		this.parent = parent;
 		this.number = number;
 		this.dataType = dataType;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "TrackData(FileData,int,String)");
 	}
 
 	/**
@@ -125,40 +126,26 @@ public class TrackData {
 	 * @return The specified metadata.
 	 */
 	public String getMetaData(final MetaDataField metaDataField) throws IllegalArgumentException {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getMetaData(MetaDataField)", metaDataField);
-		String result;
 		switch (metaDataField) {
 			case ISRCCODE:
-				result = this.getIsrcCode() == null ? "" : this.getIsrcCode();
-				break;
+				return this.getIsrcCode() == null ? "" : this.getIsrcCode();
 			case PERFORMER:
-				result = this.getPerformer() == null ? this.getParent().getParent().getPerformer() : this.getPerformer();
-				break;
+				return this.getPerformer() == null ? this.getParent().getParent().getPerformer() : this.getPerformer();
 			case TRACKPERFORMER:
-				result = this.getPerformer() == null ? "" : this.getPerformer();
-				break;
+				return this.getPerformer() == null ? "" : this.getPerformer();
 			case SONGWRITER:
-				result = this.getSongwriter() == null ? this.getParent().getParent().getSongwriter() : this.getSongwriter();
-				break;
+				return this.getSongwriter() == null ? this.getParent().getParent().getSongwriter() : this.getSongwriter();
 			case TRACKSONGWRITER:
-				result = this.getSongwriter();
-				break;
+				return this.getSongwriter();
 			case TITLE:
-				result = this.getTitle() == null ? this.getParent().getParent().getTitle() : this.getTitle();
-				break;
+				return this.getTitle() == null ? this.getParent().getParent().getTitle() : this.getTitle();
 			case TRACKTITLE:
-				result = this.getTitle();
-				break;
+				return this.getTitle();
 			case TRACKNUMBER:
-				result = Integer.toString(this.getNumber());
-				break;
+				return Integer.toString(this.getNumber());
 			default:
-				result = this.getParent().getParent().getMetaData(metaDataField);
-				break;
+				return this.getParent().getParent().getMetaData(metaDataField);
 		}
-
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getMetaData()", result);
-		return result;
 	}
 
 	/**
@@ -168,8 +155,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getDataType() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getDataType()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getDataType()", this.dataType);
 		return this.dataType;
 	}
 
@@ -180,9 +165,7 @@ public class TrackData {
 	 *            not been set.
 	 */
 	public void setDataType(final String dataType) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setDataType(String)", dataType);
 		this.dataType = dataType;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setDataType(String)");
 	}
 
 	/**
@@ -192,8 +175,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getIsrcCode() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getIsrcCode()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIsrcCode()", this.isrcCode);
 		return this.isrcCode;
 	}
 
@@ -204,9 +185,7 @@ public class TrackData {
 	 *            not been set.
 	 */
 	public void setIsrcCode(final String isrcCode) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setIsrcCode(String)", isrcCode);
 		this.isrcCode = isrcCode;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setIsrcCode(String)");
 	}
 
 	/**
@@ -215,8 +194,6 @@ public class TrackData {
 	 * @return The track number. -1 signifies that it has not been set.
 	 */
 	public int getNumber() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getNumber()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getNumber()", this.number);
 		return this.number;
 	}
 
@@ -226,9 +203,7 @@ public class TrackData {
 	 * @param number The track number. -1 signifies that it has not been set.
 	 */
 	public void setNumber(final int number) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setNumber(int)", number);
 		this.number = number;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setNumber(int)");
 	}
 
 	/**
@@ -238,8 +213,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getPerformer() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getPerformer()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPerformer()", this.performer);
 		return this.performer;
 	}
 
@@ -251,9 +224,7 @@ public class TrackData {
 	 *            to burn to CD-TEXT.
 	 */
 	public void setPerformer(final String performer) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setPerformer(String)", performer);
 		this.performer = performer;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPerformer(String)");
 	}
 
 	/**
@@ -263,8 +234,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public Position getPostgap() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getPostgap()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPostgap()", this.postgap);
 		return this.postgap;
 	}
 
@@ -275,9 +244,7 @@ public class TrackData {
 	 *            been set.
 	 */
 	public void setPostgap(final Position postgap) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setPostgap(Position)", postgap);
 		this.postgap = postgap;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPostgap(Position)");
 	}
 
 	/**
@@ -287,8 +254,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public Position getPregap() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getPregap()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getPregap()", this.pregap);
 		return this.pregap;
 	}
 
@@ -299,9 +264,7 @@ public class TrackData {
 	 *            been set.
 	 */
 	public void setPregap(final Position pregap) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setPregap(Position)", pregap);
 		this.pregap = pregap;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setPregap(Position)");
 	}
 
 	/**
@@ -312,8 +275,6 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getSongwriter() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getSongwriter()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getSongwriter()", this.songwriter);
 		return this.songwriter;
 	}
 
@@ -326,9 +287,7 @@ public class TrackData {
 	 *            want to burn to CD-TEXT.
 	 */
 	public void setSongwriter(final String songwriter) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setSongwriter(String)", songwriter);
 		this.songwriter = songwriter;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setSongwriter(String)");
 	}
 
 	/**
@@ -337,8 +296,6 @@ public class TrackData {
 	 * @return The title of this track. Null signifies that it has not been set.
 	 */
 	public String getTitle() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getTitle()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getTitle()", this.title);
 		return this.title;
 	}
 
@@ -351,9 +308,7 @@ public class TrackData {
 	 *            to CD-TEXT.
 	 */
 	public void setTitle(final String title) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setTitle(String)", title);
 		this.title = title;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setTitle(String)");
 	}
 
 	/**
@@ -365,23 +320,16 @@ public class TrackData {
 	 *         index.
 	 */
 	public Index getIndex(final int number) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getIndex(int)");
-
-		Index result = null;
-
 		// Note: we have to pass all indices until we've found the right one, as
 		// we don't enforce that indices are sorted.
 		// Normally, this shouldn't be a problem, as there are generally very
 		// few indices. (Only rarely more than 2).
-		indexLoop: for (Index index : this.indices) {
+		for (Index index : this.indices) {
 			if (index.getNumber() == number) {
-				result = index;
-				break indexLoop;  // No need to continue searching, so break out of the loop.
+				return index;
 			}
 		}
-
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIndex(int)", result);
-		return result;
+		return null;
 	}
 
 	/**
@@ -390,8 +338,6 @@ public class TrackData {
 	 * @return The indices for this track data.
 	 */
 	public List<Index> getIndices() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getIndices()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getIndices()", this.indices);
 		return this.indices;
 	}
 
@@ -401,8 +347,6 @@ public class TrackData {
 	 * @return The flags for this track data.
 	 */
 	public Set<String> getFlags() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getFlags()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getFlags()", this.flags);
 		return this.flags;
 	}
 
@@ -412,8 +356,6 @@ public class TrackData {
 	 * @return The file data that this track data belong to..
 	 */
 	public FileData getParent() {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "getParent()");
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "getParent()", this.parent);
 		return this.parent;
 	}
 
@@ -423,8 +365,6 @@ public class TrackData {
 	 * @param parent The file data that this track data belong to..
 	 */
 	public void setParent(final FileData parent) {
-		TrackData.logger.entering(TrackData.class.getCanonicalName(), "setParent(FileData)", parent);
 		this.parent = parent;
-		TrackData.logger.exiting(TrackData.class.getCanonicalName(), "setParent(FileData)");
 	}
 }

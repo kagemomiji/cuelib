@@ -21,7 +21,6 @@ package org.digitalmediaserver.cuelib.tools.trackcutter;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import org.digitalmediaserver.cuelib.CueSheet;
 import org.digitalmediaserver.cuelib.FileData;
@@ -54,75 +53,76 @@ public class TrackCutterConfiguration {
 	 * Parent directory for relative paths.
 	 */
 	private File parentDirectory = null;
+
 	/**
 	 * How to handle pregaps.
 	 */
 	private PregapHandling pregapHandling = PregapHandling.DISCARD;
+
 	/**
 	 * Only process pregaps with a frame length greater than this.
 	 */
 	private long pregapFrameLengthThreshold = 0;
+
 	/**
 	 * Audio type to convert to.
 	 */
 	private AudioFileFormat.Type targetType = AudioFileFormat.Type.WAVE;
+
 	/**
 	 * Whether or not error output from post-processing should be redirected.
 	 */
 	private boolean redirectErr = false;
+
 	/**
 	 * Whether or not standard output from post-processing should be redirected.
 	 */
 	private boolean redirectStdOut = false;
+
 	/**
 	 * Whether or not we should do post-processing.
 	 */
 	private boolean doPostProcessing = false;
+
 	/**
 	 * Whether or not we should redirect output directly to post-processing.
 	 */
 	private boolean redirectToPostprocessing = false;
+
 	/**
 	 * Template for the file name of the cut tracks.
 	 */
 	private String cutFileNameTemplate = "<artist>_<album>_<track>_<title>.wav";
+
 	/**
 	 * Template for the file name of the post-processed tracks.
 	 */
 	private String postProcessFileNameTemplate = "<artist>/<album>/<track>_<title>.mp3";
+
 	/**
 	 * Template for the post-processing command.
 	 */
 	private String postProcessCommandTemplate = "C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"<title>\" --ta \"<artist>\" --tl \"<album>\" --ty \"<year>\" --tc \"<comment>\" --tn \"<track>\" --tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
+
 	/**
 	 * Template for the file name of the cut pregaps.
 	 */
 	private String pregapCutFileNameTemplate = "<artist>_<album>_<track>__pre_<title>.wav";
+
 	/**
 	 * Template for the file name of the post-processed pregaps.
 	 */
 	private String pregapPostProcessFileNameTemplate = "<artist>/<album>/<track>__pre_<title>.mp3";
+
 	/**
 	 * Template for the post-processing command for the pregaps.
 	 */
 	private String pregapPostProcessCommandTemplate = "C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"Pregap of <title>\" --ta \"<artist>\" --tl \"<album>\" --ty \"<year>\" --tc \"Pregap of <title>\" --tn \"<track>\" --tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
-	/**
-	 * The logger for this class.
-	 */
-	private final static Logger logger = Logger.getLogger(TrackCutterConfiguration.class.getCanonicalName());
 
 	/**
 	 * Replacer for the template values.
 	 */
 	public static final StringReplacer templateReplacer = new StringReplacer(getHumanReadableToFormatStringReplacements());
-
-	/**
-	 * Create a new TrackCutterConfiguration instance, with default values.
-	 */
-	public TrackCutterConfiguration() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "TrackCutterConfiguration()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "TrackCutterConfiguration()");
-	}
 
 	/**
 	 * Get a replacements map for human readable fields to formatting string
@@ -132,7 +132,6 @@ public class TrackCutterConfiguration {
 	 *         fields.
 	 */
 	private static Map<String, String> getHumanReadableToFormatStringReplacements() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getHumanReadableToFormatStringReplacements()");
 		HashMap<String, String> replacements = new HashMap<String, String>();
 		replacements.put("<title>", "%1$s");
 		replacements.put("<artist>", "%2$s");
@@ -146,7 +145,6 @@ public class TrackCutterConfiguration {
 		replacements.put("<lamegenre>", "%10$s");
 		replacements.put("<cutFile>", "%11$s");
 		replacements.put("<postProcessFile>", "%12$s");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getHumanReadableToFormatStringReplacements()", replacements);
 		return replacements;
 	}
 
@@ -175,8 +173,6 @@ public class TrackCutterConfiguration {
 	 * @param properties The Properties to load configuration from.
 	 */
 	public void loadProperties(final EnhancedProperties properties) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "loadProperties(EnhancedProperties)");
-
 		this.parentDirectory = properties.getProperty("parentDirectory", this.parentDirectory, FilePropertyHandler.getInstance());
 		this.pregapHandling = properties.getProperty("pregapHandling", this.pregapHandling);
 		this.pregapFrameLengthThreshold = properties.getPropertyAsLong("pregapFrameLengthThreshold", this.pregapFrameLengthThreshold);
@@ -191,8 +187,6 @@ public class TrackCutterConfiguration {
 		this.pregapCutFileNameTemplate = properties.getProperty("pregapCutFileNameTemplate", this.pregapCutFileNameTemplate);
 		this.pregapPostProcessFileNameTemplate = properties.getProperty("pregapPostProcessFileNameTemplate", this.pregapPostProcessFileNameTemplate);
 		this.pregapPostProcessCommandTemplate = properties.getProperty("pregapPostProcessCommandTemplate", this.pregapPostProcessCommandTemplate);
-
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "loadProperties(EnhancedProperties)");
 	}
 
 	/**
@@ -204,8 +198,6 @@ public class TrackCutterConfiguration {
 	 *         EnhancedProperties instance.
 	 */
 	public EnhancedProperties getPropertiesSnapshot() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPropertiesSnapshot()");
-
 		final EnhancedProperties properties = new EnhancedProperties();
 
 		properties.setProperty("parentDirectory", this.parentDirectory, FilePropertyHandler.getInstance());
@@ -223,7 +215,6 @@ public class TrackCutterConfiguration {
 		properties.setProperty("pregapPostProcessFileNameTemplate", this.pregapPostProcessFileNameTemplate);
 		properties.setProperty("pregapPostProcessCommandTemplate", this.pregapPostProcessCommandTemplate);
 
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPropertiesSnapshot()", properties);
 		return properties;
 	}
 
@@ -236,12 +227,10 @@ public class TrackCutterConfiguration {
 	 *         FileData.
 	 */
 	public File getAudioFile(final FileData fileData) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getAudioFile(FileData)");
 		File audioFile = new File(fileData.getFile());
 		if (audioFile.getParent() == null) {
 			audioFile = new File(this.getParentDirectory(), fileData.getFile());
 		}
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getAudioFile(FileData)", audioFile);
 		return audioFile;
 	}
 
@@ -255,7 +244,6 @@ public class TrackCutterConfiguration {
 	 *         modern file and operating systems.
 	 */
 	private static String normalizeFileName(final String fileName) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "normalizeFileName(String)", fileName);
 		StringBuilder builder = new StringBuilder(fileName.length());
 		int length = fileName.length();
 		for (int index = 0; index < length; index++) {
@@ -283,7 +271,6 @@ public class TrackCutterConfiguration {
 			}
 		}
 		String result = builder.toString();
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "normalizeFileName(String)", result);
 		return result;
 	}
 
@@ -295,7 +282,6 @@ public class TrackCutterConfiguration {
 	 * @return The expanded file.
 	 */
 	public File getFileFromTemplate(final TrackData trackData, final String fileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getFileFromTemplate(TrackData, String)", new Object[] { trackData, fileNameTemplate });
 		String targetFileName = getExpandedFileName(trackData, fileNameTemplate);
 
 		File targetFile = new File(targetFileName);
@@ -303,7 +289,6 @@ public class TrackCutterConfiguration {
 			targetFile = new File(this.getParentDirectory(), targetFileName);
 		}
 
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getFileFromTemplate(TrackData, String)", targetFile);
 		return targetFile;
 	}
 
@@ -315,7 +300,6 @@ public class TrackCutterConfiguration {
 	 * @return The expanded file name.
 	 */
 	private String getExpandedFileName(final TrackData trackData, final String fileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getExpandedFileName(TrackData, String)", new Object[] { trackData, fileNameTemplate });
 		String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
 		String result = String.format(this.getTemplateReplacer().replace(fileNameTemplate),
 			normalizeFileName("" + trackData.getMetaData(CueSheet.MetaDataField.TITLE)),
@@ -328,8 +312,6 @@ public class TrackCutterConfiguration {
 			normalizeFileName("" + GenreNormalizer.normalizeGenreDescription(genre, false, false)),
 			normalizeFileName("" + GenreNormalizer.normalizeGenreDescription(genre, true, false)),
 			normalizeFileName("" + GenreNormalizer.normalizeGenreDescription(genre, true, true)));
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(),
-			"getExpandedFileName(TrackData, String)", result);
 		return result;
 	}
 
@@ -344,7 +326,6 @@ public class TrackCutterConfiguration {
 	 */
 	private String getExpandedProcessCommand(final TrackData trackData, final String processCommandTemplate, final String cutFileName,
 		final String processFileName) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getExpandedFileName(TrackData, String, String, String)", new Object[] { trackData, processCommandTemplate, cutFileName, processFileName });
 		String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
 		String result = String.format(
 			this.getTemplateReplacer().replace(processCommandTemplate),
@@ -361,7 +342,6 @@ public class TrackCutterConfiguration {
 			cutFileName,
 			processFileName
 		);
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getExpandedFileName(TrackData, String, String, String)", result);
 		return result;
 	}
 
@@ -372,13 +352,11 @@ public class TrackCutterConfiguration {
 	 * @return A File instance representing the file after cutting the track.
 	 */
 	public File getCutFile(final TrackCutterProcessingAction processAction) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getCutFile(TrackCutterProcessingAction)", processAction);
 		TrackData trackData = processAction.getTrackData();
 
 		String fileNameTemplate = processAction.getIsPregap() ? this.getPregapCutFileNameTemplate() : this.getCutFileNameTemplate();
 
 		File result = getFileFromTemplate(trackData, fileNameTemplate);
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getCutFile(TrackCutterProcessingAction)", result);
 		return result;
 	}
 
@@ -389,13 +367,11 @@ public class TrackCutterConfiguration {
 	 * @return A File instance representing the file after post-processing.
 	 */
 	public File getPostProcessFile(final TrackCutterProcessingAction processAction) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessFile(TrackCutterProcessingAction)", processAction);
 		TrackData trackData = processAction.getTrackData();
 
 		String fileNameTemplate = processAction.getIsPregap() ? this.getPregapPostProcessFileNameTemplate() : this.getPostProcessFileNameTemplate();
 
 		File result = getFileFromTemplate(trackData, fileNameTemplate);
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessFile(TrackCutterProcessingAction)", result);
 		return result;
 	}
 
@@ -406,12 +382,10 @@ public class TrackCutterConfiguration {
 	 * @return The command to use for post-processing.
 	 */
 	public String getPostProcessCommand(final TrackCutterProcessingAction processAction) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessCommand(TrackCutterProcessingAction)", processAction);
 		TrackData trackData = processAction.getTrackData();
 		String commandTemplate = processAction.getIsPregap() ? this.getPregapPostProcessCommandTemplate() : this.getPostProcessCommandTemplate();
 		String processCommand = getExpandedProcessCommand(trackData, commandTemplate, processAction.getCutFile().getPath(), processAction.getPostProcessFile().getPath());
 
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessCommand(TrackCutterProcessingAction)", processCommand);
 		return processCommand;
 	}
 
@@ -421,8 +395,6 @@ public class TrackCutterConfiguration {
 	 * @return The replacer for the template values.
 	 */
 	private StringReplacer getTemplateReplacer() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getTemplateReplacer()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getTemplateReplacer()", TrackCutterConfiguration.templateReplacer);
 		return TrackCutterConfiguration.templateReplacer;
 	}
 
@@ -432,8 +404,6 @@ public class TrackCutterConfiguration {
 	 * @return The parent directory for relative paths.
 	 */
 	public File getParentDirectory() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getParentDirectory()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getParentDirectory()", this.parentDirectory);
 		return this.parentDirectory;
 	}
 
@@ -443,9 +413,7 @@ public class TrackCutterConfiguration {
 	 * @param parentDirectory The parent directory for relative paths.
 	 */
 	public void setParentDirectory(final File parentDirectory) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setParentDirectory(File)", parentDirectory);
 		this.parentDirectory = parentDirectory;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setParentDirectory(File)");
 	}
 
 	/**
@@ -454,8 +422,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the file name of the tracks after cutting.
 	 */
 	public String getCutFileNameTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getCutFileNameTemplate()", parentDirectory);
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getCutFileNameTemplate()", this.cutFileNameTemplate);
 		return this.cutFileNameTemplate;
 	}
 
@@ -466,9 +432,7 @@ public class TrackCutterConfiguration {
 	 *            tracks after cutting.
 	 */
 	public void setCutFileNameTemplate(final String targetFileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setCutFileNameTemplate(String)", targetFileNameTemplate);
 		this.cutFileNameTemplate = targetFileNameTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setCutFileNameTemplate(String)");
 	}
 
 	/**
@@ -477,8 +441,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the file name of the post-processed tracks.
 	 */
 	public String getPostProcessFileNameTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessFileNameTemplate()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessFileNameTemplate()", this.postProcessFileNameTemplate);
 		return this.postProcessFileNameTemplate;
 	}
 
@@ -489,9 +451,7 @@ public class TrackCutterConfiguration {
 	 *            post-processed tracks.
 	 */
 	public void setPostProcessFileNameTemplate(String postProcessFileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPostProcessFileNameTemplate(String)", postProcessFileNameTemplate);
 		this.postProcessFileNameTemplate = postProcessFileNameTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPostProcessFileNameTemplate(String)");
 	}
 
 	/**
@@ -500,8 +460,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the command for post-processing tracks.
 	 */
 	public String getPostProcessCommandTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessCommandTemplate()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPostProcessCommandTemplate()", this.postProcessCommandTemplate);
 		return this.postProcessCommandTemplate;
 	}
 
@@ -512,9 +470,7 @@ public class TrackCutterConfiguration {
 	 *            post-processing tracks.
 	 */
 	public void setPostProcessCommandTemplate(final String postProcessCommandTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPostProcessCommandTemplate(String)", postProcessCommandTemplate);
 		this.postProcessCommandTemplate = postProcessCommandTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPostProcessCommandTemplate(String)");
 	}
 
 	/**
@@ -523,8 +479,6 @@ public class TrackCutterConfiguration {
 	 * @return The mode for pregap handling.
 	 */
 	public PregapHandling getPregapHandling() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPregapHandling()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPregapHandling()", this.pregapHandling);
 		return this.pregapHandling;
 	}
 
@@ -534,9 +488,7 @@ public class TrackCutterConfiguration {
 	 * @param pregapHandling The mode for pregap handling.
 	 */
 	public void setPregapHandling(final PregapHandling pregapHandling) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPregapHandling(PregapHandling)", pregapHandling);
 		this.pregapHandling = pregapHandling;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPregapHandling(PregapHandling)");
 	}
 
 	/**
@@ -547,8 +499,6 @@ public class TrackCutterConfiguration {
 	 *         should be redirected.
 	 */
 	public boolean getRedirectErr() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectErr()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectErr()", this.redirectErr);
 		return this.redirectErr;
 	}
 
@@ -560,9 +510,7 @@ public class TrackCutterConfiguration {
 	 *            should be redirected.
 	 */
 	public void setRedirectErr(final boolean redirectErr) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectErr(boolean)", redirectErr);
 		this.redirectErr = redirectErr;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectErr(boolean)");
 	}
 
 	/**
@@ -573,8 +521,6 @@ public class TrackCutterConfiguration {
 	 *         post-processing should be redirected.
 	 */
 	public boolean getRedirectStdOut() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectStdOut()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectStdOut()", this.redirectStdOut);
 		return this.redirectStdOut;
 	}
 
@@ -586,9 +532,7 @@ public class TrackCutterConfiguration {
 	 *            should be redirected.
 	 */
 	public void setRedirectStdOut(final boolean redirectStdOut) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectStdOut(boolean)", redirectStdOut);
 		this.redirectStdOut = redirectStdOut;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectStdOut(boolean)");
 	}
 
 	/**
@@ -597,8 +541,6 @@ public class TrackCutterConfiguration {
 	 * @return The audio type to convert to.
 	 */
 	public AudioFileFormat.Type getTargetType() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getTargetType()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getTargetType()", this.targetType);
 		return this.targetType;
 	}
 
@@ -608,10 +550,7 @@ public class TrackCutterConfiguration {
 	 * @param targetType The audio type to convert to.
 	 */
 	public void setTargetType(final AudioFileFormat.Type targetType) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setTargetType(AudioFileFormat.Type)",
-			targetType);
 		this.targetType = targetType;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setTargetType(AudioFileFormat.Type)");
 	}
 
 	/**
@@ -620,8 +559,6 @@ public class TrackCutterConfiguration {
 	 * @return Whether or not to do post-processing.
 	 */
 	public boolean getDoPostProcessing() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getDoPostProcessing()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getDoPostProcessing()", this.doPostProcessing);
 		return this.doPostProcessing;
 	}
 
@@ -631,9 +568,7 @@ public class TrackCutterConfiguration {
 	 * @param doPostProcessing Whether or not to do post-processing.
 	 */
 	public void setDoPostProcessing(final boolean doPostProcessing) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setDoPostProcessing(boolean)", doPostProcessing);
 		this.doPostProcessing = doPostProcessing;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setDoPostProcessing(boolean)");
 	}
 
 	/**
@@ -643,8 +578,6 @@ public class TrackCutterConfiguration {
 	 *         post-processing.
 	 */
 	public boolean getRedirectToPostprocessing() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectToPostprocessing()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getRedirectToPostprocessing()", this.redirectToPostprocessing);
 		return this.redirectToPostprocessing;
 	}
 
@@ -655,10 +588,7 @@ public class TrackCutterConfiguration {
 	 *            directly to post-processing.
 	 */
 	public void setRedirectToPostprocessing(final boolean redirectToPostprocessing) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectToPostprocessing(boolean)",
-			redirectToPostprocessing);
 		this.redirectToPostprocessing = redirectToPostprocessing;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setRedirectToPostprocessing(boolean)");
 	}
 
 	/**
@@ -667,8 +597,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the file name of the tracks after cutting.
 	 */
 	public String getPregapCutFileNameTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPregapCutFileNameTemplate()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPregapCutFileNameTemplate()", this.pregapCutFileNameTemplate);
 		return this.pregapCutFileNameTemplate;
 	}
 
@@ -679,9 +607,7 @@ public class TrackCutterConfiguration {
 	 *            pregap tracks after cutting.
 	 */
 	public void setPregapCutFileNameTemplate(final String pregapTargetFileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPregapCutFileNameTemplate(String)", pregapTargetFileNameTemplate);
 		this.pregapCutFileNameTemplate = pregapTargetFileNameTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPregapCutFileNameTemplate(String)");
 	}
 
 	/**
@@ -690,8 +616,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the file name of the post-processed tracks.
 	 */
 	public String getPregapPostProcessFileNameTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPregapPostProcessFileNameTemplate()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPregapPostProcessFileNameTemplate()", this.pregapPostProcessFileNameTemplate);
 		return this.pregapPostProcessFileNameTemplate;
 	}
 
@@ -702,9 +626,7 @@ public class TrackCutterConfiguration {
 	 *            of the post-processed tracks.
 	 */
 	public void setPregapPostProcessFileNameTemplate(final String pregapPostProcessFileNameTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPregapPostProcessFileNameTemplate(String)", pregapPostProcessFileNameTemplate);
 		this.pregapPostProcessFileNameTemplate = pregapPostProcessFileNameTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPregapPostProcessFileNameTemplate(String)");
 	}
 
 	/**
@@ -713,8 +635,6 @@ public class TrackCutterConfiguration {
 	 * @return The template for the command for post-processing tracks.
 	 */
 	public String getPregapPostProcessCommandTemplate() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPregapPostProcessCommandTemplate()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPregapPostProcessCommandTemplate()", this.pregapPostProcessCommandTemplate);
 		return this.pregapPostProcessCommandTemplate;
 	}
 
@@ -725,9 +645,7 @@ public class TrackCutterConfiguration {
 	 *            post-processing tracks.
 	 */
 	public void setPregapPostProcessCommandTemplate(final String pregapPostProcessCommandTemplate) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPregapPostProcessCommandTemplate(String)", pregapPostProcessCommandTemplate);
 		this.pregapPostProcessCommandTemplate = pregapPostProcessCommandTemplate;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPregapPostProcessCommandTemplate(String)");
 	}
 
 	/**
@@ -737,8 +655,6 @@ public class TrackCutterConfiguration {
 	 * @return The threshold on pregaps in frame length.
 	 */
 	public long getPregapFrameLengthThreshold() {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "getPregapFrameLengthThreshold()");
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "getPregapFrameLengthThreshold()", this.pregapFrameLengthThreshold);
 		return this.pregapFrameLengthThreshold;
 	}
 
@@ -750,8 +666,6 @@ public class TrackCutterConfiguration {
 	 *            length.
 	 */
 	public void setPregapFrameLengthThreshold(final long pregapFrameLengthThreshold) {
-		TrackCutterConfiguration.logger.entering(TrackCutterConfiguration.class.getCanonicalName(), "setPregapFrameLengthThreshold(long)", pregapFrameLengthThreshold);
 		this.pregapFrameLengthThreshold = pregapFrameLengthThreshold;
-		TrackCutterConfiguration.logger.exiting(TrackCutterConfiguration.class.getCanonicalName(), "setPregapFrameLengthThreshold(long)");
 	}
 }

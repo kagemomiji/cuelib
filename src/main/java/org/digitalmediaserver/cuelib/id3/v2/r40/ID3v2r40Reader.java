@@ -28,8 +28,12 @@ import org.digitalmediaserver.cuelib.id3.ID3Version;
 import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
 import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
 import org.digitalmediaserver.cuelib.id3.v2.UnsynchedInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ID3v2r40Reader implements ID3Reader {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ID3v2r40Reader.class);
 
 	// TODO Handle cases where tag is not at start of file.
 
@@ -119,12 +123,15 @@ public class ID3v2r40Reader implements ID3Reader {
 									tag.getFlags().put(ID3Tag.TAG_IS_UPDATE, Boolean.toString(tagIsAnUpdate));
 									final boolean crcPresent = (extendedFlags & 32) == 32;
 									final boolean tagRestrictionsSet = (extendedFlags & 16) == 16;
-									System.out.println("Tag restrictions set: " + tagRestrictionsSet);
+									LOGGER.debug("Tag restrictions set: {}", tagRestrictionsSet);
 
 									if (tagIsAnUpdate) {
 										final int updateFlagDataLength = input.read();
 										if (updateFlagDataLength != 0) {
-											System.out.println("Invalid length for \"tag is an update\" flag encountered. Should be 0, but is " + updateFlagDataLength);
+											LOGGER.warn(
+												"Invalid length for \"tag is an update\" flag encountered. Should be 0, but is {}",
+												updateFlagDataLength
+											);
 											// TODO Handle or throw exception.
 										}
 									}
@@ -141,7 +148,10 @@ public class ID3v2r40Reader implements ID3Reader {
 											tag.getFlags().put(ID3Tag.CRC32_HEX, Long.toHexString(crc));
 											// TODO Use this CRC32_HEX information.
 										} else {
-											System.out.println("Invalid length for CRC32_HEX flag encountered. Should be 5, but is " + crcLength);
+											LOGGER.warn(
+												"Invalid length for CRC32_HEX flag encountered. Should be 5, but is {}",
+												crcLength
+											);
 											// TODO Handle or throw exception.
 										}
 									}
@@ -157,77 +167,104 @@ public class ID3v2r40Reader implements ID3Reader {
 											final int imageSizeRestrictions = (restrictionsByte & 3);
 											switch (tagSizeRestrictions) {
 												case 0:
-													System.out.println("Tag size restriction: No more than 128 frames and 1 MB total tag size.");
+													LOGGER.debug(
+														"Tag size restriction: No more than 128 frames and 1 MB total tag size."
+													);
 													break;
 												case 1:
-													System.out.println("Tag size restriction: No more than 64 frames and 128 KB total tag size.");
+													LOGGER.debug(
+														"Tag size restriction: No more than 64 frames and 128 KB total tag size."
+													);
 													break;
 												case 2:
-													System.out.println("Tag size restriction: No more than 32 frames and 40 KB total tag size.");
+													LOGGER.debug(
+														"Tag size restriction: No more than 32 frames and 40 KB total tag size."
+													);
 													break;
 												case 3:
-													System.out.println("Tag size restriction: No more than 32 frames and 4 KB total tag size.");
+													LOGGER.debug(
+														"Tag size restriction: No more than 32 frames and 4 KB total tag size."
+													);
 													break;
 											}
 											switch (textEncodingRestrictions) {
 												case 0:
-													System.out.println("Text encoding restriction: No restrictions.");
+													LOGGER.debug("Text encoding restriction: No restrictions.");
 													break;
 												case 1:
-													System.out
-														.println("Text encoding restriction: Strings are only encoded with ISO-8859-1 [ISO-8859-1] or UTF-8 [UTF-8].");
+													LOGGER.debug(
+														"Text encoding restriction: Strings are only encoded with " +
+														"ISO-8859-1 [ISO-8859-1] or UTF-8 [UTF-8]."
+													);
 													break;
 											}
 											switch (textFieldSizeRestrictions) {
 												case 0:
-													System.out.println("Text field size restriction: No restrictions.");
+													LOGGER.debug("Text field size restriction: No restrictions.");
 													break;
 												case 1:
-													System.out.println("Text field size restriction: No string is longer than 1024 characters.");
+													LOGGER.debug(
+														"Text field size restriction: No string is longer than 1024 characters."
+													);
 													break;
 												case 2:
-													System.out.println("Text field size restriction: No string is longer than 128 characters.");
+													LOGGER.debug(
+														"Text field size restriction: No string is longer than 128 characters."
+													);
 													break;
 												case 3:
-													System.out.println("Text field size restriction: No string is longer than 30 characters.");
+													LOGGER.debug(
+														"Text field size restriction: No string is longer than 30 characters."
+													);
 													break;
 											}
 											switch (imageEncodingRestrictions) {
 												case 0:
-													System.out.println("Image encoding restriction: No restrictions.");
+													LOGGER.debug("Image encoding restriction: No restrictions.");
 													break;
 												case 1:
-													System.out
-														.println("Image encoding restriction: Images are encoded only with PNG [PNG] or JPEG [JFIF].");
+													LOGGER.debug(
+														"Image encoding restriction: Images are encoded " +
+														"only with PNG [PNG] or JPEG [JFIF]."
+													);
 													break;
 											}
 											switch (imageSizeRestrictions) {
 												case 0:
-													System.out.println("Image size restriction: No restrictions.");
+													LOGGER.debug("Image size restriction: No restrictions.");
 													break;
 												case 1:
-													System.out.println("Image size restriction: All images are 256x256 pixels or smaller.");
+													LOGGER.debug("Image size restriction: All images are 256x256 pixels or smaller.");
 													break;
 												case 2:
-													System.out.println("Image size restriction: All images are 64x64 pixels or smaller.");
+													LOGGER.debug("Image size restriction: All images are 64x64 pixels or smaller.");
 													break;
 												case 3:
-													System.out.println("Image size restriction: All images are exactly 64x64 pixels, unless required otherwise.");
+													LOGGER.debug(
+														"Image size restriction: All images are exactly " +
+														"64x64 pixels, unless required otherwise."
+													);
 													break;
 											}
 											// TODO Check restrictions.
 											// TODO Set as property of tag.
 										} else {
-											System.out.println("Invalid length for tag restrictions flag encountered. Should be 1, but is " + tagRestrictionsDataSize);
+											LOGGER.warn(
+												"Invalid length for tag restrictions flag encountered. Should be 1, but is {}",
+												tagRestrictionsDataSize
+											);
 											// TODO Handle or throw exception.
 										}
 									}
 								} else {
-									System.out.println("Number of flag bytes in extended header should be one, but is: " + numberOfFlagBytes);
+									LOGGER.warn(
+										"Number of flag bytes in extended header should be one, but is {} ",
+										numberOfFlagBytes
+									);
 									// TODO Throw exception or handle.
 								}
 							} else {
-								System.out.println("Invalid extended header size: " + extendedHeaderSize);
+								LOGGER.error("Invalid extended header size: {}", extendedHeaderSize);
 								// TODO Throw an exception.
 							}
 						}
