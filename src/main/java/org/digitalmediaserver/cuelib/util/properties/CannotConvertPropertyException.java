@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib.util.properties;
 
+
 /**
  * Method intended to be thrown when a {@link PropertyHandler} cannot convert to
  * or from a property.
@@ -27,8 +28,7 @@ package org.digitalmediaserver.cuelib.util.properties;
 public class CannotConvertPropertyException extends RuntimeException {
 
 	/**
-	 * Generated UID to comply with the contract of
-	 * {@linkplain java.io.Serializable}.
+	 * Generated UID to comply with the contract of {@link Serializable}.
 	 */
 	private static final long serialVersionUID = -8158507550259008115L;
 
@@ -42,28 +42,28 @@ public class CannotConvertPropertyException extends RuntimeException {
 	/**
 	 * Create a new CannotConvertPropertyException.
 	 *
-	 * @param message
+	 * @param message the message.
 	 */
-	public CannotConvertPropertyException(final String message) {
+	public CannotConvertPropertyException(String message) {
 		super(message);
 	}
 
 	/**
 	 * Create a new CannotConvertPropertyException.
 	 *
-	 * @param message
-	 * @param cause
+	 * @param message the message.
+	 * @param cause the {@link Throwable}.
 	 */
-	public CannotConvertPropertyException(final String message, final Throwable cause) {
+	public CannotConvertPropertyException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * Create a new CannotConvertPropertyException.
 	 *
-	 * @param cause
+	 * @param cause the {@link Throwable}.
 	 */
-	public CannotConvertPropertyException(final Throwable cause) {
+	public CannotConvertPropertyException(Throwable cause) {
 		super(cause);
 	}
 }

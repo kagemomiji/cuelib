@@ -20,6 +20,10 @@ package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
+
+/**
+ * The Class UniqueFileIdentifierFrame.
+ */
 public class UniqueFileIdentifierFrame implements ID3Frame {
 
 	// TODO Change to byte array?
@@ -36,12 +40,9 @@ public class UniqueFileIdentifierFrame implements ID3Frame {
 		return flags;
 	}
 
-	public UniqueFileIdentifierFrame() {
-	}
-
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("Unique File Identifier frame: [").append(this.totalFrameSize).append("]\n")
 			.append("Flags: ").append(this.flags.toString()).append('\n')
 			.append("Owner identifier: ").append(this.ownerIdentifier).append('\n')
@@ -60,23 +61,43 @@ public class UniqueFileIdentifierFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
+	/**
+	 * Gets the owner identifier.
+	 *
+	 * @return the owner identifier
+	 */
 	public String getOwnerIdentifier() {
 		return this.ownerIdentifier;
 	}
 
-	public void setOwnerIdentifier(final String ownerIdentifier) {
+	/**
+	 * Sets the owner identifier.
+	 *
+	 * @param ownerIdentifier the new owner identifier
+	 */
+	public void setOwnerIdentifier(String ownerIdentifier) {
 		this.ownerIdentifier = ownerIdentifier;
 	}
 
+	/**
+	 * Gets the hex identifier.
+	 *
+	 * @return the hex identifier
+	 */
 	public String getHexIdentifier() {
 		return this.hexIdentifier;
 	}
 
-	public void setHexIdentifier(final String hexIdentifier) {
+	/**
+	 * Sets the hex identifier.
+	 *
+	 * @param hexIdentifier the new hex identifier
+	 */
+	public void setHexIdentifier(String hexIdentifier) {
 		this.hexIdentifier = hexIdentifier;
 	}
 

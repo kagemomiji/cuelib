@@ -21,12 +21,13 @@ package org.digitalmediaserver.cuelib.util.properties;
 import java.util.Properties;
 import javax.sound.sampled.AudioFileFormat;
 
+
 /**
- * PropertyHandler for {@link javax.sound.sampled.AudioFileFormat.Type}s.
+ * PropertyHandler for {@link AudioFileFormat.Type}s.
  *
  * @author jwbroek
  */
-final public class AudioFileFormatTypePropertyHandler implements PropertyHandler<AudioFileFormat.Type> {
+public final class AudioFileFormatTypePropertyHandler implements PropertyHandler<AudioFileFormat.Type> {
 
 	/**
 	 * The singleton instance of this class.
@@ -54,44 +55,42 @@ final public class AudioFileFormatTypePropertyHandler implements PropertyHandler
 	 * Convert the value to a String that can be used in a {@link Properties}
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value to a string that can be used in a
 	 *         {@link Properties} instance.
 	 */
 	@Override
-	public String toProperty(final AudioFileFormat.Type value) {
-		final String result = value.toString();
-		return result;
+	public String toProperty(AudioFileFormat.Type value) {
+		return value.toString();
 	}
 
 	/**
 	 * Convert the value from a {@link Properties} instance into a
 	 * AudioFileFormat.Type instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value from a {@link Properties} instance into
 	 *         a AudioFileFormat.Type instance.
 	 * @throws CannotConvertPropertyException When the value could not be
 	 *             converted.
 	 */
 	@Override
-	public AudioFileFormat.Type fromProperty(final String value) throws CannotConvertPropertyException {
-		final AudioFileFormat.Type result;
-
+	public AudioFileFormat.Type fromProperty(String value) throws CannotConvertPropertyException {
 		if ("AIFC".equals(value)) {
-			result = AudioFileFormat.Type.AIFC;
-		} else if ("AIFF".equals(value)) {
-			result = AudioFileFormat.Type.AIFF;
-		} else if ("AU".equals(value)) {
-			result = AudioFileFormat.Type.AU;
-		} else if ("SND".equals(value)) {
-			result = AudioFileFormat.Type.SND;
-		} else if ("WAVE".equals(value)) {
-			result = AudioFileFormat.Type.WAVE;
-		} else {
-			throw new CannotConvertPropertyException("Cannot convert to AudioFileFormat.Type: '" + value + "'");
+			return AudioFileFormat.Type.AIFC;
 		}
-
-		return result;
+		if ("AIFF".equals(value)) {
+			return  AudioFileFormat.Type.AIFF;
+		}
+		if ("AU".equals(value)) {
+			return  AudioFileFormat.Type.AU;
+		}
+		if ("SND".equals(value)) {
+			return  AudioFileFormat.Type.SND;
+		}
+		if ("WAVE".equals(value)) {
+			return  AudioFileFormat.Type.WAVE;
+		}
+		throw new CannotConvertPropertyException("Cannot convert to AudioFileFormat.Type: '" + value + "'");
 	}
 }

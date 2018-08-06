@@ -22,6 +22,7 @@ import java.io.File;
 import org.digitalmediaserver.cuelib.Position;
 import org.digitalmediaserver.cuelib.TrackData;
 
+
 /**
  * Represents a processing action for a TrackCutter instance.
  *
@@ -83,7 +84,13 @@ public class TrackCutterProcessingAction {
 	 * @param configuration The TrackCutterConfiguration of the TrackCutter for
 	 *            which this action is intended.
 	 */
-	public TrackCutterProcessingAction(final Position startPosition, final Position endPosition, final TrackData trackData, final boolean isPregap, final TrackCutterConfiguration configuration) {
+	public TrackCutterProcessingAction(
+		Position startPosition,
+		Position endPosition,
+		TrackData trackData,
+		boolean isPregap,
+		TrackCutterConfiguration configuration
+	) {
 		this.startPosition = startPosition;
 		this.endPosition = endPosition;
 		this.trackData = trackData;

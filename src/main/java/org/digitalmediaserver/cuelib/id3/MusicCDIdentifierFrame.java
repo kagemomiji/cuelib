@@ -20,6 +20,10 @@ package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
+
+/**
+ * The Class MusicCDIdentifierFrame.
+ */
 public class MusicCDIdentifierFrame implements ID3Frame {
 
 	// TODO Change to byte array?
@@ -35,15 +39,13 @@ public class MusicCDIdentifierFrame implements ID3Frame {
 		return flags;
 	}
 
-	public MusicCDIdentifierFrame() {
-	}
-
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Music CD Identifier frame: [").append(this.totalFrameSize).append("]\n")
-			.append("Flags: ").append(this.flags.toString()).append('\n')
-			.append("Identifier: ").append(this.hexTOC);
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append("Music CD Identifier frame: [").append(this.totalFrameSize).append("]\n")
+			.append("Flags: ").append(flags).append('\n')
+			.append("Identifier: ").append(hexTOC);
 		return builder.toString();
 	}
 
@@ -58,15 +60,25 @@ public class MusicCDIdentifierFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
+	/**
+	 * Gets the hex TOC.
+	 *
+	 * @return the hex TOC
+	 */
 	public String getHexTOC() {
 		return this.hexTOC;
 	}
 
-	public void setHexTOC(final String hexTOC) {
+	/**
+	 * Sets the hex TOC.
+	 *
+	 * @param hexTOC the new hex TOC
+	 */
+	public void setHexTOC(String hexTOC) {
 		this.hexTOC = hexTOC;
 	}
 

@@ -21,6 +21,10 @@ package org.digitalmediaserver.cuelib.id3;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+
+/**
+ * The Class UserDefinedTextFrame.
+ */
 public class UserDefinedTextFrame implements ID3Frame {
 
 	private String description;
@@ -37,12 +41,9 @@ public class UserDefinedTextFrame implements ID3Frame {
 		return flags;
 	}
 
-	public UserDefinedTextFrame() {
-	}
-
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("User defined text frame [").append(this.totalFrameSize).append("] ")
 			.append(this.charset.toString()).append('\n')
 			.append("Flags: ").append(this.flags.toString()).append('\n')
@@ -52,16 +53,16 @@ public class UserDefinedTextFrame implements ID3Frame {
 	}
 
 	/**
+	 * Set the {@link Charset}.
 	 *
-	 * @param charset
+	 * @param charset the {@link Charset}.
 	 */
-	public void setCharset(final Charset charset) {
+	public void setCharset(Charset charset) {
 		this.charset = charset;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return The {@link Charset}.
 	 */
 	public Charset getCharset() {
 		return this.charset;
@@ -78,7 +79,7 @@ public class UserDefinedTextFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 

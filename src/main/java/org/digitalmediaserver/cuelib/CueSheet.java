@@ -18,8 +18,10 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Simple representation of a cue sheet.
@@ -30,7 +32,7 @@ public class CueSheet {
 
 	/**
 	 * Enumeration of available metadata fields. These can be consulted through
-	 * the {@link #getMetaData(jwbroek.cuelib.CueSheet.MetaDataField)} method.
+	 * the {@link #getMetaData(MetaDataField)} method.
 	 */
 	public enum MetaDataField {
 		/**
@@ -112,6 +114,11 @@ public class CueSheet {
 	}
 
 	/**
+	 * The CUE file if any.
+	 */
+	private final Path file;
+
+	/**
 	 * Messages that concern this CueSheet.
 	 */
 	private final List<Message> messages = new ArrayList<Message>();
@@ -121,54 +128,81 @@ public class CueSheet {
 	 * The file components of the cue sheet.
 	 */
 	private final List<FileData> fileData = new ArrayList<FileData>();
+
 	/**
 	 * The disc's media catalog number. It should be 13 digits and compliant
 	 * with UPC/EAN rules. May be null.
 	 */
 	private String catalog = null;
+
 	/**
 	 * The file containing the cd text data. May be null.
 	 */
 	private String cdTextFile = null;
+
 	/**
 	 * The performer of the album. For using as cd-text, it should be a maximum
 	 * of 80 characters long. May be null.
 	 */
 	private String performer = null;
+
 	/**
 	 * The title of the album. For burning as cd-text, it should be a maximum of
 	 * 80 characters long. May be null.
 	 */
 	private String title = null;
+
 	/**
 	 * The songwriter of the album. For burning as cd-text, it should be a
 	 * maximum of 80 characters long. May be null.
 	 */
 	private String songwriter = null;
+
 	/**
 	 * A comment as is typically copied to ID3 tags. It may be null.
 	 */
 	private String comment = null;
+
 	/**
 	 * The year of the album. -1 signifies that it has not been specified.
 	 */
 	private int year = -1;
+
 	/**
 	 * An id for the disc. Typically the freedb disc id. May be null.
 	 */
-	private String discid = null;
+	private String discId = null;
+
 	/**
 	 * The genre of the album. May be null.
 	 */
 	private String genre = null;
+
 	/**
 	 * Total discs of the album. -1 signifies that it has not been specified.
 	 */
 	private int totalDiscs = -1;
+
 	/**
 	 * Disc number of the album. -1 signifies that it has not been specified.
 	 */
 	private int discNumber = -1;
+
+	/**
+	 * Create a new instance that isn't based on a file.
+	 */
+	public CueSheet() {
+		this.file = null;
+	}
+
+	/**
+	 * Create a new instance that is based on a file.
+	 *
+	 * @param file the CUE file.
+	 */
+	public CueSheet(Path file) {
+		this.file = file;
+	}
 
 	/**
 	 * Convenience method for getting metadata from the cue sheet. If a certain
@@ -178,36 +212,38 @@ public class CueSheet {
 	 * Otherwise, this method will attempt to give a sensible answer, possibly
 	 * by searching through the cue sheet.
 	 *
-	 * @param metaDataField
+	 * @param metaDataField The {@link MetaDataField}.
 	 * @return The specified metadata.
+	 * @throws IllegalArgumentException If the {@link MetaDataField} is
+	 *             unsupported.
 	 */
 	public String getMetaData(MetaDataField metaDataField) throws IllegalArgumentException {
 		switch (metaDataField) {
 			case CATALOG:
-				return this.getCatalog() == null ? "" : this.getCatalog();
+				return getCatalog() == null ? "" : getCatalog();
 			case CDTEXTFILE:
-				return this.getCdTextFile() == null ? "" : this.getCdTextFile();
+				return getCdTextFile() == null ? "" : getCdTextFile();
 			case COMMENT:
-				return this.getComment() == null ? "" : this.getComment();
+				return getComment() == null ? "" : getComment();
 			case DISCID:
-				return this.getDiscid() == null ? "" : this.getDiscid();
+				return getDiscId() == null ? "" : getDiscId();
 			case DISCNUMBER:
-				return this.getDiscNumber() == -1 ? "" : "" + this.getDiscNumber();
+				return getDiscNumber() == -1 ? "" : "" + getDiscNumber();
 			case GENRE:
-				return this.getGenre() == null ? "" : this.getGenre();
+				return getGenre() == null ? "" : getGenre();
 			case PERFORMER:
 			case ALBUMPERFORMER:
-				return this.getPerformer() == null ? "" : this.getPerformer();
+				return getPerformer() == null ? "" : getPerformer();
 			case SONGWRITER:
 			case ALBUMSONGWRITER:
-				return this.getSongwriter() == null ? "" : this.getSongwriter();
+				return getSongwriter() == null ? "" : getSongwriter();
 			case TITLE:
 			case ALBUMTITLE:
-				return this.getTitle() == null ? "" : this.getTitle();
+				return getTitle() == null ? "" : getTitle();
 			case TOTALDISCS:
-				return this.getTotalDiscs() == -1 ? "" : "" + this.getTotalDiscs();
+				return getTotalDiscs() == -1 ? "" : "" + getTotalDiscs();
 			case YEAR:
-				return this.getYear() == -1 ? "" : "" + this.getYear();
+				return getYear() == -1 ? "" : "" + getYear();
 			default:
 				throw new IllegalArgumentException("Unsupported field: " + metaDataField.toString());
 		}
@@ -220,7 +256,7 @@ public class CueSheet {
 	 * @param message A message describing the error.
 	 */
 	public void addError(LineOfInput lineOfInput, String message) {
-		this.messages.add(new Error(lineOfInput, message));
+		messages.add(new Error(lineOfInput, message));
 	}
 
 	/**
@@ -230,7 +266,7 @@ public class CueSheet {
 	 * @param message A message describing the warning.
 	 */
 	public void addWarning(LineOfInput lineOfInput, String message) {
-		this.messages.add(new Warning(lineOfInput, message));
+		messages.add(new Warning(lineOfInput, message));
 	}
 
 	/**
@@ -241,8 +277,8 @@ public class CueSheet {
 	public List<TrackData> getAllTrackData() {
 		List<TrackData> allTrackData = new ArrayList<TrackData>();
 
-		for (FileData fileData : this.fileData) {
-			allTrackData.addAll(fileData.getTrackData());
+		for (FileData fileDataElement : fileData) {
+			allTrackData.addAll(fileDataElement.getTrackData());
 		}
 
 		return allTrackData;
@@ -256,7 +292,7 @@ public class CueSheet {
 	 * @return The disc's media catalog number
 	 */
 	public String getCatalog() {
-		return this.catalog;
+		return catalog;
 	}
 
 	/**
@@ -266,7 +302,7 @@ public class CueSheet {
 	 *
 	 * @param catalog The disc's media catalog number
 	 */
-	public void setCatalog(final String catalog) {
+	public void setCatalog(String catalog) {
 		this.catalog = catalog;
 	}
 
@@ -277,7 +313,7 @@ public class CueSheet {
 	 * @return The file containing cd text data.
 	 */
 	public String getCdTextFile() {
-		return this.cdTextFile;
+		return cdTextFile;
 	}
 
 	/**
@@ -286,7 +322,7 @@ public class CueSheet {
 	 *
 	 * @param cdTextFile The file containing cd text data
 	 */
-	public void setCdTextFile(final String cdTextFile) {
+	public void setCdTextFile(String cdTextFile) {
 		this.cdTextFile = cdTextFile;
 	}
 
@@ -297,7 +333,7 @@ public class CueSheet {
 	 * @return The performer of the album
 	 */
 	public String getPerformer() {
-		return this.performer;
+		return performer;
 	}
 
 	/**
@@ -306,7 +342,7 @@ public class CueSheet {
 	 *
 	 * @param performer The performer of the album.
 	 */
-	public void setPerformer(final String performer) {
+	public void setPerformer(String performer) {
 		this.performer = performer;
 	}
 
@@ -317,7 +353,7 @@ public class CueSheet {
 	 * @return The songwriter of the album
 	 */
 	public String getSongwriter() {
-		return this.songwriter;
+		return songwriter;
 	}
 
 	/**
@@ -326,7 +362,7 @@ public class CueSheet {
 	 *
 	 * @param songwriter The songwriter of the album.
 	 */
-	public void setSongwriter(final String songwriter) {
+	public void setSongwriter(String songwriter) {
 		this.songwriter = songwriter;
 	}
 
@@ -337,7 +373,7 @@ public class CueSheet {
 	 * @return The title of the album
 	 */
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	/**
@@ -346,26 +382,48 @@ public class CueSheet {
 	 *
 	 * @param title The title of the album.
 	 */
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
 	/**
-	 * Get the id for the disc. Typically the freedb disc id. May be null.
+	 * Get the id for the disc. Typically the freedb disc ID. May be null.
 	 *
-	 * @return The id for the disc.
+	 * @return The ID for the disc.
+	 * @deprecated Use {@link #getDiscId()} instead.
 	 */
+	@Deprecated
 	public String getDiscid() {
-		return this.discid;
+		return discId;
 	}
 
 	/**
-	 * Set the id for the disc. Typically the freedb disc id. May be null.
+	 * Get the id for the disc. Typically the freedb disc ID. May be null.
 	 *
-	 * @param discid The id for the disc.
+	 * @return The ID for the disc.
 	 */
-	public void setDiscid(final String discid) {
-		this.discid = discid;
+	public String getDiscId() {
+		return discId;
+	}
+
+	/**
+	 * Set the ID for the disc. Typically the freedb disc ID. May be null.
+	 *
+	 * @param discid The ID for the disc.
+	 * @deprecated Use {@link #setDiscId(String)} instead.
+	 */
+	@Deprecated
+	public void setDiscid(String discid) {
+		this.discId = discid;
+	}
+
+	/**
+	 * Set the ID for the disc. Typically the freedb disc ID. May be null.
+	 *
+	 * @param discId The ID for the disc.
+	 */
+	public void setDiscId(String discId) {
+		this.discId = discId;
 	}
 
 	/**
@@ -374,7 +432,7 @@ public class CueSheet {
 	 * @return The genre of the album.
 	 */
 	public String getGenre() {
-		return this.genre;
+		return genre;
 	}
 
 	/**
@@ -382,7 +440,7 @@ public class CueSheet {
 	 *
 	 * @param genre The genre of the album.
 	 */
-	public void setGenre(final String genre) {
+	public void setGenre(String genre) {
 		this.genre = genre;
 	}
 
@@ -392,7 +450,7 @@ public class CueSheet {
 	 * @return The year of the album.
 	 */
 	public int getYear() {
-		return this.year;
+		return year;
 	}
 
 	/**
@@ -400,7 +458,7 @@ public class CueSheet {
 	 *
 	 * @param year The year of the album.
 	 */
-	public void setYear(final int year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
@@ -410,7 +468,7 @@ public class CueSheet {
 	 * @return The comment for the album.
 	 */
 	public String getComment() {
-		return this.comment;
+		return comment;
 	}
 
 	/**
@@ -418,7 +476,7 @@ public class CueSheet {
 	 *
 	 * @param comment The comment for the album.
 	 */
-	public void setComment(final String comment) {
+	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
@@ -428,7 +486,7 @@ public class CueSheet {
 	 * @return The file data for this cue sheet.
 	 */
 	public List<FileData> getFileData() {
-		return this.fileData;
+		return fileData;
 	}
 
 	/**
@@ -437,7 +495,7 @@ public class CueSheet {
 	 * @return The parsing messages for the cue sheet.
 	 */
 	public List<Message> getMessages() {
-		return this.messages;
+		return messages;
 	}
 
 	/**
@@ -446,7 +504,7 @@ public class CueSheet {
 	 * @return The total discs of the album.
 	 */
 	public int getTotalDiscs() {
-		return this.totalDiscs;
+		return totalDiscs;
 	}
 
 	/**
@@ -454,7 +512,7 @@ public class CueSheet {
 	 *
 	 * @param totalDiscs The total discs of the album.
 	 */
-	public void setTotalDiscs(final int totalDiscs) {
+	public void setTotalDiscs(int totalDiscs) {
 		this.totalDiscs = totalDiscs;
 	}
 
@@ -464,7 +522,7 @@ public class CueSheet {
 	 * @return The total discs of the album.
 	 */
 	public int getDiscNumber() {
-		return this.discNumber;
+		return discNumber;
 	}
 
 	/**
@@ -472,7 +530,17 @@ public class CueSheet {
 	 *
 	 * @param discNumber The disc number of the album.
 	 */
-	public void setDiscNumber(final int discNumber) {
+	public void setDiscNumber(int discNumber) {
 		this.discNumber = discNumber;
+	}
+
+	/**
+	 * Get the CUE {@link Path} for this {@link CueSheet}. Might be {@code null}
+	 * if the information wasn't given in the constructor.
+	 *
+	 * @return The {@link Path} or {@code null}.
+	 */
+	public Path getFile() {
+		return file;
 	}
 }

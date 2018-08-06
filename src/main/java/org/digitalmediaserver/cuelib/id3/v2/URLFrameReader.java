@@ -25,23 +25,50 @@ import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
 import org.digitalmediaserver.cuelib.id3.URLFrame;
 import org.digitalmediaserver.cuelib.id3.util.FieldReader;
 
+
+/**
+ * The Class URLFrameReader.
+ */
 public class URLFrameReader implements FrameReader {
 
 	private final CanonicalFrameType canonicalFrameType;
 	private final int headerSize;
 
-	public URLFrameReader(final CanonicalFrameType canonicalFrameType, final int headerSize) {
+	/**
+	 * Instantiates a new URL frame reader.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 * @param headerSize the header size
+	 */
+	public URLFrameReader(CanonicalFrameType canonicalFrameType, int headerSize) {
 		this.canonicalFrameType = canonicalFrameType;
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public URLFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException {
+	public URLFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException {
 		return this.readFrameBody(null, size, input);
 	}
 
-	public URLFrame readFrameBody(final String additionalTypeInfo, final int size, final InputStream input) throws IOException, UnsupportedEncodingException {
-		final URLFrame result = new URLFrame(this.canonicalFrameType);
+	/**
+	 * Read frame body.
+	 *
+	 * @param additionalTypeInfo the additional type info
+	 * @param size the size
+	 * @param input the input
+	 * @return the URL frame
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	public URLFrame readFrameBody(
+		String additionalTypeInfo,
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException {
+		URLFrame result = new URLFrame(this.canonicalFrameType);
 		result.setTotalFrameSize(size + this.headerSize);
 		// Read encoding. Should not be there officially.
 		input.read();

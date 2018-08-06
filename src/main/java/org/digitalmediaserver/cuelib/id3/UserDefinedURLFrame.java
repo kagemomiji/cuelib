@@ -22,6 +22,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+
+/**
+ * The Class UserDefinedURLFrame.
+ */
 public class UserDefinedURLFrame implements ID3Frame {
 
 	// TODO Use proper URL.
@@ -39,12 +43,9 @@ public class UserDefinedURLFrame implements ID3Frame {
 		return flags;
 	}
 
-	public UserDefinedURLFrame() {
-	}
-
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("User defined URL frame: ").append(" [").append(this.totalFrameSize).append("]\n")
 			.append("Flags: ").append(this.flags.toString()).append('\n')
 			.append("Description: ").append(this.description).append('\n')
@@ -53,24 +54,25 @@ public class UserDefinedURLFrame implements ID3Frame {
 	}
 
 	/**
+	 * Set the URL.
 	 *
-	 * @param url
+	 * @param url the {@link URL}.
 	 */
-	public void setUrl(final URL url) {
+	public void setUrl(URL url) {
 		this.url = url.toString();
 	}
 
 	/**
+	 * Set the URL.
 	 *
-	 * @param url
+	 * @param url the URL.
 	 */
-	public void setUrl(final String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return The URL.
 	 */
 	public String getUrl() {
 		return this.url;
@@ -87,7 +89,7 @@ public class UserDefinedURLFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 

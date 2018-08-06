@@ -21,6 +21,10 @@ package org.digitalmediaserver.cuelib.id3;
 import java.net.URL;
 import java.util.Properties;
 
+
+/**
+ * The Class URLFrame.
+ */
 public class URLFrame implements ID3Frame {
 
 	// TODO Use proper URL.
@@ -38,13 +42,18 @@ public class URLFrame implements ID3Frame {
 		return flags;
 	}
 
-	public URLFrame(final CanonicalFrameType canonicalFrameType) {
+	/**
+	 * Instantiates a new URL frame.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 */
+	public URLFrame(CanonicalFrameType canonicalFrameType) {
 		this.canonicalFrameType = canonicalFrameType;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("URL frame: ").append(this.canonicalFrameType.toString())
 			.append(' ').append(this.additionalTypeInfo)
 			.append(" [").append(this.totalFrameSize).append("]\n")
@@ -54,24 +63,25 @@ public class URLFrame implements ID3Frame {
 	}
 
 	/**
+	 * Set the {@link URL}.
 	 *
-	 * @param url
+	 * @param url the {@link URL}.
 	 */
-	public void setUrl(final URL url) {
+	public void setUrl(URL url) {
 		this.url = url.toString();
 	}
 
 	/**
+	 * Set the {@link URL}.
 	 *
-	 * @param url
+	 * @param url the URL.
 	 */
-	public void setUrl(final String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return The URL.
 	 */
 	public String getUrl() {
 		return this.url;
@@ -88,7 +98,7 @@ public class URLFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
@@ -97,7 +107,12 @@ public class URLFrame implements ID3Frame {
 		return this.canonicalFrameType;
 	}
 
-	public void setCanonicalFrameType(final CanonicalFrameType canonicalFrameType) {
+	/**
+	 * Sets the canonical frame type.
+	 *
+	 * @param canonicalFrameType the new canonical frame type
+	 */
+	public void setCanonicalFrameType(CanonicalFrameType canonicalFrameType) {
 		this.canonicalFrameType = canonicalFrameType;
 	}
 

@@ -21,6 +21,10 @@ package org.digitalmediaserver.cuelib.id3;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+
+/**
+ * The Class TextFrame.
+ */
 public class TextFrame implements ID3Frame {
 
 	private String additionalTypeInfo = "";
@@ -30,15 +34,33 @@ public class TextFrame implements ID3Frame {
 	private Charset charset = Charset.forName("ISO-8859-1");
 	private Properties flags = new Properties();
 
-	public TextFrame(final CanonicalFrameType canonicalFrameType) {
+	/**
+	 * Instantiates a new text frame.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 */
+	public TextFrame(CanonicalFrameType canonicalFrameType) {
 		this(canonicalFrameType, " ");
 	}
 
-	public TextFrame(final CanonicalFrameType canonicalFrameType, final String text) {
+	/**
+	 * Instantiates a new text frame.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 * @param text the text
+	 */
+	public TextFrame(CanonicalFrameType canonicalFrameType, String text) {
 		this(canonicalFrameType, text, text.length());
 	}
 
-	public TextFrame(final CanonicalFrameType canonicalFrameType, final String text, final int totalFrameSize) {
+	/**
+	 * Instantiates a new text frame.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 * @param text the text
+	 * @param totalFrameSize the total frame size
+	 */
+	public TextFrame(CanonicalFrameType canonicalFrameType, String text, int totalFrameSize) {
 		this.canonicalFrameType = canonicalFrameType;
 		this.text = text;
 		this.totalFrameSize = totalFrameSize;
@@ -46,7 +68,7 @@ public class TextFrame implements ID3Frame {
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("Text frame: ").append(this.canonicalFrameType.toString()).append(' ').append(this.additionalTypeInfo).append(" [")
 			.append(this.totalFrameSize).append("] ").append(this.charset.toString()).append('\n').append("Flags: ")
 			.append(this.flags.toString()).append('\n').append("Text: ").append(this.text);
@@ -54,16 +76,16 @@ public class TextFrame implements ID3Frame {
 	}
 
 	/**
+	 * Set the {@link Charset}.
 	 *
-	 * @param charset
+	 * @param charset the {@link Charset}.
 	 */
-	public void setCharset(final Charset charset) {
+	public void setCharset(Charset charset) {
 		this.charset = charset;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return The {@link Charset}.
 	 */
 	public Charset getCharset() {
 		return this.charset;
@@ -80,7 +102,7 @@ public class TextFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
@@ -103,7 +125,12 @@ public class TextFrame implements ID3Frame {
 		return this.canonicalFrameType;
 	}
 
-	public void setCanonicalFrameType(final CanonicalFrameType canonicalFrameType) {
+	/**
+	 * Sets the canonical frame type.
+	 *
+	 * @param canonicalFrameType the new canonical frame type
+	 */
+	public void setCanonicalFrameType(CanonicalFrameType canonicalFrameType) {
 		this.canonicalFrameType = canonicalFrameType;
 	}
 

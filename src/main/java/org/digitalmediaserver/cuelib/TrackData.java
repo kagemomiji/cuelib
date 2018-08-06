@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.digitalmediaserver.cuelib.CueSheet.MetaDataField;
 
+
 /**
  * Simple representation of a TRACK block of a cue sheet.
  *
@@ -95,7 +96,7 @@ public class TrackData {
 	 * @param parent The file data that this track data belongs to. Should not
 	 *            be null.
 	 */
-	public TrackData(final FileData parent) {
+	public TrackData(FileData parent) {
 		this.parent = parent;
 	}
 
@@ -108,7 +109,7 @@ public class TrackData {
 	 * @param dataType The data type of this track. Null signifies that it has
 	 *            not been set.
 	 */
-	public TrackData(final FileData parent, final int number, final String dataType) {
+	public TrackData(FileData parent, int number, String dataType) {
 		this.parent = parent;
 		this.number = number;
 		this.dataType = dataType;
@@ -122,29 +123,30 @@ public class TrackData {
 	 * Otherwise, this method will attempt to give a sensible answer, possibly
 	 * by searching through the cue sheet.
 	 *
-	 * @param metaDataField
+	 * @param metaDataField The {@link MetaDataField}.
 	 * @return The specified metadata.
+	 * @throws IllegalArgumentException If a field is ambiguous.
 	 */
-	public String getMetaData(final MetaDataField metaDataField) throws IllegalArgumentException {
+	public String getMetaData(MetaDataField metaDataField) throws IllegalArgumentException {
 		switch (metaDataField) {
 			case ISRCCODE:
-				return this.getIsrcCode() == null ? "" : this.getIsrcCode();
+				return getIsrcCode() == null ? "" : getIsrcCode();
 			case PERFORMER:
-				return this.getPerformer() == null ? this.getParent().getParent().getPerformer() : this.getPerformer();
+				return getPerformer() == null ? getParent().getParent().getPerformer() : getPerformer();
 			case TRACKPERFORMER:
-				return this.getPerformer() == null ? "" : this.getPerformer();
+				return getPerformer() == null ? "" : getPerformer();
 			case SONGWRITER:
-				return this.getSongwriter() == null ? this.getParent().getParent().getSongwriter() : this.getSongwriter();
+				return getSongwriter() == null ? getParent().getParent().getSongwriter() : getSongwriter();
 			case TRACKSONGWRITER:
-				return this.getSongwriter();
+				return getSongwriter();
 			case TITLE:
-				return this.getTitle() == null ? this.getParent().getParent().getTitle() : this.getTitle();
+				return getTitle() == null ? getParent().getParent().getTitle() : getTitle();
 			case TRACKTITLE:
-				return this.getTitle();
+				return getTitle();
 			case TRACKNUMBER:
-				return Integer.toString(this.getNumber());
+				return Integer.toString(getNumber());
 			default:
-				return this.getParent().getParent().getMetaData(metaDataField);
+				return getParent().getParent().getMetaData(metaDataField);
 		}
 	}
 
@@ -155,7 +157,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getDataType() {
-		return this.dataType;
+		return dataType;
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class TrackData {
 	 * @param dataType The data type of this track. Null signifies that it has
 	 *            not been set.
 	 */
-	public void setDataType(final String dataType) {
+	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
 
@@ -175,7 +177,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getIsrcCode() {
-		return this.isrcCode;
+		return isrcCode;
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class TrackData {
 	 * @param isrcCode The ISRC code of this track. Null signifies that it has
 	 *            not been set.
 	 */
-	public void setIsrcCode(final String isrcCode) {
+	public void setIsrcCode(String isrcCode) {
 		this.isrcCode = isrcCode;
 	}
 
@@ -194,7 +196,7 @@ public class TrackData {
 	 * @return The track number. -1 signifies that it has not been set.
 	 */
 	public int getNumber() {
-		return this.number;
+		return number;
 	}
 
 	/**
@@ -202,7 +204,7 @@ public class TrackData {
 	 *
 	 * @param number The track number. -1 signifies that it has not been set.
 	 */
-	public void setNumber(final int number) {
+	public void setNumber(int number) {
 		this.number = number;
 	}
 
@@ -213,7 +215,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getPerformer() {
-		return this.performer;
+		return performer;
 	}
 
 	/**
@@ -223,7 +225,7 @@ public class TrackData {
 	 *            not been set. Should be a maximum of 80 characters if you want
 	 *            to burn to CD-TEXT.
 	 */
-	public void setPerformer(final String performer) {
+	public void setPerformer(String performer) {
 		this.performer = performer;
 	}
 
@@ -234,7 +236,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public Position getPostgap() {
-		return this.postgap;
+		return postgap;
 	}
 
 	/**
@@ -243,7 +245,7 @@ public class TrackData {
 	 * @param postgap The postgap of this track. Null signifies that it has not
 	 *            been set.
 	 */
-	public void setPostgap(final Position postgap) {
+	public void setPostgap(Position postgap) {
 		this.postgap = postgap;
 	}
 
@@ -254,7 +256,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public Position getPregap() {
-		return this.pregap;
+		return pregap;
 	}
 
 	/**
@@ -263,7 +265,7 @@ public class TrackData {
 	 * @param pregap The pregap of this track. Null signifies that it has not
 	 *            been set.
 	 */
-	public void setPregap(final Position pregap) {
+	public void setPregap(Position pregap) {
 		this.pregap = pregap;
 	}
 
@@ -275,7 +277,7 @@ public class TrackData {
 	 *         set.
 	 */
 	public String getSongwriter() {
-		return this.songwriter;
+		return songwriter;
 	}
 
 	/**
@@ -286,7 +288,7 @@ public class TrackData {
 	 *            has not been set. Should be a maximum of 80 characters if you
 	 *            want to burn to CD-TEXT.
 	 */
-	public void setSongwriter(final String songwriter) {
+	public void setSongwriter(String songwriter) {
 		this.songwriter = songwriter;
 	}
 
@@ -296,7 +298,7 @@ public class TrackData {
 	 * @return The title of this track. Null signifies that it has not been set.
 	 */
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	/**
@@ -307,7 +309,7 @@ public class TrackData {
 	 *            set. Should be a maximum of 80 characters if you want to burn
 	 *            to CD-TEXT.
 	 */
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -319,12 +321,12 @@ public class TrackData {
 	 * @return The index with the specified number, or null if there is no such
 	 *         index.
 	 */
-	public Index getIndex(final int number) {
+	public Index getIndex(int number) {
 		// Note: we have to pass all indices until we've found the right one, as
 		// we don't enforce that indices are sorted.
 		// Normally, this shouldn't be a problem, as there are generally very
 		// few indices. (Only rarely more than 2).
-		for (Index index : this.indices) {
+		for (Index index : indices) {
 			if (index.getNumber() == number) {
 				return index;
 			}
@@ -333,12 +335,54 @@ public class TrackData {
 	}
 
 	/**
-	 * Get the indices for this track data.
+	 * Get the indices for this {@link TrackData}.
 	 *
-	 * @return The indices for this track data.
+	 * @return The {@link List} of {@link Index} entries for this
+	 *         {@link TrackData}.
 	 */
 	public List<Index> getIndices() {
-		return this.indices;
+		return indices;
+	}
+
+	/**
+	 * Get the first {@link Index} for this {@link TrackData}.
+	 *
+	 * @return The first {@link Index} or {@code null}.
+	 */
+	public Index getFirstIndex() {
+		return indices.isEmpty() ? null : indices.get(0);
+	}
+
+	/**
+	 * Get the last {@link Index} for this {@link TrackData}.
+	 *
+	 * @return The last {@link Index} or {@code null}.
+	 */
+	public Index getLastIndex() {
+		return indices.isEmpty() ? null : indices.get(indices.size() - 1);
+	}
+
+	/**
+	 * Get the {@link Index} that indicates that start of the track. This is per
+	 * definition index number 1. It there is no such index, index 0 is
+	 * returned. If index 0 doesn't exist either, {@code null} is returned.
+	 *
+	 * @return The start {@link Index} or {@code null}.
+	 */
+	public Index getStartIndex() {
+		if (indices.isEmpty()) {
+			return null;
+		}
+		Index index0 = null;
+		for (Index idx : indices) {
+			if (idx.getNumber() == 1) {
+				return idx;
+			}
+			if (idx.getNumber() == 0) {
+				index0 = idx;
+			}
+		}
+		return index0;
 	}
 
 	/**
@@ -347,7 +391,7 @@ public class TrackData {
 	 * @return The flags for this track data.
 	 */
 	public Set<String> getFlags() {
-		return this.flags;
+		return flags;
 	}
 
 	/**
@@ -356,7 +400,7 @@ public class TrackData {
 	 * @return The file data that this track data belong to..
 	 */
 	public FileData getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	/**
@@ -364,7 +408,7 @@ public class TrackData {
 	 *
 	 * @param parent The file data that this track data belong to..
 	 */
-	public void setParent(final FileData parent) {
+	public void setParent(FileData parent) {
 		this.parent = parent;
 	}
 }

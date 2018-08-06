@@ -21,6 +21,7 @@ package org.digitalmediaserver.cuelib;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Simple representation of a FILE block in a cue sheet.
  *
@@ -54,7 +55,7 @@ public class FileData {
 	 *
 	 * @param parent The CueSheet that this FileData is associated with.
 	 */
-	public FileData(final CueSheet parent) {
+	public FileData(CueSheet parent) {
 		this.parent = parent;
 	}
 
@@ -67,7 +68,7 @@ public class FileData {
 	 * @param fileType The file type for this FileData. May be null, or any
 	 *            string value, though this is not necessarily compliant.
 	 */
-	public FileData(final CueSheet parent, final String file, final String fileType) {
+	public FileData(CueSheet parent, String file, String fileType) {
 		this.parent = parent;
 		this.file = file;
 		this.fileType = fileType;
@@ -81,8 +82,8 @@ public class FileData {
 	public List<Index> getAllIndices() {
 		List<Index> allIndices = new ArrayList<Index>();
 
-		for (TrackData trackData : this.trackData) {
-			allIndices.addAll(trackData.getIndices());
+		for (TrackData trackDataElement : trackData) {
+			allIndices.addAll(trackDataElement.getIndices());
 		}
 
 		return allIndices;
@@ -96,7 +97,7 @@ public class FileData {
 	 *         is not compliant.
 	 */
 	public String getFile() {
-		return this.file;
+		return file;
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class FileData {
 	 * @param file The file that this FileData applies to. May be null, though
 	 *            this is not compliant.
 	 */
-	public void setFile(final String file) {
+	public void setFile(String file) {
 		this.file = file;
 	}
 
@@ -118,7 +119,7 @@ public class FileData {
 	 *         value, though this is not necessarily compliant.
 	 */
 	public String getFileType() {
-		return this.fileType;
+		return fileType;
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class FileData {
 	 * @param fileType The file type for this FileData. May be null, or any
 	 *            string value, though this is not necessarily compliant.
 	 */
-	public void setFileType(final String fileType) {
+	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
 
@@ -138,7 +139,7 @@ public class FileData {
 	 * @return The track data for this file data.
 	 */
 	public List<TrackData> getTrackData() {
-		return this.trackData;
+		return trackData;
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class FileData {
 	 * @return The CueSheet that this FileData belongs to.
 	 */
 	public CueSheet getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class FileData {
 	 *
 	 * @param parent The CueSheet that this FileData belongs to.
 	 */
-	public void setParent(final CueSheet parent) {
+	public void setParent(CueSheet parent) {
 		this.parent = parent;
 	}
 }

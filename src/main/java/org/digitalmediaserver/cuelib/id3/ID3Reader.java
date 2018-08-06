@@ -23,9 +23,29 @@ import java.io.IOException;
 import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
 import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
 
+
+/**
+ * The Interface ID3Reader.
+ */
 public interface ID3Reader {
 
-	public boolean hasTag(final File file) throws IOException;
+	/**
+	 * Checks for tag.
+	 *
+	 * @param file the {@link File}.
+	 * @return {@code true} if the specified File has a tag, {@code false} otherwise.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public boolean hasTag(File file) throws IOException;
 
-	public ID3Tag read(final File file) throws IOException, UnsupportedEncodingException, MalformedFrameException;
+	/**
+	 * Read the specified {@link File}.
+	 *
+	 * @param file the {@link File}.
+	 * @return the {@link ID3Tag}.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException If the encoding is unsupported.
+	 * @throws MalformedFrameException If a malformed frame is encountered.
+	 */
+	public ID3Tag read(File file) throws IOException, UnsupportedEncodingException, MalformedFrameException;
 }

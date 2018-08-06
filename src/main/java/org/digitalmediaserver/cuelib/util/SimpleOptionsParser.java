@@ -21,6 +21,7 @@ package org.digitalmediaserver.cuelib.util;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * Simple parser for options (typically command line arguments).
  *
@@ -30,9 +31,8 @@ public class SimpleOptionsParser {
 
 	/**
 	 * Interface that you must implement if you want to handle options.
-	 * {@link org.digitalmediaserver.cuelib.util.SimpleOptionsParser} will call
-	 * the OptionHandler that is registered for an option, when it encounters
-	 * that option.
+	 * {@link SimpleOptionsParser} will call the {@link OptionHandler} that is
+	 * registered for an option, when it encounters that option.
 	 */
 	public interface OptionHandler {
 
@@ -42,8 +42,8 @@ public class SimpleOptionsParser {
 		 * cannot, it must throw an Exception. It may handle more than one
 		 * option.
 		 *
-		 * @param options
-		 * @param offset
+		 * @param options the options.
+		 * @param offset the offset.
 		 * @return The index of the last option parsed + 1. The handler must
 		 *         handle at least the option at the offset. If it cannot, it
 		 *         must throw an Exception.
@@ -57,16 +57,13 @@ public class SimpleOptionsParser {
 	private Map<String, OptionHandler> optionHandlers = new HashMap<String, OptionHandler>();
 
 	/**
-	 * <p>
 	 * Register an option with the parser. If the option is found, then the
 	 * specified handler will be called.
-	 * </p>
 	 *
 	 * @param optionKey The option to be registered. For instance "-a".
 	 * @param handler The handler to handle this option.
-	 * @deprecated The prefered method is
-	 *             {@link #registerOption(org.digitalmediaserver.cuelib.util.SimpleOptionsParser.OptionHandler, String[])}
-	 *             .
+	 * @deprecated The preferred method is
+	 *             {@link #registerOption(OptionHandler, String[])}.
 	 */
 	@Deprecated
 	public void registerOption(String optionKey, OptionHandler handler) {
@@ -97,7 +94,7 @@ public class SimpleOptionsParser {
 	 * @return The index of the first option that could not be matched, or
 	 *         options.length if everything was matched.
 	 */
-	public int parseOptions(final String[] options) {
+	public int parseOptions(String[] options) {
 		return parseOptions(options, 0);
 	}
 
@@ -110,7 +107,7 @@ public class SimpleOptionsParser {
 	 * @return The index of the first option that could not be matched, or
 	 *         options.length if everything was matched.
 	 */
-	public int parseOptions(final String[] options, final int offset) {
+	public int parseOptions(String[] options, int offset) {
 		int currentOffset = offset;
 		OptionHandler currentHandler = null;
 
@@ -132,7 +129,10 @@ public class SimpleOptionsParser {
 
 			// Handler claims to have handled more options than actually exist.
 			if (nextOffset > options.length) {
-				throw new IllegalStateException("Handler registered for option \"" + options[currentOffset] + "\" claims to have handled more options than are existent.");
+				throw new IllegalStateException(
+					"Handler registered for option \"" + options[currentOffset] +
+					"\" claims to have handled more options than are existent."
+				);
 			}
 
 			currentOffset = nextOffset;

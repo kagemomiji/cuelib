@@ -18,22 +18,45 @@
  */
 package org.digitalmediaserver.cuelib.id3.v2;
 
+
+/**
+ * An {@link Exception} that indicates an unsupported frame type.
+ */
 public class UnsupportedFrameTypeException extends RuntimeException {
 
 	private static final long serialVersionUID = -1545143968507887751L;
 
+	/**
+	 * Instantiates a new unsupported frame type exception.
+	 */
 	public UnsupportedFrameTypeException() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new unsupported frame type exception.
+	 *
+	 * @param e the {@link Exception}.
+	 */
 	public UnsupportedFrameTypeException(final Exception e) {
 		super(e);
 	}
 
+	/**
+	 * Instantiates a new unsupported frame type exception.
+	 *
+	 * @param message the message.
+	 */
 	public UnsupportedFrameTypeException(final String message) {
 		super(message);
 	}
 
+	/**
+	 * Instantiates a new unsupported frame type exception.
+	 *
+	 * @param message the message.
+	 * @param e the {@link Exception}.
+	 */
 	public UnsupportedFrameTypeException(final String message, final Exception e) {
 		super(message, e);
 	}

@@ -18,17 +18,21 @@
  */
 package org.digitalmediaserver.cuelib.util.properties;
 
+import java.io.Serializable;
+
+
 /**
  * Interface for PropertyHandler factories.
  *
  * @author jwbroek
  */
-public interface PropertyHandlerFactory {
+public interface PropertyHandlerFactory extends Serializable {
 
 	/**
 	 * Get a PropertyHandler for the specified type.
 	 *
-	 * @param propertyType
+	 * @param propertyType the property type class.
+	 * @param <T> the type.
 	 * @return A PropertyHandler for the specified type.
 	 * @throws UnsupportedOperationException When the specified type is not
 	 *             supported by this factory.

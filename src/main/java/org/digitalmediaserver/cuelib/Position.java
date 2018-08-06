@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Simple representation for a position field in a cue sheet.
  *
@@ -47,16 +48,16 @@ public class Position {
 	}
 
 	/**
-	 * Create a new Position.
+	 * Creates a new {@link Position}.
 	 *
-	 * @param minutes The number of minutes in this position. Must be >= 0.
-	 *            Should be < 60.
-	 * @param seconds The number of seconds in this position. Must be >= 0.
-	 *            Should be < 60.
-	 * @param frames The number of frames in this position. Must be >= 0. Should
-	 *            be < 75.
+	 * @param minutes The number of minutes in this position. Must be
+	 *            {@code >= 0}. Should be {@code < 60}.
+	 * @param seconds The number of seconds in this position. Must be
+	 *            {@code >= 0}. Should be {@code < 60}.
+	 * @param frames The number of frames in this position. Must be {@code >= 0}
+	 *            . Should be {@code < 75}.
 	 */
-	public Position(final int minutes, final int seconds, final int frames) {
+	public Position(int minutes, int seconds, int frames) {
 		this.minutes = minutes;
 		this.seconds = seconds;
 		this.frames = frames;
@@ -64,7 +65,7 @@ public class Position {
 
 	/**
 	 * Get the total number of frames represented by this position. This is
-	 * equal to frames + (75 * (seconds + 60 * minutes)).
+	 * equal to {@code frames + (75 * (seconds + 60 * minutes))}.
 	 *
 	 * @return The total number of frames represented by this position.
 	 */
@@ -73,62 +74,68 @@ public class Position {
 	}
 
 	/**
-	 * Get the number of frames in this position. Must be >= 0. Should be < 75.
+	 * Get the number of frames in this position. Must be {@code >= 0}. Should
+	 * be {@code < 75}.
 	 *
-	 * @return The number of frames in this position. Must be >= 0. Should be <
-	 *         75.
+	 * @return The number of frames in this position. Must be {@code >= 0}.
+	 *         Should be {@code < 75}.
 	 */
 	public int getFrames() {
-		return this.frames;
+		return frames;
 	}
 
 	/**
-	 * Set the number of frames in this position. Must be >= 0. Should be < 75.
+	 * Set the number of frames in this position. Must be {@code >= 0}. Should
+	 * be {@code < 75}.
 	 *
-	 * @param frames The number of frames in this position. Must be >= 0. Should
-	 *            be < 75.
+	 * @param frames The number of frames in this position. Must be {@code >= 0}
+	 *            . Should be {@code < 75}.
 	 */
-	public void setFrames(final int frames) {
+	public void setFrames(int frames) {
 		this.frames = frames;
 	}
 
 	/**
-	 * Get the number of minutes in this position. Must be >= 0. Should be < 60.
+	 * Get the number of minutes in this position. Must be {@code >= 0}. Should
+	 * be {@code < 60}.
 	 *
-	 * @return The number of minutes in this position. Must be >= 0. Should be <
-	 *         60.
+	 * @return The number of minutes in this position. Must be {@code >= 0}.
+	 *         Should be {@code < 60}.
 	 */
 	public int getMinutes() {
-		return this.minutes;
+		return minutes;
 	}
 
 	/**
-	 * Set the number of minutes in this position. Must be >= 0. Should be < 60.
+	 * Set the number of minutes in this position. Must be {@code >= 0}. Should
+	 * be {@code < 60}.
 	 *
-	 * @param minutes The number of minutes in this position. Must be >= 0.
-	 *            Should be < 60.
+	 * @param minutes The number of minutes in this position. Must be
+	 *            {@code >= 0}. Should be {@code < 60}.
 	 */
-	public void setMinutes(final int minutes) {
+	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
 
 	/**
-	 * Get the number of seconds in this position. Must be >= 0. Should be < 60.
+	 * Get the number of seconds in this position. Must be {@code >= 0}. Should
+	 * be {@code < 60}.
 	 *
-	 * @return The seconds of seconds in this position. Must be >= 0. Should be
-	 *         < 60.
+	 * @return The seconds of seconds in this position. Must be {@code >= 0}.
+	 *         Should be {@code < 60}.
 	 */
 	public int getSeconds() {
-		return this.seconds;
+		return seconds;
 	}
 
 	/**
-	 * Set the number of seconds in this position. Must be >= 0. Should be < 60.
+	 * Set the number of seconds in this position. Must be {@code >= 0}. Should
+	 * be {@code < 60}.
 	 *
-	 * @param seconds The number of seconds in this position. Must be >= 0.
-	 *            Should be < 60.
+	 * @param seconds The number of seconds in this position. Must be
+	 *            {@code >= 0}. Should be {@code < 60}.
 	 */
-	public void setSeconds(final int seconds) {
+	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 	}
 }

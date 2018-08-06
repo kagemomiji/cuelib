@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
 
+
+/**
+ * The Class FrameDictionary.
+ */
 public class FrameDictionary {
 
 	private static Map<String, CanonicalFrameType> nameToType = new HashMap<String, CanonicalFrameType>();
@@ -102,23 +106,31 @@ public class FrameDictionary {
 		// TODO CRA
 		// TODO LNK
 		FrameDictionary.addToDictionary("PCS", CanonicalFrameType.ITUNES_PODCAST);
-		FrameDictionary.addToDictionary("XYZ", CanonicalFrameType.UNRECOGNISED_FRAME);
+		FrameDictionary.addToDictionary("XYZ", CanonicalFrameType.UNRECOGNIZED_FRAME);
 	}
 
-	public FrameDictionary() {
-
-	}
-
-	private static void addToDictionary(final String name, final CanonicalFrameType canonicalFrameType) {
+	private static void addToDictionary(String name, CanonicalFrameType canonicalFrameType) {
 		FrameDictionary.nameToType.put(name, canonicalFrameType);
 		FrameDictionary.typeToName.put(canonicalFrameType, name);
 	}
 
-	public CanonicalFrameType getCanonicalFrameType(final String name) {
+	/**
+	 * Gets the canonical frame type.
+	 *
+	 * @param name the name
+	 * @return the canonical frame type
+	 */
+	public CanonicalFrameType getCanonicalFrameType(String name) {
 		return FrameDictionary.nameToType.get(name);
 	}
 
-	public String getName(final CanonicalFrameType canonicalFrameType) {
+	/**
+	 * Gets the name.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 * @return the name
+	 */
+	public String getName(CanonicalFrameType canonicalFrameType) {
 		return FrameDictionary.typeToName.get(canonicalFrameType);
 	}
 }

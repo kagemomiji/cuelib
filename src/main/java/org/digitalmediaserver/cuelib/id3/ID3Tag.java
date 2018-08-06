@@ -22,15 +22,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+
+/**
+ * The Class ID3Tag.
+ */
 public class ID3Tag {
 
+	/** The Constant COMPRESSION_USED. */
 	public static final String COMPRESSION_USED = "compression_used";
+
+	/** The Constant CRC32_HEX. */
 	public static final String CRC32_HEX = "crc32_hex";
+
+	/** The Constant EXPERIMENTAL. */
 	public static final String EXPERIMENTAL = "experimental";
+
+	/** The Constant EXTENDED_HEADER_SIZE. */
 	public static final String EXTENDED_HEADER_SIZE = "extended_header_size";
+
+	/** The Constant PADDING_SIZE. */
 	public static final String PADDING_SIZE = "padding_size";
+
+	/** The Constant UNSYNC_USED. */
 	public static final String UNSYNC_USED = "unsync_used";
+
+	/** The Constant FOOTER_PRESENT. */
 	public static final String FOOTER_PRESENT = "footer_present";
+
+	/** The Constant TAG_IS_UPDATE. */
 	public static final String TAG_IS_UPDATE = "tag_is_update";
 
 	private ID3Version version = ID3Version.ID3v2r4;
@@ -40,13 +59,16 @@ public class ID3Tag {
 	// TODO Make sure this is consistently with or without header. Decide which makes more sense.
 	private int declaredSize = 0;
 
+	/**
+	 * Instantiates a new ID 3 tag.
+	 */
 	public ID3Tag() {
 
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("ID3 version: ").append(this.version.toString())
 			.append(" revision ").append(this.revision).append('\n')
 			.append("Flags: ").append(this.flags.toString()).append('\n');
@@ -66,7 +88,7 @@ public class ID3Tag {
 	/**
 	 * @param version the version to set
 	 */
-	public void setVersion(final ID3Version version) {
+	public void setVersion(ID3Version version) {
 		this.version = version;
 	}
 
@@ -108,7 +130,7 @@ public class ID3Tag {
 	/**
 	 * @param declaredSize the declaredSize to set
 	 */
-	public void setDeclaredSize(final int declaredSize) {
+	public void setDeclaredSize(int declaredSize) {
 		this.declaredSize = declaredSize;
 	}
 }

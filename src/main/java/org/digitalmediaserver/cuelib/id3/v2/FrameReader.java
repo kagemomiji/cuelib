@@ -22,7 +22,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.digitalmediaserver.cuelib.id3.ID3Frame;
 
+
+/**
+ * The Interface FrameReader.
+ */
 public interface FrameReader {
 
-	public ID3Frame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException, MalformedFrameException;
+	/**
+	 * Read frame body.
+	 *
+	 * @param size the size.
+	 * @param input the {@link InputStream}.
+	 * @return the {@link ID3Frame}.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException If the encoding isn't supported.
+	 * @throws MalformedFrameException If a malformed frame were encountered.
+	 */
+	public ID3Frame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException;
 }

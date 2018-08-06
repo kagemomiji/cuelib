@@ -27,6 +27,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
  * Class containing utility methods related to logging.
  *
@@ -49,10 +50,10 @@ public final class LogUtil {
 	 * @param level Level to log at.
 	 * @param throwable Throwable to log the stack strace of.
 	 */
-	public static void logStacktrace(final Logger logger, final Level level, final Throwable throwable) {
+	public static void logStacktrace(Logger logger, Level level, Throwable throwable) {
 		// No need to do anything if the message isn't loggable.
 		if (logger.isLoggable(level)) {
-			final StringWriter sw = new StringWriter();
+			StringWriter sw = new StringWriter();
 			throwable.printStackTrace(new PrintWriter(sw));
 			logger.log(level, sw.toString());
 		}
@@ -98,7 +99,7 @@ public final class LogUtil {
 	 *         Level to the specified Logger will be handled by a Handler that
 	 *         is an instance of the specified class.
 	 */
-	public static boolean hasHandlerActive(final Logger logger, final Level level, final Class<?> handlerClass) {
+	public static boolean hasHandlerActive(Logger logger, Level level, Class<?> handlerClass) {
 		Logger currentLogger = logger;
 		boolean result = false;
 
@@ -126,11 +127,11 @@ public final class LogUtil {
 	 * that handlers can be dynamically added and removed, so this information
 	 * is not guaranteed to be correct at any moment.
 	 *
-	 * @param logger
+	 * @param logger the {@link Logger}.
 	 * @return A list of all currently active Handlers on the specified Logger.
 	 */
-	public static Set<Handler> getAllActiveHandlers(final Logger logger) {
-		final Set<Handler> handlers = new HashSet<Handler>();
+	public static Set<Handler> getAllActiveHandlers(Logger logger) {
+		Set<Handler> handlers = new HashSet<Handler>();
 
 		Logger currentLogger = logger;
 

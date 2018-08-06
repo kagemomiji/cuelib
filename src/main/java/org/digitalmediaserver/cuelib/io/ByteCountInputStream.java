@@ -34,15 +34,20 @@ public class ByteCountInputStream extends FilterInputStream {
 
 	private long bytesRead = 0;
 
-	public ByteCountInputStream(final InputStream in) {
+	/**
+	 * Instantiates a new byte count input stream.
+	 *
+	 * @param in the {@link InputStream}.
+	 */
+	public ByteCountInputStream(InputStream in) {
 		super(in);
 	}
 
 	@Override
 	public int read() throws IOException {
-		final int byteRead = in.read(); // Is all that super.read() does.
+		int byteRead = in.read(); // Is all that super.read() does.
 		if (byteRead >= 0) {
-			this.bytesRead++;
+			bytesRead++;
 		}
 		return byteRead;
 	}
@@ -50,17 +55,17 @@ public class ByteCountInputStream extends FilterInputStream {
 	// read(byte[]) is implemented to call read(byte[],int,int), so no need to override.
 
 	@Override
-	public int read(final byte[] b, final int off, final int len) throws IOException {
-		final int bytesRead = super.read(b, off, len);
-		if (bytesRead > 0) {
-			this.bytesRead += bytesRead;
+	public int read(byte[] b, int off, int len) throws IOException {
+		int count = super.read(b, off, len);
+		if (count > 0) {
+			bytesRead += count;
 		}
-		return bytesRead;
+		return count;
 	}
 
 	@Override
-	public long skip(final long n) throws IOException {
-		final long bytesSkipped = super.skip(n);
+	public long skip(long n) throws IOException {
+		long bytesSkipped = super.skip(n);
 		if (bytesSkipped > 0) {
 			this.bytesRead += bytesSkipped;
 		}
@@ -76,6 +81,9 @@ public class ByteCountInputStream extends FilterInputStream {
 		return bytesRead;
 	}
 
+	/**
+	 * Reset the number of bytes read count.
+	 */
 	public void resetBytesRead() {
 		this.bytesRead = 0;
 	}

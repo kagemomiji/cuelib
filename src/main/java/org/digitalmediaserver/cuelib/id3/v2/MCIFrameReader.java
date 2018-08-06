@@ -22,19 +22,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.digitalmediaserver.cuelib.id3.MusicCDIdentifierFrame;
 
+
+/**
+ * The Class MCIFrameReader.
+ */
 public class MCIFrameReader implements FrameReader {
 
 	private final int headerSize;
 
-	public MCIFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new MCI frame reader.
+	 *
+	 * @param headerSize the header size
+	 */
+	public MCIFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public MusicCDIdentifierFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException, MalformedFrameException {
-		final MusicCDIdentifierFrame result = new MusicCDIdentifierFrame();
+	public MusicCDIdentifierFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+		MusicCDIdentifierFrame result = new MusicCDIdentifierFrame();
 		result.setTotalFrameSize(size + headerSize);
-		final StringBuilder hexBuilder = new StringBuilder();
+		StringBuilder hexBuilder = new StringBuilder();
 		for (int index = 0; index < size; index++) {
 			hexBuilder.append(Integer.toHexString(input.read()));
 		}

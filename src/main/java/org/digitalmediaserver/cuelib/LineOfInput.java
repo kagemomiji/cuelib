@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Simple representation of a line of input for use by CueParser.
  *
@@ -47,7 +48,7 @@ public class LineOfInput {
 	 * @param input The input at this line.
 	 * @param associatedSheet The CueSheet associated with this input.
 	 */
-	public LineOfInput(final int lineNumber, final String input, final CueSheet associatedSheet) {
+	public LineOfInput(int lineNumber, String input, CueSheet associatedSheet) {
 		this.lineNumber = lineNumber;
 		this.input = input;
 		this.associatedSheet = associatedSheet;
@@ -59,7 +60,7 @@ public class LineOfInput {
 	 * @return The CueSheet associated with this input.
 	 */
 	public CueSheet getAssociatedSheet() {
-		return this.associatedSheet;
+		return associatedSheet;
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class LineOfInput {
 	 * @return The input at this line.
 	 */
 	public String getInput() {
-		return this.input;
+		return input;
 	}
 
 	/**
@@ -77,6 +78,6 @@ public class LineOfInput {
 	 * @return The number of this line.
 	 */
 	public int getLineNumber() {
-		return this.lineNumber;
+		return lineNumber;
 	}
 }

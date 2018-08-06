@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.digitalmediaserver.cuelib.id3.ID3Reader;
+import org.digitalmediaserver.cuelib.id3.AbstractID3v2Reader;
 import org.digitalmediaserver.cuelib.id3.ID3Tag;
 import org.digitalmediaserver.cuelib.id3.ID3Version;
 import org.digitalmediaserver.cuelib.id3.v2.MalformedFrameException;
@@ -31,69 +31,44 @@ import org.digitalmediaserver.cuelib.id3.v2.UnsynchedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ID3v2r40Reader implements ID3Reader {
+
+/**
+ * The Class ID3v2r40Reader.
+ */
+public class ID3v2r40Reader extends AbstractID3v2Reader {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ID3v2r40Reader.class);
 
 	// TODO Handle cases where tag is not at start of file.
 
-	public ID3v2r40Reader() {
-
+	@Override
+	protected boolean isVersionValid(int majorVersion, int revision) {
+		return majorVersion == 4 && revision == 0;
 	}
 
 	@Override
-	public boolean hasTag(final File file) throws IOException {
-		final FileInputStream input = new FileInputStream(file);
-		try {
-			if (input.read() == 'I' && input.read() == 'D' && input.read() == '3') {
-				final int majorVersion = input.read();
-				final int revision = input.read();
-				if (majorVersion == 4 && revision == 0) {
-					final int flags = input.read();
-					// Don't trip over unsupported flags.
-					// TODO Make switch for this behaviour.
-					// if ((flags & 15) == 0) // Only top three bits describe valid flags.
-					// {
-					for (int index = 0; index < 4; index++) {
-						final int sizeByte = input.read();
-						if (sizeByte >= 128) {  // Top bit cannot be used.
-							return false;
-						}
-						return true;
-					}
-					// }
-				}
-			}
-			return false;
-		} finally {
-			input.close();
-		}
-	}
-
-	@Override
-	public ID3Tag read(final File file) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+	public ID3Tag read(File file) throws IOException, UnsupportedEncodingException, MalformedFrameException {
 		ID3Tag tag = new ID3Tag();
 
-		final FileInputStream input = new FileInputStream(file);
-		try {
+		try (FileInputStream input = new FileInputStream(file)) {
 			if (input.read() == 'I' && input.read() == 'D' && input.read() == '3') {
-				final int majorVersion = input.read();
-				final int revision = input.read();
+				int majorVersion = input.read();
+				int revision = input.read();
 				if (majorVersion == 4 && revision == 0) {
 					tag.setVersion(ID3Version.ID3v2r4);
 					tag.setRevision(0);
-					final int flags = input.read();
-					final boolean unsyncUsed = (flags & 128) == 128;
+					int flags = input.read();
+					boolean unsyncUsed = (flags & 128) == 128;
 					tag.getFlags().setProperty(ID3Tag.UNSYNC_USED, Boolean.toString(unsyncUsed));
-					final boolean extendedHeaderUsed = (flags & 64) == 64;
-					final boolean experimental = (flags & 32) == 32;
+					boolean extendedHeaderUsed = (flags & 64) == 64;
+					boolean experimental = (flags & 32) == 32;
 					tag.getFlags().setProperty(ID3Tag.EXPERIMENTAL, Boolean.toString(experimental));
-					final boolean footerPresent = (flags & 16) == 16;
+					boolean footerPresent = (flags & 16) == 16;
 					tag.getFlags().setProperty(ID3Tag.FOOTER_PRESENT, Boolean.toString(footerPresent));
 					// TODO Check that other flags are not set.
 					int size = 0;
 					for (int index = 0; index < 4; index++) {
-						final int sizeByte = input.read();
+						int sizeByte = input.read();
 						if (sizeByte >= 128) {
 							size = -1;
 							break;
@@ -107,7 +82,7 @@ public class ID3v2r40Reader implements ID3Reader {
 						if (extendedHeaderUsed) {
 							long extendedHeaderSize = 0;
 							for (int index = 0; index < 4; index++) {
-								final int sizeByte = input.read();
+								int sizeByte = input.read();
 								if (sizeByte >= 128) {
 									extendedHeaderSize = -1;
 									break;
@@ -116,17 +91,17 @@ public class ID3v2r40Reader implements ID3Reader {
 							}
 							if (extendedHeaderSize >= 6) {
 								tag.getFlags().put(ID3Tag.EXTENDED_HEADER_SIZE, Long.toString(extendedHeaderSize));
-								final int numberOfFlagBytes = input.read();
+								int numberOfFlagBytes = input.read();
 								if (numberOfFlagBytes == 1) {
-									final int extendedFlags = input.read();
-									final boolean tagIsAnUpdate = (extendedFlags & 64) == 64;
+									int extendedFlags = input.read();
+									boolean tagIsAnUpdate = (extendedFlags & 64) == 64;
 									tag.getFlags().put(ID3Tag.TAG_IS_UPDATE, Boolean.toString(tagIsAnUpdate));
-									final boolean crcPresent = (extendedFlags & 32) == 32;
-									final boolean tagRestrictionsSet = (extendedFlags & 16) == 16;
+									boolean crcPresent = (extendedFlags & 32) == 32;
+									boolean tagRestrictionsSet = (extendedFlags & 16) == 16;
 									LOGGER.debug("Tag restrictions set: {}", tagRestrictionsSet);
 
 									if (tagIsAnUpdate) {
-										final int updateFlagDataLength = input.read();
+										int updateFlagDataLength = input.read();
 										if (updateFlagDataLength != 0) {
 											LOGGER.warn(
 												"Invalid length for \"tag is an update\" flag encountered. Should be 0, but is {}",
@@ -137,14 +112,16 @@ public class ID3v2r40Reader implements ID3Reader {
 									}
 
 									if (crcPresent) {
-										final int crcLength = input.read();
+										int crcLength = input.read();
 										if (crcLength == 5) {
 											// 35 bit value, but according to spec the upper 4 are not
 											// used, so would fit in the positive part of a signed integer.
 											// Seems odd though. I wonder if the spec doesn't mean the
 											// upper 5 bits of the "raw" (non-sync-safe) bytes...
 											// Using a long to be safe.
-											final long crc = input.read() << 28 | input.read() << 21 | input.read() << 14 | input.read() << 7 | input.read();
+											long crc =
+												input.read() << 28 | input.read() << 21 |
+												input.read() << 14 | input.read() << 7 | input.read();
 											tag.getFlags().put(ID3Tag.CRC32_HEX, Long.toHexString(crc));
 											// TODO Use this CRC32_HEX information.
 										} else {
@@ -157,14 +134,14 @@ public class ID3v2r40Reader implements ID3Reader {
 									}
 
 									if (tagRestrictionsSet) {
-										final int tagRestrictionsDataSize = input.read();
+										int tagRestrictionsDataSize = input.read();
 										if (tagRestrictionsDataSize == 1) {
-											final int restrictionsByte = input.read();
-											final int tagSizeRestrictions = (restrictionsByte & 192) >> 6;
-											final int textEncodingRestrictions = (restrictionsByte & 32) >> 5;
-											final int textFieldSizeRestrictions = (restrictionsByte & 24) >> 3;
-											final int imageEncodingRestrictions = (restrictionsByte & 4) >> 2;
-											final int imageSizeRestrictions = (restrictionsByte & 3);
+											int restrictionsByte = input.read();
+											int tagSizeRestrictions = (restrictionsByte & 192) >> 6;
+											int textEncodingRestrictions = (restrictionsByte & 32) >> 5;
+											int textFieldSizeRestrictions = (restrictionsByte & 24) >> 3;
+											int imageEncodingRestrictions = (restrictionsByte & 4) >> 2;
+											int imageSizeRestrictions = (restrictionsByte & 3);
 											switch (tagSizeRestrictions) {
 												case 0:
 													LOGGER.debug(
@@ -186,6 +163,8 @@ public class ID3v2r40Reader implements ID3Reader {
 														"Tag size restriction: No more than 32 frames and 4 KB total tag size."
 													);
 													break;
+												default:
+													LOGGER.debug("Unknown tag size restriction");
 											}
 											switch (textEncodingRestrictions) {
 												case 0:
@@ -197,6 +176,8 @@ public class ID3v2r40Reader implements ID3Reader {
 														"ISO-8859-1 [ISO-8859-1] or UTF-8 [UTF-8]."
 													);
 													break;
+												default:
+													LOGGER.debug("Unknown encoding restriction");
 											}
 											switch (textFieldSizeRestrictions) {
 												case 0:
@@ -217,6 +198,8 @@ public class ID3v2r40Reader implements ID3Reader {
 														"Text field size restriction: No string is longer than 30 characters."
 													);
 													break;
+												default:
+													LOGGER.debug("Unknown field size restriction");
 											}
 											switch (imageEncodingRestrictions) {
 												case 0:
@@ -228,6 +211,8 @@ public class ID3v2r40Reader implements ID3Reader {
 														"only with PNG [PNG] or JPEG [JFIF]."
 													);
 													break;
+												default:
+													LOGGER.debug("Unknown image encoding restriction");
 											}
 											switch (imageSizeRestrictions) {
 												case 0:
@@ -245,6 +230,8 @@ public class ID3v2r40Reader implements ID3Reader {
 														"64x64 pixels, unless required otherwise."
 													);
 													break;
+												default:
+													LOGGER.debug("Unknown image size restriction");
 											}
 											// TODO Check restrictions.
 											// TODO Set as property of tag.
@@ -270,13 +257,13 @@ public class ID3v2r40Reader implements ID3Reader {
 						}
 
 						// Now to read the frames.
-						final InputStream frameInputStream;
+						InputStream frameInputStream;
 						if (unsyncUsed) {
 							frameInputStream = new UnsynchedInputStream(input);
 						} else {
 							frameInputStream = input;
 						}
-						final FramesReader frameReader = new FramesReader();
+						FramesReader frameReader = new FramesReader();
 						frameReader.readFrames(tag, frameInputStream, size);
 					} else {
 						// TODO Emit warning.
@@ -295,31 +282,8 @@ public class ID3v2r40Reader implements ID3Reader {
 			}
 			// TODO Read footer (if present?). Is copy of header, but at end, and
 			// with "3DI" instead of "ID3".
-		} finally {
-			input.close();
 		}
 
 		return tag;
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			// For testing purposes...
-			final ID3v2r40Reader reader = new ID3v2r40Reader();
-			// final File file1 = new File("C:\\tmp\\mp3\\Anaal Nathrakh\\Rock Tribune CD Sampler Juli 2009\\12_The Lucifer Effect.mp3");
-			// final File file1 = new File("C:\\tmp\\01 Prowler.mp3");
-			// final File file1 = new File("C:\\tmp\\01 Satyriasis.mp3");
-			final File file1 = new File("C:\\tmp\\August 21, 2009_ Gen Con Revisited.mp3");
-			System.out.println(reader.hasTag(file1));
-			final ID3Tag tag = reader.read(file1);
-			if (tag != null) {
-				System.out.println(tag.toString());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -28,13 +28,25 @@ import org.digitalmediaserver.cuelib.id3.v2.r00.ID3v2r00Reader;
 import org.digitalmediaserver.cuelib.id3.v2.r30.ID3v2r30Reader;
 import org.digitalmediaserver.cuelib.id3.v2.r40.ID3v2r40Reader;
 
+
+/**
+ * {@link ID3Reader} factory utility class.
+ */
 public class ID3ReaderFactory {
 
-	public ID3ReaderFactory() {
-
+	/**
+	 * Not to be instantiated.
+	 */
+	private ID3ReaderFactory() {
 	}
 
-	public ID3Reader getReader(final ID3Version version) {
+	/**
+	 * Get the {@link ID3Reader} for the specified {@link ID3Version}.
+	 *
+	 * @param version The {@link ID3Version}.
+	 * @return The {@link ID3Reader}.
+	 */
+	public static ID3Reader getReader(ID3Version version) {
 		switch (version) {
 			case ID3v1:
 			case ID3v1r0:
@@ -53,47 +65,51 @@ public class ID3ReaderFactory {
 		}
 	}
 
-	public ID3Reader getReader(final File file) throws IOException {
-		return this.getReader(this.getVersion(file));
+	/**
+	 * Get the appropriate {@link ID3Reader} for the specified {@link File}.
+	 *
+	 * @param file The {@link File}.
+	 * @return The {@link ID3Reader}.
+	 * @throws IOException If an error occurs during the operation.
+	 */
+	public static ID3Reader getReader(File file) throws IOException {
+		return getReader(getVersion(file));
 	}
 
 	/**
 	 * Get the ID3v2 version for this file. Will be null if no supported ID3 tag
 	 * is found.
 	 *
-	 * @param input
-	 * @return
-	 * @throws IOException
+	 * @param input the {@link RandomAccessFile}.
+	 * @return The {@link ID3Version}.
+	 * @throws IOException If an error occurs during the operation.
 	 */
-	private ID3Version getID3v2Version(final RandomAccessFile input) throws IOException {
-		ID3Version result = null;
-
+	private static ID3Version getID3v2Version(RandomAccessFile input) throws IOException {
 		if (input.read() == 'I' && input.read() == 'D' && input.read() == '3') {
-			final int majorVersion = input.read();
+			int majorVersion = input.read();
 			switch (majorVersion) {
 				case 0:
-					result = ID3Version.ID3v2r0;
-					break;
+					return ID3Version.ID3v2r0;
 				case 3:
-					result = ID3Version.ID3v2r3;
-					break;
+					return ID3Version.ID3v2r3;
 				case 4:
-					result = ID3Version.ID3v2r4;
-					break;
+					return ID3Version.ID3v2r4;
+				default:
+					return null;
 			}
 		}
-		return result;
+		return null;
 	}
 
 	/**
 	 * Get the ID3v1 version for this file. Will be null if no supported ID3 tag
 	 * is found.
 	 *
-	 * @param input
-	 * @return
-	 * @throws IOException
+	 * @param input The {@link RandomAccessFile}.
+	 * @return The {@link ID3Version}.
+	 * @throws IOException If an error occurs during the operation.
 	 */
-	private ID3Version getID3v1Version(final RandomAccessFile input) throws IOException {
+	private static ID3Version getID3v1Version(RandomAccessFile input) throws IOException {
 		ID3Version result = null;
 
 		if (input.length() >= 128) {
@@ -101,8 +117,8 @@ public class ID3ReaderFactory {
 			if (input.readUnsignedByte() == 'T' && input.readUnsignedByte() == 'A' && input.readUnsignedByte() == 'G') {
 				// Check if there is a track number. If so, it's 1.1.
 				input.seek(input.length() - 3);
-				final int trackNoMarker = input.readUnsignedByte();
-				final int rawTrackNo = input.readUnsignedByte();
+				int trackNoMarker = input.readUnsignedByte();
+				int rawTrackNo = input.readUnsignedByte();
 				if (trackNoMarker == 0) {
 					if (rawTrackNo == 0) {
 						// Could be either v1.0 or v1.1, so just report v1.
@@ -122,28 +138,25 @@ public class ID3ReaderFactory {
 	 * is found. Will be the highest supported version if multiple tags are
 	 * present.
 	 *
-	 * @param file
-	 * @return
-	 * @throws IOException
+	 * @param file The {@link File}.
+	 * @return The highest supported {@link ID3Version}.
+	 * @throws IOException If an error occurs during the operation.
 	 */
-	public ID3Version getVersion(final File file) throws IOException {
+	public static ID3Version getVersion(File file) throws IOException {
 		// TODO Support the difference between no ID3 & unsupported version of ID3. Are currently both mapped by null.
 
-		final RandomAccessFile input = new RandomAccessFile(file, "r");
-		try {
+		try (RandomAccessFile input = new RandomAccessFile(file, "r")) {
 			ID3Version result = null;
 
 			// First look for a V2 style tag.
-			result = this.getID3v2Version(input);
+			result = getID3v2Version(input);
 
 			// If we have no result, check for a V1 style tag.
 			if (result == null) {
-				result = this.getID3v1Version(input);
+				result = getID3v1Version(input);
 			}
 
 			return result;
-		} finally {
-			input.close();
 		}
 	}
 
@@ -151,46 +164,26 @@ public class ID3ReaderFactory {
 	 * Get the ID3 versions for this file. Unsupported versions will not be
 	 * reported.
 	 *
-	 * @param file
-	 * @return
-	 * @throws IOException
+	 * @param file The {@link File}.
+	 * @return The {@link List} of {@link ID3Version}s.
+	 * @throws IOException If an error occurs during the operation.
 	 */
-	public List<ID3Version> getVersions(final File file) throws IOException {
+	public static List<ID3Version> getVersions(File file) throws IOException {
 		// TODO Support the difference between no ID3 & unsupported version of ID3. Are currently both mapped by null.
-		final List<ID3Version> result = new ArrayList<ID3Version>();
+		List<ID3Version> result = new ArrayList<ID3Version>();
 
-		final RandomAccessFile input = new RandomAccessFile(file, "r");
-		try {
-			final ID3Version v2result = this.getID3v2Version(input);
+		try (RandomAccessFile input = new RandomAccessFile(file, "r")) {
+			ID3Version v2result = getID3v2Version(input);
 			if (v2result != null) {
 				result.add(v2result);
 			}
 
-			final ID3Version v1result = this.getID3v1Version(input);
+			ID3Version v1result = getID3v1Version(input);
 			if (v1result != null) {
 				result.add(v1result);
 			}
 
 			return result;
-		} finally {
-			input.close();
-		}
-	}
-
-	public static void main(String... param) {
-		try {
-			// For testing purposes...
-			final ID3ReaderFactory rf = new ID3ReaderFactory();
-			final File file1 = new File("C:\\tmp\\mp3\\Anaal Nathrakh\\Rock Tribune CD Sampler Juli 2009\\12_The Lucifer Effect.mp3");
-
-			for (ID3Version id3Version : rf.getVersions(file1)) {
-				System.out.println(id3Version);
-				final ID3Reader reader = rf.getReader(id3Version);
-				System.out.println(reader.hasTag(file1));
-				reader.read(file1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

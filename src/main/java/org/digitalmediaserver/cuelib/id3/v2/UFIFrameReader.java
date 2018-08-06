@@ -24,25 +24,37 @@ import java.util.ArrayList;
 import java.util.List;
 import org.digitalmediaserver.cuelib.id3.UniqueFileIdentifierFrame;
 
+
+/**
+ * The Class UFIFrameReader.
+ */
 public class UFIFrameReader implements FrameReader {
 
 	private final int headerSize;
 
-	public UFIFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new UFI frame reader.
+	 *
+	 * @param headerSize the header size
+	 */
+	public UFIFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public UniqueFileIdentifierFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException {
-		final UniqueFileIdentifierFrame result = new UniqueFileIdentifierFrame();
+	public UniqueFileIdentifierFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException {
+		UniqueFileIdentifierFrame result = new UniqueFileIdentifierFrame();
 		result.setTotalFrameSize(size + this.headerSize);
 
-		final StringBuilder owner = new StringBuilder();
-		final List<Integer> identifier = new ArrayList<Integer>();
+		StringBuilder owner = new StringBuilder();
+		List<Integer> identifier = new ArrayList<Integer>();
 		boolean haveNul = false;
 
 		for (int index = 0; index < size; index++) {
-			final int i = input.read();
+			int i = input.read();
 			if (haveNul) {
 				identifier.add(i);
 			} else {
@@ -55,8 +67,8 @@ public class UFIFrameReader implements FrameReader {
 		}
 		result.setOwnerIdentifier(owner.toString());
 
-		final StringBuilder hexIdentifier = new StringBuilder();
-		for (final Integer i : identifier) {
+		StringBuilder hexIdentifier = new StringBuilder();
+		for (Integer i : identifier) {
 			hexIdentifier.append(Integer.toHexString(i));
 		}
 		result.setHexIdentifier(hexIdentifier.toString());

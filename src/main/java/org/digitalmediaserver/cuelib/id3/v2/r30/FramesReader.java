@@ -21,6 +21,7 @@ package org.digitalmediaserver.cuelib.id3.v2.r30;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -41,9 +42,14 @@ import org.digitalmediaserver.cuelib.id3.v2.UFIFrameReader;
 import org.digitalmediaserver.cuelib.id3.v2.URLFrameReader;
 import org.digitalmediaserver.cuelib.id3.v2.UnsupportedEncodingException;
 import org.digitalmediaserver.cuelib.id3.v2.WXXFrameReader;
+import org.digitalmediaserver.cuelib.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * The Class FramesReader.
+ */
 public class FramesReader {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FramesReader.class);
@@ -52,17 +58,25 @@ public class FramesReader {
 
 	private static FrameDictionary frameDictionary = new FrameDictionary();
 	private static Map<String, FrameReader> frameReaders = new HashMap<String, FrameReader>();
-	final private static int FRAME_HEADER_LENGTH = 10;
+	private static final int FRAME_HEADER_LENGTH = 10;
 
-	private static void putTextFrameReader(final String frameName) {
-		frameReaders.put(frameName, new TextFrameReader(frameDictionary.getCanonicalFrameType(frameName), FramesReader.FRAME_HEADER_LENGTH));
+	private static void putTextFrameReader(String frameName) {
+		frameReaders.put(frameName, new TextFrameReader(
+			frameDictionary.getCanonicalFrameType(frameName),
+			FramesReader.FRAME_HEADER_LENGTH
+		));
 	}
 
-	private static void putURLFrameReader(final String frameName) {
+	private static void putURLFrameReader(String frameName) {
 		frameReaders.put(frameName, new URLFrameReader(frameDictionary.getCanonicalFrameType(frameName), FramesReader.FRAME_HEADER_LENGTH));
 	}
 
-	private final static Set<String> discardWhenFileAltered = new TreeSet<String>(Arrays.asList(new String[] { "AENC", "ETCO", "EQUA", "MLLT", "POSS", "SYLT", "SYTC", "RVAD", "TENC", "TLEN", "TSIZ" }));
+	/** The Constant DISCARD_WHEN_FILE_ALTERED. */
+	public static final Set<String> DISCARD_WHEN_FILE_ALTERED = Collections.unmodifiableSet(
+		new TreeSet<String>(Arrays.asList(new String[] {
+			"AENC", "ETCO", "EQUA", "MLLT", "POSS", "SYLT", "SYTC", "RVAD", "TENC", "TLEN", "TSIZ"
+		}))
+	);
 
 	static {
 		frameReaders.put("UFID", new UFIFrameReader(FramesReader.FRAME_HEADER_LENGTH));
@@ -273,49 +287,65 @@ public class FramesReader {
 		frameReaders.put("PCST", new ITunesPodcastFrameReader(FramesReader.FRAME_HEADER_LENGTH));
 	}
 
+	/**
+	 * Instantiates a new frames reader.
+	 */
 	public FramesReader() {
 
 	}
 
-	public int readNextFrame(final ID3Tag tag, final InputStream input) throws IOException, UnsupportedEncodingException,
+	/**
+	 * Read next frame.
+	 *
+	 * @param tag the tag
+	 * @param input the input
+	 * @return the int
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 * @throws MalformedFrameException the malformed frame exception
+	 */
+	public int readNextFrame(ID3Tag tag, InputStream input) throws IOException, UnsupportedEncodingException,
 		MalformedFrameException {
-		final ID3Frame frame;
-		final StringBuilder frameNameBuilder = new StringBuilder(4);
+		ID3Frame frame;
+		StringBuilder frameNameBuilder = new StringBuilder(4);
 		frameNameBuilder.append((char) input.read());
 		frameNameBuilder.append((char) input.read());
 		frameNameBuilder.append((char) input.read());
 		frameNameBuilder.append((char) input.read());
-		final String frameName = frameNameBuilder.toString();
-		final int mostSignificantSizeByte = input.read();
+		String frameName = frameNameBuilder.toString();
+		int mostSignificantSizeByte = input.read();
 		if (mostSignificantSizeByte > 16) {
 			// TODO Throw exception.
 			LOGGER.error("Frame size greater than maximum tag size!");
 		}
-		final int frameSize = mostSignificantSizeByte * 16777216 + input.read() * 65536 + input.read() * 256 + input.read();
-		final int flagsBytes = (input.read() << 8) | input.read();
-		final Map<String, String> flags = new HashMap<String, String>();
+		int frameSize = mostSignificantSizeByte * 16777216 + input.read() * 65536 + input.read() * 256 + input.read();
+		int flagsBytes = (input.read() << 8) | input.read();
+		Map<String, String> flags = new HashMap<String, String>();
 		flags.put(ID3Frame.PRESERVE_FRAME_WHEN_TAG_ALTERED, Boolean.toString((flagsBytes & 32768) == 32768));
-		flags.put(ID3Frame.PRESERVE_FRAME_WHEN_FILE_ALTERED, Boolean.toString(FramesReader.discardWhenFileAltered.contains(frameName) || (flagsBytes & 16384) == 16384));
+		flags.put(
+			ID3Frame.PRESERVE_FRAME_WHEN_FILE_ALTERED,
+			Boolean.toString(FramesReader.DISCARD_WHEN_FILE_ALTERED.contains(frameName) || (flagsBytes & 16384) == 16384)
+		);
 		flags.put(ID3Frame.READ_ONLY, Boolean.toString((flagsBytes & 8192) == 8192));
-		final boolean compressionUsed = (flagsBytes & 128) == 128;
+		boolean compressionUsed = (flagsBytes & 128) == 128;
 		flags.put(ID3Frame.COMPRESSION_USED, Boolean.toString(compressionUsed));
-		final boolean encryptionUsed = (flagsBytes & 64) == 64;
-		final boolean containsGroupInformation = (flagsBytes & 32) == 32;
+		boolean encryptionUsed = (flagsBytes & 64) == 64;
+		boolean containsGroupInformation = (flagsBytes & 32) == 32;
 
 		if (compressionUsed) {
-			final long decompressedSize = input.read() * 16777216L + input.read() * 65536L + input.read() * 256L + input.read();
+			long decompressedSize = input.read() * 16777216L + input.read() * 65536L + input.read() * 256L + input.read();
 			flags.put(ID3Frame.DATA_LENGTH_INDICATOR, Long.toString(decompressedSize));
 		}
 		if (encryptionUsed) {
-			final int encryptionMethodUsed = input.read();
+			int encryptionMethodUsed = input.read();
 			flags.put(ID3Frame.ENCRYPTION_METHOD_USED, Integer.toString(encryptionMethodUsed));
 		}
 		if (containsGroupInformation) {
-			final int groupId = input.read();
+			int groupId = input.read();
 			flags.put(ID3Frame.GROUP_ID, Integer.toString(groupId));
 		}
 
-		final FrameReader reader = FramesReader.frameReaders.get(frameName);
+		FrameReader reader = FramesReader.frameReaders.get(frameName);
 		if (reader == null) {
 			if ("\u0000\u0000\u0000\u0000".equals(frameName.toString())) {
 				// End of frames.
@@ -323,14 +353,20 @@ public class FramesReader {
 			} else if (frameName.charAt(0) == 'T') {
 				// TODO: Add option to enable/disable this behaviour.
 				LOGGER.warn("Encountered unknown text frame: \"{}\"", frameName);
-				frame = new TextFrameReader(CanonicalFrameType.USER_DEFINED_TEXT, FramesReader.FRAME_HEADER_LENGTH).readFrameBody(frameName, frameSize, input);
+				frame = new TextFrameReader(
+					CanonicalFrameType.USER_DEFINED_TEXT,
+					FramesReader.FRAME_HEADER_LENGTH
+				).readFrameBody(frameName, frameSize, input);
 			} else if (frameName.charAt(0) == 'W') {
 				// TODO: Add option to enable/disable this behaviour.
 				LOGGER.warn("Encountered unknown URL frame: \"{}\"", frameName);
-				frame = new URLFrameReader(CanonicalFrameType.USER_DEFINED_URL, FramesReader.FRAME_HEADER_LENGTH).readFrameBody(frameName, frameSize, input);
+				frame = new URLFrameReader(
+					CanonicalFrameType.USER_DEFINED_URL,
+					FramesReader.FRAME_HEADER_LENGTH
+				).readFrameBody(frameName, frameSize, input);
 			} else {
 				LOGGER.warn("Encountered unsupported frame type: \"{}\" of length {}", frameName, frameSize);
-				input.skip(frameSize);
+				Utils.skipOrThrow(input, frameSize);
 				frame = null;
 				// TODO Handle
 			}
@@ -346,16 +382,30 @@ public class FramesReader {
 		return frameSize + FramesReader.FRAME_HEADER_LENGTH; // Size + header size.
 	}
 
-	public void readFrames(final ID3Tag tag, final InputStream input, final long length) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+	/**
+	 * Read frames.
+	 *
+	 * @param tag the tag
+	 * @param input the input
+	 * @param length the length
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 * @throws MalformedFrameException the malformed frame exception
+	 */
+	public void readFrames(
+		ID3Tag tag,
+		InputStream input,
+		long length
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
 		long bytesLeft = length;
 		while (bytesLeft >= FramesReader.FRAME_HEADER_LENGTH) {
-			final int bytesRead = readNextFrame(tag, input);
+			int bytesRead = readNextFrame(tag, input);
 			bytesLeft -= bytesRead;
 			if (bytesRead == FramesReader.FRAME_HEADER_LENGTH) {
-				input.skip(bytesLeft);
+				Utils.skipOrThrow(input, bytesLeft);
 				bytesLeft = 0;
 			}
 		}
-		input.skip(bytesLeft);
+		Utils.skipOrThrow(input, bytesLeft);
 	}
 }

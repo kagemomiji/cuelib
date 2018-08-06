@@ -19,44 +19,69 @@
 package org.digitalmediaserver.cuelib.id3;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
+
+/**
+ * The {@link ID3Frame} implementation CommentFrame.
+ */
 public class CommentFrame implements ID3Frame {
 
+	/** The description. */
 	private String description;
+
+	/** The text. */
 	private String text;
+
+	/** The language code. */
 	private String languageCode;
+
+	/** The total frame size. */
 	private int totalFrameSize;
-	private Charset charset = Charset.forName("ISO-8859-1");
+
+	/** The charset. */
+	private Charset charset = StandardCharsets.ISO_8859_1;
+
+	/** The flags. */
 	private Properties flags = new Properties();
 
+	/**
+	 * Instantiates a new comment frame.
+	 */
 	public CommentFrame() {
 	}
 
-	public CommentFrame(final int totalFrameSize) {
+	/**
+	 * Instantiates a new comment frame.
+	 *
+	 * @param totalFrameSize the total frame size.
+	 */
+	public CommentFrame(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Comment frame: ").append(this.languageCode).append(" [").append(this.totalFrameSize).append("] ")
-			.append(this.charset.toString()).append('\n').append("Flags: ").append(this.flags.toString()).append('\n')
-			.append("Description: ").append(this.description).append('\n').append("Text: ").append(this.text);
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append("Comment frame: ").append(languageCode).append(" [").append(totalFrameSize).append("] ")
+			.append(charset.toString()).append('\n').append("Flags: ").append(flags.toString()).append('\n')
+			.append("Description: ").append(description).append('\n').append("Text: ").append(text);
 		return builder.toString();
 	}
 
 	/**
+	 * Sets the {@link Charset}.
 	 *
-	 * @param charset
+	 * @param charset The {@link Charset} to set.
 	 */
-	public void setCharset(final Charset charset) {
+	public void setCharset(Charset charset) {
 		this.charset = charset;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return The {@link Charset}.
 	 */
 	public Charset getCharset() {
 		return this.charset;
@@ -73,7 +98,7 @@ public class CommentFrame implements ID3Frame {
 	/**
 	 * @param totalFrameSize the totalFrameSize to set
 	 */
-	public void setTotalFrameSize(final int totalFrameSize) {
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
@@ -125,7 +150,7 @@ public class CommentFrame implements ID3Frame {
 	}
 
 	/**
-	 * @return the flags
+	 * @return The flags.
 	 */
 	@Override
 	public Properties getFlags() {

@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Simple warning for use by a cue sheet.
  *
@@ -32,7 +33,7 @@ public class Warning extends MessageImplementation {
 	 * @param lineNumber The line number of the input that caused the warning.
 	 * @param message A message explaining what is wrong.
 	 */
-	public Warning(final String input, final int lineNumber, final String message) {
+	public Warning(String input, int lineNumber, String message) {
 		super("Warning", input, lineNumber, message);
 	}
 
@@ -42,7 +43,7 @@ public class Warning extends MessageImplementation {
 	 * @param lineOfInput The input that caused the warning.
 	 * @param message A message explaining what is wrong.
 	 */
-	public Warning(final LineOfInput lineOfInput, final String message) {
+	public Warning(LineOfInput lineOfInput, String message) {
 		super("Warning", lineOfInput, message);
 	}
 }

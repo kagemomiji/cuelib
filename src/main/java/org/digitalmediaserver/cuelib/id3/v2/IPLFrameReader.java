@@ -21,64 +21,84 @@ package org.digitalmediaserver.cuelib.id3.v2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.digitalmediaserver.cuelib.id3.InvolvedPeopleFrame;
+import org.digitalmediaserver.cuelib.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+
+/**
+ * The Class IPLFrameReader.
+ */
 public class IPLFrameReader implements FrameReader {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(IPLFrameReader.class);
 
 	private final int headerSize;
 
-	public IPLFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new IPL frame reader.
+	 *
+	 * @param headerSize the header size
+	 */
+	public IPLFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public InvolvedPeopleFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException, MalformedFrameException {
-		final InvolvedPeopleFrame result = new InvolvedPeopleFrame(this.headerSize + size);
-		final int encoding = input.read();
+	public InvolvedPeopleFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+		InvolvedPeopleFrame result = new InvolvedPeopleFrame(this.headerSize + size);
+		int encoding = input.read();
 
-		System.out.println("Encoding: " + encoding);
-		final Charset charset;
+		Charset charset;
 		switch (encoding) {
 			case 0:
-				charset = Charset.forName("ISO-8859-1");
+				charset = StandardCharsets.ISO_8859_1;
 				break;
 			case 1:
-				charset = Charset.forName("UTF-16");
+				charset = StandardCharsets.UTF_16;
 				break;
 			case 2:
 				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-16BE");
+				charset = StandardCharsets.UTF_16BE;
 				break;
 			case 3:
 				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-8");
+				charset = StandardCharsets.UTF_8;
 				break;
 			default:
 				throw new UnsupportedEncodingException("Encoding not supported: " + encoding);
 		}
+		LOGGER.trace("Reading InvolvedPeopleFrame with charset {}", charset);
 
 		result.setCharset(charset);
 
 		// Read entire field, then process.
 		// Length -1 because of the encoding byte.
-		final byte[] b = new byte[size - 1];
-		input.read(b);
-		final String rawValue = new String(b, charset);
+		byte[] b = new byte[size - 1];
+		Utils.readFully(input, b);
+		String rawValue = new String(b, charset);
 
 		int startPosition = 0;
 		boolean atInvolvement = true;
 		InvolvedPeopleFrame.InvolvedPerson involvedPerson = null;
 		while (startPosition < rawValue.length()) {
-			final int nulPosition = rawValue.indexOf(0);
-			final int endPosition = (nulPosition == -1) ? rawValue.length() : nulPosition;
-			final String value = rawValue.substring(startPosition, endPosition);
+			int nulPosition = rawValue.indexOf(0, startPosition);
+			int endPosition = (nulPosition == -1) ? rawValue.length() : nulPosition;
+			String value = rawValue.substring(startPosition, endPosition);
 			if (atInvolvement) {
 				involvedPerson = new InvolvedPeopleFrame.InvolvedPerson();
 				involvedPerson.setInvolvement(value);
-			} else {
+				atInvolvement = false;
+			} else if (involvedPerson != null) {
 				involvedPerson.setInvolvee(value);
 				result.getInvolvedPeopleList().add(involvedPerson);
 				involvedPerson = null;
+				atInvolvement = true;
 			}
 			// +1 because we don't want the nul character.
 			startPosition = endPosition + 1;
@@ -86,7 +106,7 @@ public class IPLFrameReader implements FrameReader {
 
 		if (involvedPerson != null) {
 			// Involvement without involvee found.
-			// TODO Throw exception?
+			LOGGER.warn("Encountered ID3v2 involvement ({}) without involvee", involvedPerson.getInvolvement());
 			involvedPerson.setInvolvee("");
 			result.getInvolvedPeopleList().add(involvedPerson);
 		}

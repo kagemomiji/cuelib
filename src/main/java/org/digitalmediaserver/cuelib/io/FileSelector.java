@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Convenience class for selecting files based on some criterium.
  *
@@ -38,7 +39,7 @@ public class FileSelector {
 	/**
 	 * The logger for this class.
 	 */
-	private final static Logger LOGGER = LoggerFactory.getLogger(FileSelector.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileSelector.class);
 
 	/**
 	 * FileFilter that accepts only directories.
@@ -46,7 +47,7 @@ public class FileSelector {
 	private static FileFilter dirsFileFilter = new FileFilter() {
 
 		@Override
-		public boolean accept(final File file) {
+		public boolean accept(File file) {
 			return file.isDirectory();
 		}
 	};
@@ -57,7 +58,7 @@ public class FileSelector {
 	private static FileFilter filesFilter = new FileFilter() {
 
 		@Override
-		public boolean accept(final File file) {
+		public boolean accept(File file) {
 			return file.isFile();
 		}
 	};
@@ -95,7 +96,7 @@ public class FileSelector {
 	 * @return A FileFilter that will accept only files whose canonical paths
 	 *         match the pattern.
 	 */
-	public static FileFilter getPathPatternFilter(final String pattern) {
+	public static FileFilter getPathPatternFilter(String pattern) {
 		return FileSelector.getPathPatternFilter(Pattern.compile(pattern));
 	}
 
@@ -111,7 +112,7 @@ public class FileSelector {
 		FileFilter result = new FileFilter() {
 
 			@Override
-			public boolean accept(final File file) {
+			public boolean accept(File file) {
 				boolean result;
 				try {
 					result = pattern.matcher(file.getCanonicalPath()).matches();
@@ -135,7 +136,7 @@ public class FileSelector {
 	 * @return A FileFilter that will accept only files whose names match the
 	 *         pattern.
 	 */
-	public static FileFilter getFileNamePatternFilter(final String pattern) {
+	public static FileFilter getFileNamePatternFilter(String pattern) {
 		return FileSelector.getFileNamePatternFilter(Pattern.compile(pattern));
 	}
 
@@ -151,7 +152,7 @@ public class FileSelector {
 		FileFilter result = new FileFilter() {
 
 			@Override
-			public boolean accept(final File file) {
+			public boolean accept(File file) {
 				boolean result;
 				try {
 					result = pattern.matcher(file.getName()).matches();
@@ -178,7 +179,7 @@ public class FileSelector {
 	 *         accepted by all specified FileFilters.
 	 */
 	@Deprecated
-	public static FileFilter getCombinedFileFilter(final FileFilter... fileFilters) {
+	public static FileFilter getCombinedFileFilter(FileFilter... fileFilters) {
 		// The FileFilter ... parameter has lower (implicit) priority than Iterable<FileFilter>, so there is no
 		// (directly) recursive call here.
 		return FileSelector.getIntersectionFileFilter(fileFilters);
@@ -197,7 +198,7 @@ public class FileSelector {
 	 *         accepted by all specified FileFilters.
 	 */
 	@Deprecated
-	public static FileFilter getCombinedFileFilter(final Iterable<FileFilter> fileFilters) {
+	public static FileFilter getCombinedFileFilter(Iterable<FileFilter> fileFilters) {
 		return FileSelector.getIntersectionFileFilter(fileFilters);
 	}
 
@@ -212,7 +213,7 @@ public class FileSelector {
 	 *         that the resulting filter will only accept the intersection of
 	 *         the specified filters.
 	 */
-	public static FileFilter getIntersectionFileFilter(final FileFilter... fileFilters) {
+	public static FileFilter getIntersectionFileFilter(FileFilter... fileFilters) {
 		return FileSelector.getIntersectionFileFilter(Arrays.asList(fileFilters));
 	}
 
@@ -228,10 +229,10 @@ public class FileSelector {
 	 *         the specified filters.
 	 */
 	public static FileFilter getIntersectionFileFilter(final Iterable<FileFilter> fileFilters) {
-		final FileFilter result = new FileFilter() {
+		FileFilter result = new FileFilter() {
 
 			@Override
-			public boolean accept(final File file) {
+			public boolean accept(File file) {
 				boolean result = true;
 
 				fileFilterLoop: for (FileFilter fileFilter : fileFilters) {
@@ -258,9 +259,8 @@ public class FileSelector {
 	 *         that the resulting filter will accept the union of the files
 	 *         accepted by specified filters.
 	 */
-	public static FileFilter getUnionFileFilter(final FileFilter... fileFilters) {
-		final FileFilter result = FileSelector.getUnionFileFilter(Arrays.asList(fileFilters));
-		return result;
+	public static FileFilter getUnionFileFilter(FileFilter... fileFilters) {
+		return FileSelector.getUnionFileFilter(Arrays.asList(fileFilters));
 	}
 
 	/**
@@ -274,10 +274,10 @@ public class FileSelector {
 	 *         accepted by specified filters.
 	 */
 	public static FileFilter getUnionFileFilter(final Iterable<FileFilter> fileFilters) {
-		final FileFilter result = new FileFilter() {
+		FileFilter result = new FileFilter() {
 
 			@Override
-			public boolean accept(final File file) {
+			public boolean accept(File file) {
 				boolean result = false;
 
 				fileFilterLoop: for (FileFilter fileFilter : fileFilters) {
@@ -299,11 +299,11 @@ public class FileSelector {
 	 *
 	 * @param baseFile Base to start looking for files.
 	 * @param pattern The pattern that the files must match.
-	 * @param recurseDepth The depth of subdirectories to recurse into. If 0,
-	 *            then only the base directory will be processed (excluding any
-	 *            subfiles and subdirectories). If Long.MAX_VALUE, then
-	 *            recursion depth is indefinite. If < 0, then no files will be
-	 *            processed.
+	 * @param recurseDepth The depth of subdirectories to recurse into. If
+	 *            {@code 0}, then only the base directory will be processed
+	 *            (excluding any subfiles and subdirectories). If
+	 *            {@link Long#MAX_VALUE}, then recursion depth is indefinite. If
+	 *            {@code < 0}, then no files will be processed.
 	 * @param considerBaseFile If set to false, then the baseFile will not be
 	 *            selected, even if it passes the FileFilter.
 	 * @param keepGoing Whether or not to keep going when a SecurityException
@@ -311,8 +311,8 @@ public class FileSelector {
 	 *            method will try to continue selecting more files.
 	 * @return A list of files such that they match the pattern.
 	 */
-	public static List<File> selectFiles(final File baseFile, final Pattern pattern, final long recurseDepth,
-		final boolean considerBaseFile, final boolean keepGoing) {
+	public static List<File> selectFiles(File baseFile, Pattern pattern, long recurseDepth,
+		boolean considerBaseFile, boolean keepGoing) {
 		List<File> fileList = new ArrayList<File>();
 
 		selectFiles(baseFile, getPathPatternFilter(pattern), fileList, recurseDepth, considerBaseFile, keepGoing);
@@ -328,18 +328,24 @@ public class FileSelector {
 	 *            unless the considerBaseFile parameter is set to false.
 	 * @param fileFilter The filter that the files must be tested against.
 	 * @param fileList Files that are matched will be added to this list.
-	 * @param recurseDepth The depth of subdirectories to recurse into. If 0,
-	 *            then only the base directory will be processed (excluding any
-	 *            subfiles and subdirectories). If Long.MAX_VALUE, then
-	 *            recursion depth is indefinite. If < 0, then no files will be
-	 *            processed.
+	 * @param recurseDepth The depth of subdirectories to recurse into. If
+	 *            {@code 0}, then only the base directory will be processed
+	 *            (excluding any subfiles and subdirectories). If
+	 *            {@link Long#MAX_VALUE}, then recursion depth is indefinite. If
+	 *            {@code < 0}, then no files will be processed.
 	 * @param considerBaseFile If set to false, then the baseFile will not be
 	 *            selected, even if it passes the FileFilter.
 	 * @param keepGoing Whether or not to keep going when a SecurityException
 	 *            occurs.
 	 */
-	public static void selectFiles(final File baseFile, final FileFilter fileFilter, final List<File> fileList, final long recurseDepth,
-		final boolean considerBaseFile, final boolean keepGoing) {
+	public static void selectFiles(
+		File baseFile,
+		FileFilter fileFilter,
+		List<File> fileList,
+		long recurseDepth,
+		boolean considerBaseFile,
+		boolean keepGoing
+	) {
 
 		// We've gone too deep, so stop.
 		if (recurseDepth < 0) {

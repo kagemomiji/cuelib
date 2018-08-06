@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Implementation of the Message interface. Implements a specific type of
  * message that can be freely chosen. For instance, "Warning", "Error", "Debug",
@@ -52,7 +53,7 @@ public abstract class MessageImplementation implements Message {
 	 *
 	 * @param type The type of the message.
 	 */
-	public MessageImplementation(final String type) {
+	public MessageImplementation(String type) {
 		this.input = "";
 		this.lineNumber = -1;
 		this.message = "";
@@ -66,7 +67,7 @@ public abstract class MessageImplementation implements Message {
 	 * @param lineOfInput The line of input that this message applies to.
 	 * @param message The message text.
 	 */
-	public MessageImplementation(final String type, final LineOfInput lineOfInput, final String message) {
+	public MessageImplementation(String type, LineOfInput lineOfInput, String message) {
 		this.input = lineOfInput.getInput();
 		this.lineNumber = lineOfInput.getLineNumber();
 		this.message = message;
@@ -108,7 +109,7 @@ public abstract class MessageImplementation implements Message {
 	 */
 	@Override
 	public String getInput() {
-		return this.input;
+		return input;
 	}
 
 	/**
@@ -116,7 +117,7 @@ public abstract class MessageImplementation implements Message {
 	 *
 	 * @param input The input that this message applies to.
 	 */
-	public void setInput(final String input) {
+	public void setInput(String input) {
 		this.input = input;
 	}
 
@@ -127,7 +128,7 @@ public abstract class MessageImplementation implements Message {
 	 */
 	@Override
 	public int getLineNumber() {
-		return this.lineNumber;
+		return lineNumber;
 	}
 
 	/**
@@ -136,7 +137,7 @@ public abstract class MessageImplementation implements Message {
 	 * @param lineNumber The line number of the input that this message applies
 	 *            to.
 	 */
-	public void setLineNumber(final int lineNumber) {
+	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
 	}
 
@@ -147,7 +148,7 @@ public abstract class MessageImplementation implements Message {
 	 */
 	@Override
 	public String getMessage() {
-		return this.message;
+		return message;
 	}
 
 	/**
@@ -155,7 +156,7 @@ public abstract class MessageImplementation implements Message {
 	 *
 	 * @param message The text for this message.
 	 */
-	public void setMessage(final String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 }

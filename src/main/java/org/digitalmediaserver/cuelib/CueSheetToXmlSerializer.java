@@ -35,89 +35,89 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+
 /**
- * Class for serializing a {@link org.digitalmediaserver.cuelib.CueSheet
- * CueSheet} to an XML representation. The serialized cue sheet will conform to
- * the following XML Schema, which closely resembles the cue sheet syntax,
- * except for the fact that it is less restrictive with respect to allowed
- * element values. This is necessary, as the
- * {@link org.digitalmediaserver.cuelib.CueSheet CueSheet} structure is more
- * lenient than the cue sheet standard.
+ * Class for serializing a {@link CueSheet} to an XML representation. The
+ * serialized cue sheet will conform to the following XML Schema, which closely
+ * resembles the cue sheet syntax, except for the fact that it is less
+ * restrictive with respect to allowed element values. This is necessary, as the
+ * {@link CueSheet} structure is more lenient than the cue sheet standard.
  *
- * {@code
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://jwbroek/cuelib/2008/cuesheet/1"
-  targetNamespace="http://jwbroek/cuelib/2008/cuesheet/1"
-  elementFormDefault="qualified"
-  attributeFormDefault="unqualified"
-  >
-
-  <xsd:element name="cuesheet" type="tns:cuesheet"/>
-
-  <xsd:complexType name="cuesheet">
-    <xsd:sequence>
-      <xsd:element name="file" type="tns:file" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="genre" type="xsd:string" use="optional"/>
-    <xsd:attribute name="date" type="xsd:integer" use="optional"/>
-    <xsd:attribute name="discid" type="xsd:string" use="optional"/>
-    <xsd:attribute name="comment" type="xsd:string" use="optional"/>
-    <xsd:attribute name="catalog" type="xsd:string" use="optional"/>
-    <xsd:attribute name="performer" type="xsd:string" use="optional"/>
-    <xsd:attribute name="title" type="xsd:string" use="optional"/>
-    <xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
-    <xsd:attribute name="cdtextfile" type="xsd:string" use="optional"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="file">
-    <xsd:sequence>
-      <xsd:element name="track" type="tns:track" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="file" type="xsd:string" use="optional"/>
-    <xsd:attribute name="type" type="xsd:string" use="optional"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="track">
-    <xsd:sequence>
-      <xsd:element name="pregap" type="tns:position" minOccurs="0"/>
-      <xsd:element name="postgap" type="tns:position" minOccurs="0"/>
-      <xsd:element name="flags" type="tns:flags" minOccurs="0"/>
-      <xsd:element name="index" type="tns:index" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="number" type="xsd:integer" use="optional"/>
-    <xsd:attribute name="type" type="xsd:string" use="optional"/>
-    <xsd:attribute name="isrc" type="xsd:string" use="optional"/>
-    <xsd:attribute name="performer" type="xsd:string" use="optional"/>
-    <xsd:attribute name="title" type="xsd:string" use="optional"/>
-    <xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="position">
-    <xsd:attribute name="minutes" type="xsd:integer"/>
-    <xsd:attribute name="seconds" type="xsd:integer"/>
-    <xsd:attribute name="frames" type="xsd:integer"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="flags">
-    <xsd:sequence>
-      <xsd:element name="flag" type="xsd:string" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="index">
-    <xsd:annotation>
-      <xsd:documentation>
-        The attributes in this type will either all be present, or all absent. Unfortunately,
-        I know of no way to capture this constraint in XML Schema version 1.0.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:attribute name="minutes" type="xsd:integer" use="optional"/>
-    <xsd:attribute name="seconds" type="xsd:integer" use="optional"/>
-    <xsd:attribute name="frames" type="xsd:integer" use="optional"/>
-    <xsd:attribute name="number" type="xsd:integer" use="optional"/>
-  </xsd:complexType>
-
-</xsd:schema>}
+ * <pre>{@code
+ *<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ *  xmlns:tns="http://jwbroek/cuelib/2008/cuesheet/1"
+ *  targetNamespace="http://jwbroek/cuelib/2008/cuesheet/1"
+ *  elementFormDefault="qualified"
+ *  attributeFormDefault="unqualified"
+ *  >
+ *
+ *  <xsd:element name="cuesheet" type="tns:cuesheet"/>
+ *
+ *  <xsd:complexType name="cuesheet">
+ *    <xsd:sequence>
+ *      <xsd:element name="file" type="tns:file" minOccurs="0" maxOccurs="unbounded"/>
+ *    </xsd:sequence>
+ *    <xsd:attribute name="genre" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="date" type="xsd:integer" use="optional"/>
+ *    <xsd:attribute name="discid" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="comment" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="catalog" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="performer" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="title" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="cdtextfile" type="xsd:string" use="optional"/>
+ *  </xsd:complexType>
+ *
+ *  <xsd:complexType name="file">
+ *    <xsd:sequence>
+ *      <xsd:element name="track" type="tns:track" minOccurs="0" maxOccurs="unbounded"/>
+ *    </xsd:sequence>
+ *    <xsd:attribute name="file" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="type" type="xsd:string" use="optional"/>
+ *  </xsd:complexType>
+ *
+ *  <xsd:complexType name="track">
+ *    <xsd:sequence>
+ *      <xsd:element name="pregap" type="tns:position" minOccurs="0"/>
+ *      <xsd:element name="postgap" type="tns:position" minOccurs="0"/>
+ *      <xsd:element name="flags" type="tns:flags" minOccurs="0"/>
+ *      <xsd:element name="index" type="tns:index" minOccurs="0" maxOccurs="unbounded"/>
+ *    </xsd:sequence>
+ *    <xsd:attribute name="number" type="xsd:integer" use="optional"/>
+ *    <xsd:attribute name="type" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="isrc" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="performer" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="title" type="xsd:string" use="optional"/>
+ *    <xsd:attribute name="songwriter" type="xsd:string" use="optional"/>
+ *  </xsd:complexType>
+ *
+ *  <xsd:complexType name="position">
+ *    <xsd:attribute name="minutes" type="xsd:integer"/>
+ *    <xsd:attribute name="seconds" type="xsd:integer"/>
+ *    <xsd:attribute name="frames" type="xsd:integer"/>
+ *  </xsd:complexType>
+ *
+ *  <xsd:complexType name="flags">
+ *    <xsd:sequence>
+ *      <xsd:element name="flag" type="xsd:string" maxOccurs="unbounded"/>
+ *    </xsd:sequence>
+ *  </xsd:complexType>
+ *
+ *  <xsd:complexType name="index">
+ *    <xsd:annotation>
+ *      <xsd:documentation>
+ *        The attributes in this type will either all be present, or all absent. Unfortunately,
+ *        I know of no way to capture this constraint in XML Schema version 1.0.
+ *      </xsd:documentation>
+ *    </xsd:annotation>
+ *    <xsd:attribute name="minutes" type="xsd:integer" use="optional"/>
+ *    <xsd:attribute name="seconds" type="xsd:integer" use="optional"/>
+ *    <xsd:attribute name="frames" type="xsd:integer" use="optional"/>
+ *    <xsd:attribute name="number" type="xsd:integer" use="optional"/>
+ *  </xsd:complexType>
+ *
+ *</xsd:schema>}
+ *</pre>
  *
  * @author jwbroek
  */
@@ -136,7 +136,8 @@ public class CueSheetToXmlSerializer {
 	/**
 	 * Create a default CueSheetToXmlSerializer.
 	 *
-	 * @throws ParserConfigurationException
+	 * @throws ParserConfigurationException If a DocumentBuilder cannot be
+	 *             created which satisfies the configuration requested.
 	 */
 	public CueSheetToXmlSerializer() throws ParserConfigurationException {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -149,9 +150,10 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param cueSheet The CueSheet to serialize.
 	 * @param writer The Writer to write the XML representation to.
-	 * @throws TransformerException
+	 * @throws TransformerException If an unrecoverable error occurs during the
+	 *             course of the transformation.
 	 */
-	public void serializeCueSheet(final CueSheet cueSheet, final Writer writer) throws TransformerException {
+	public void serializeCueSheet(CueSheet cueSheet, Writer writer) throws TransformerException {
 		serializeCueSheet(cueSheet, new StreamResult(writer));
 	}
 
@@ -160,9 +162,10 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param cueSheet The CueSheet to serialize.
 	 * @param outputStream The OutputStream to write the XML representation to.
-	 * @throws TransformerException
+	 * @throws TransformerException If an unrecoverable error occurs during the
+	 *             course of the transformation.
 	 */
-	public void serializeCueSheet(final CueSheet cueSheet, final OutputStream outputStream) throws TransformerException {
+	public void serializeCueSheet(CueSheet cueSheet, OutputStream outputStream) throws TransformerException {
 		serializeCueSheet(cueSheet, new StreamResult(outputStream));
 	}
 
@@ -171,9 +174,10 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param cueSheet The CueSheet to serialize.
 	 * @param file The File to write the XML representation to.
-	 * @throws TransformerException
+	 * @throws TransformerException If an unrecoverable error occurs during the
+	 *             course of the transformation.
 	 */
-	public void serializeCueSheet(final CueSheet cueSheet, final File file) throws TransformerException {
+	public void serializeCueSheet(CueSheet cueSheet, File file) throws TransformerException {
 		serializeCueSheet(cueSheet, new StreamResult(file));
 	}
 
@@ -182,9 +186,10 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param cueSheet The CueSheet to serialize.
 	 * @param result The Result to write the XML representation to.
-	 * @throws TransformerException
+	 * @throws TransformerException If an unrecoverable error occurs during the
+	 *             course of the transformation.
 	 */
-	public void serializeCueSheet(final CueSheet cueSheet, final Result result) throws TransformerException {
+	public void serializeCueSheet(CueSheet cueSheet, Result result) throws TransformerException {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer identityTransformer = transformerFactory.newTransformer();
 		Source cueSheetSource = new DOMSource(serializeCueSheet(cueSheet));
@@ -197,14 +202,14 @@ public class CueSheetToXmlSerializer {
 	 * @param cueSheet The CueSheet to serialize.
 	 * @return An XML DOM tree representation of the cue sheet.
 	 */
-	public Document serializeCueSheet(final CueSheet cueSheet) {
+	public Document serializeCueSheet(CueSheet cueSheet) {
 		Document doc = docBuilder.newDocument();
 		Element cueSheetElement = doc.createElementNS(this.namespace, "cuesheet");
 		doc.appendChild(cueSheetElement);
 
 		addAttribute(cueSheetElement, "genre", cueSheet.getGenre());
 		addAttribute(cueSheetElement, "date", cueSheet.getYear());
-		addAttribute(cueSheetElement, "discid", cueSheet.getDiscid());
+		addAttribute(cueSheetElement, "discid", cueSheet.getDiscId());
 		addAttribute(cueSheetElement, "comment", cueSheet.getComment());
 		addAttribute(cueSheetElement, "catalog", cueSheet.getCatalog());
 		addAttribute(cueSheetElement, "performer", cueSheet.getPerformer());
@@ -225,7 +230,7 @@ public class CueSheetToXmlSerializer {
 	 * @param parentElement The parent element for the FileData.
 	 * @param fileData The FileData to serialize.
 	 */
-	private void serializeFileData(final Element parentElement, final FileData fileData) {
+	protected void serializeFileData(Element parentElement, FileData fileData) {
 		Document doc = parentElement.getOwnerDocument();
 		Element fileElement = doc.createElementNS(this.namespace, "file");
 		parentElement.appendChild(fileElement);
@@ -244,7 +249,7 @@ public class CueSheetToXmlSerializer {
 	 * @param parentElement The parent element for the TrackData.
 	 * @param trackData The TrackData to serialize.
 	 */
-	private void serializeTrackData(final Element parentElement, final TrackData trackData) {
+	protected void serializeTrackData(Element parentElement, TrackData trackData) {
 		Document doc = parentElement.getOwnerDocument();
 		Element trackElement = doc.createElementNS(this.namespace, "track");
 		parentElement.appendChild(trackElement);
@@ -275,7 +280,7 @@ public class CueSheetToXmlSerializer {
 	 * @param parentElement The parent element for the TrackData.
 	 * @param flags The flags to serialize.
 	 */
-	private void serializeFlags(final Element parentElement, final Set<String> flags) {
+	protected void serializeFlags(Element parentElement, Set<String> flags) {
 		Document doc = parentElement.getOwnerDocument();
 		Element flagsElement = doc.createElementNS(this.namespace, "flags");
 		parentElement.appendChild(flagsElement);
@@ -291,7 +296,7 @@ public class CueSheetToXmlSerializer {
 	 * @param parentElement The parent element for the TrackData.
 	 * @param index The Index to serialize.
 	 */
-	private void serializeIndex(final Element parentElement, final Index index) {
+	protected void serializeIndex(Element parentElement, Index index) {
 		Element indexElement = addElement(parentElement, "index", index.getPosition(), true);
 
 		addAttribute(indexElement, "number", index.getNumber());
@@ -304,10 +309,10 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param parentElement The parent element for the position element.
 	 * @param elementName The name for the position element to add.
-	 * @param value The value to add.
+	 * @param position The {@link Position} to add.
 	 * @return The element that was created, or null if no element was created.
 	 */
-	private Element addElement(final Element parentElement, final String elementName, final Position position) {
+	protected Element addElement(Element parentElement, String elementName, Position position) {
 		return addElement(parentElement, elementName, position, false);
 	}
 
@@ -318,12 +323,12 @@ public class CueSheetToXmlSerializer {
 	 *
 	 * @param parentElement The parent element for the position element.
 	 * @param elementName The name for the position element to add.
+	 * @param position The {@link Position} to add.
 	 * @param forceElement Force creation of the element, but not necessarily of
 	 *            the attributes.
-	 * @param value The value to add.
 	 * @return The element that was created, or null if no element was created.
 	 */
-	private Element addElement(final Element parentElement, final String elementName, final Position position, final boolean forceElement) {
+	protected Element addElement(Element parentElement, String elementName, Position position, boolean forceElement) {
 		Element positionElement = null;
 
 		if (position != null || forceElement) {
@@ -342,15 +347,14 @@ public class CueSheetToXmlSerializer {
 
 	/**
 	 * Add an element to the document. The element is only added if the value is
-	 * != null.
+	 * {@code != null}.
 	 *
-	 * @param cueBuilder
 	 * @param parentElement The parent element for this element.
 	 * @param elementName The name for the element.
 	 * @param value The value for the element.
 	 * @return The element that was created, or null if no element was created.
 	 */
-	private Element addElement(final Element parentElement, final String elementName, final String value) {
+	protected Element addElement(Element parentElement, String elementName, String value) {
 		Element newElement = null;
 
 		if (value != null) {
@@ -364,15 +368,14 @@ public class CueSheetToXmlSerializer {
 
 	/**
 	 * Add an element to the document. The element is only added if the value is
-	 * > -1.
+	 * {@code > -1}.
 	 *
-	 * @param cueBuilder
 	 * @param parentElement The parent element for this element.
 	 * @param elementName The name for the element.
 	 * @param value The value for the element.
 	 * @return The element that was created, or null if no element was created.
 	 */
-	private Element addElement(final Element parentElement, final String elementName, final int value) {
+	protected Element addElement(Element parentElement, String elementName, int value) {
 		Element newElement = null;
 
 		if (value > -1) {
@@ -386,14 +389,13 @@ public class CueSheetToXmlSerializer {
 
 	/**
 	 * Add an attribute to the document. The attribute is only added if the
-	 * value is != null.
+	 * value is {@code != null}.
 	 *
-	 * @param cueBuilder
 	 * @param parentElement The parent element for this attribute.
 	 * @param attributeName The name for the attribute.
 	 * @param value The value for the attribute.
 	 */
-	private void addAttribute(final Element parentElement, final String attributeName, final String value) {
+	protected static void addAttribute(Element parentElement, String attributeName, String value) {
 		if (value != null) {
 			parentElement.setAttribute(attributeName, value);
 		}
@@ -401,14 +403,13 @@ public class CueSheetToXmlSerializer {
 
 	/**
 	 * Add an attribute to the document. The attribute is only added if the
-	 * value is > -1.
+	 * value is {@code > -1}.
 	 *
-	 * @param cueBuilder
 	 * @param parentElement The parent element for this attribute.
 	 * @param attributeName The name for the attribute.
 	 * @param value The value for the attribute.
 	 */
-	private void addAttribute(final Element parentElement, final String attributeName, final int value) {
+	protected static void addAttribute(Element parentElement, String attributeName, int value) {
 		if (value > -1) {
 			parentElement.setAttribute(attributeName, "" + value);
 		}

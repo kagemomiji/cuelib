@@ -21,15 +21,29 @@ package org.digitalmediaserver.cuelib.id3.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import org.digitalmediaserver.cuelib.util.Utils;
 
+
+/**
+ * The utility class FieldReader.
+ */
 public class FieldReader {
 
 	private FieldReader() {
 		// No need to instantiate.
 	}
 
-	public static String readUntilNul(final InputStream input, final int length, final Charset charset) throws IOException {
-		final boolean singleNul;
+	/**
+	 * Read until null.
+	 *
+	 * @param input the {@link InputStream}.
+	 * @param length the length.
+	 * @param charset the {@link Charset}.
+	 * @return The read {@link String}.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static String readUntilNul(InputStream input, int length, Charset charset) throws IOException {
+		boolean singleNul;
 		if (charset.equals(Charset.forName("ISO-8859-1"))) {
 			// Nul is reliably identified as a single 0 byte.
 			singleNul = true;
@@ -48,28 +62,36 @@ public class FieldReader {
 			throw new IllegalArgumentException("Encoding not supported: " + charset.toString());
 		}
 
-		final byte[] b = new byte[length];
+		byte[] b = new byte[length];
 		int previousValue = -1;
 
 		for (int index = 0; index < length; index++) {
 			byte currentValue = (byte) input.read();
 			if (currentValue == 0 && (singleNul || previousValue == 0)) {
-				final int bytesUntilNul = index - (singleNul ? 0 : 1);
+				int bytesUntilNul = index - (singleNul ? 0 : 1);
 				return new String(b, 0, bytesUntilNul, charset);
-			} else {
-				b[index] = currentValue;
-				previousValue = currentValue;
 			}
+			b[index] = currentValue;
+			previousValue = currentValue;
 		}
 		return new String(b, charset);
 	}
 
-	public static String readField(final InputStream input, final int length, final Charset charset) throws IOException {
+	/**
+	 * Read a field.
+	 *
+	 * @param input the {@link InputStream}.
+	 * @param length the length.
+	 * @param charset the {@link Charset}.
+	 * @return The read {@link String}.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static String readField(InputStream input, int length, Charset charset) throws IOException {
 		// Read entire field, but throw away everything after first nul character.
-		final byte[] b = new byte[length];
-		input.read(b);
-		final String rawResult = new String(b, charset);
-		final int nulPosition = rawResult.indexOf(0);
+		byte[] b = new byte[length];
+		Utils.readFully(input, b);
+		String rawResult = new String(b, charset);
+		int nulPosition = rawResult.indexOf(0);
 		return rawResult.substring(0, (nulPosition == -1) ? rawResult.length() : nulPosition);
 	}
 }

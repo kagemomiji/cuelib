@@ -18,22 +18,45 @@
  */
 package org.digitalmediaserver.cuelib.id3.v2;
 
+
+/**
+ * An {@link Exception} indicating a malformed frame.
+ */
 public class MalformedFrameException extends Exception {
 
 	private static final long serialVersionUID = 6928538930151585090L;
 
+	/**
+	 * Instantiates a new malformed frame exception.
+	 */
 	public MalformedFrameException() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new malformed frame exception.
+	 *
+	 * @param message the message.
+	 */
 	public MalformedFrameException(String message) {
 		super(message);
 	}
 
+	/**
+	 * Instantiates a new malformed frame exception.
+	 *
+	 * @param message the message.
+	 * @param cause the {@link Throwable}.
+	 */
 	public MalformedFrameException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	/**
+	 * Instantiates a new malformed frame exception.
+	 *
+	 * @param cause the {@link Throwable}.
+	 */
 	public MalformedFrameException(Throwable cause) {
 		super(cause);
 	}

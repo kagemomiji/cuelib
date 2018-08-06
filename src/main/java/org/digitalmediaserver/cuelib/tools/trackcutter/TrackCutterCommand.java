@@ -42,6 +42,7 @@ import org.digitalmediaserver.cuelib.util.LogUtil;
 import org.digitalmediaserver.cuelib.util.SimpleOptionsParser;
 import org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
 
+
 /**
  * Command line interface for TrackCutter.
  *
@@ -103,7 +104,7 @@ public class TrackCutterCommand {
 	/**
 	 * The logger for this class.
 	 */
-	private final static Logger logger = Logger.getLogger(TrackCutterCommand.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(TrackCutterCommand.class.getCanonicalName());
 
 	/**
 	 * Print a help message.
@@ -207,7 +208,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Set selection pattern for file name.
-				TrackCutterCommand.this.setFileNameSelectionPattern(Pattern.compile(options[offset + 1], Pattern.CASE_INSENSITIVE));
+				setFileNameSelectionPattern(Pattern.compile(options[offset + 1], Pattern.CASE_INSENSITIVE));
 				return offset + 2;
 			}
 		}, "-pf");
@@ -216,7 +217,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Set selection pattern for file path.
-				TrackCutterCommand.this.setPathSelectionPattern(Pattern.compile(options[offset + 1], Pattern.CASE_INSENSITIVE));
+				setPathSelectionPattern(Pattern.compile(options[offset + 1], Pattern.CASE_INSENSITIVE));
 				return offset + 2;
 			}
 		}, "-pp");
@@ -225,7 +226,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Base directory for file selection.
-				TrackCutterCommand.this.setSelectionBaseDirectory(new File(options[offset + 1]));
+				setSelectionBaseDirectory(new File(options[offset + 1]));
 				return offset + 2;
 			}
 		}, "-pb");
@@ -234,7 +235,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Recurse into subdirectories.
-				TrackCutterCommand.this.setRecursionDepth(Long.MAX_VALUE);
+				setRecursionDepth(Long.MAX_VALUE);
 				return offset + 1;
 			}
 		}, "-r");
@@ -243,7 +244,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Recurse into subdirectories.
-				TrackCutterCommand.this.setRecursionDepth(Long.parseLong(options[offset + 1]));
+				setRecursionDepth(Long.parseLong(options[offset + 1]));
 				return offset + 2;
 			}
 		}, "-rd");
@@ -252,7 +253,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Base directory for cue sheet processing.
-				TrackCutterCommand.this.getConfiguration().setParentDirectory(new File(options[offset + 1]));
+				getConfiguration().setParentDirectory(new File(options[offset + 1]));
 				return offset + 2;
 			}
 		}, "-b");
@@ -261,7 +262,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Read a cue sheet from standard input.
-				TrackCutterCommand.this.setReadCueSheetFromStdIn(true);
+				setReadCueSheetFromStdIn(true);
 				return offset + 1;
 			}
 		}, "-i");
@@ -270,8 +271,8 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Create a target file. This implies no streaming to the postprocessor.
-				TrackCutterCommand.this.getConfiguration().setRedirectToPostprocessing(false);
-				TrackCutterCommand.this.getConfiguration().setCutFileNameTemplate(options[offset + 1]);
+				getConfiguration().setRedirectToPostprocessing(false);
+				getConfiguration().setCutFileNameTemplate(options[offset + 1]);
 				return offset + 2;
 			}
 		}, "-f");
@@ -295,7 +296,7 @@ public class TrackCutterCommand {
 					throw new IllegalArgumentException("Unsupported audio type: " + type);
 				}
 				// Set target audio type.
-				TrackCutterCommand.this.getConfiguration().setTargetType(audioType);
+				getConfiguration().setTargetType(audioType);
 				return offset + 2;
 			}
 		}, "-t");
@@ -304,9 +305,9 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Create a postprocessing command. This implies that we do postprocessing.
-				TrackCutterCommand.this.getConfiguration().setDoPostProcessing(true);
-				TrackCutterCommand.this.getConfiguration().setPostProcessFileNameTemplate(options[offset + 1]);
-				TrackCutterCommand.this.getConfiguration().setPostProcessCommandTemplate(options[offset + 2]);
+				getConfiguration().setDoPostProcessing(true);
+				getConfiguration().setPostProcessFileNameTemplate(options[offset + 1]);
+				getConfiguration().setPostProcessCommandTemplate(options[offset + 2]);
 				return offset + 3;
 			}
 		}, "-p");
@@ -316,16 +317,16 @@ public class TrackCutterCommand {
 			public int handleOption(String[] options, int offset) {
 				// Pregap handling
 				if ("prepend".equalsIgnoreCase(options[offset + 1])) {
-					TrackCutterCommand.this.getConfiguration().setPregapHandling(PregapHandling.PREPEND);
+					getConfiguration().setPregapHandling(PregapHandling.PREPEND);
 					return offset + 2;
 				} else if ("discard".equalsIgnoreCase(options[offset + 1])) {
-					TrackCutterCommand.this.getConfiguration().setPregapHandling(PregapHandling.DISCARD);
+					getConfiguration().setPregapHandling(PregapHandling.DISCARD);
 					return offset + 2;
 				} else if ("separate".equalsIgnoreCase(options[offset + 1])) {
-					TrackCutterCommand.this.getConfiguration().setPregapHandling(PregapHandling.SEPARATE);
-					TrackCutterCommand.this.getConfiguration().setPregapPostProcessFileNameTemplate(options[offset + 2]);
-					TrackCutterCommand.this.getConfiguration().setPregapPostProcessCommandTemplate(options[offset + 3]);
-					TrackCutterCommand.this.getConfiguration().setPregapCutFileNameTemplate(options[offset + 4]);
+					getConfiguration().setPregapHandling(PregapHandling.SEPARATE);
+					getConfiguration().setPregapPostProcessFileNameTemplate(options[offset + 2]);
+					getConfiguration().setPregapPostProcessCommandTemplate(options[offset + 3]);
+					getConfiguration().setPregapCutFileNameTemplate(options[offset + 4]);
 					return offset + 5;
 				} else {
 					throw new IllegalArgumentException("Invalid type for pregap handling: " + options[1]);
@@ -337,7 +338,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Stream to postprocessor
-				TrackCutterCommand.this.getConfiguration().setRedirectToPostprocessing(true);
+				getConfiguration().setRedirectToPostprocessing(true);
 				return offset + 1;
 			}
 		}, "-s");
@@ -346,11 +347,13 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Set frame length threshold for pregap handling.
-				Scanner scanner = new Scanner(options[offset + 1]).useDelimiter(":");
-				Position thresholdPosition = new Position(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
-				scanner.close();
-				TrackCutterCommand.this.getConfiguration().setPregapFrameLengthThreshold(thresholdPosition.getTotalFrames());
+				Position thresholdPosition;
+				try (Scanner scanner = new Scanner(options[offset + 1])) {
+					scanner.useDelimiter(":");
+					thresholdPosition = new Position(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+				getConfiguration().setPregapFrameLengthThreshold(thresholdPosition.getTotalFrames());
 				return offset + 2;
+				}
 			}
 		}, "-pt");
 		argumentsParser.registerOption(new SimpleOptionsParser.OptionHandler() {
@@ -358,7 +361,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Redirect standard out.
-				TrackCutterCommand.this.getConfiguration().setRedirectStdOut(true);
+				getConfiguration().setRedirectStdOut(true);
 				return offset + 1;
 			}
 		}, "-ro");
@@ -367,7 +370,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Redirect err.
-				TrackCutterCommand.this.getConfiguration().setRedirectErr(true);
+				getConfiguration().setRedirectErr(true);
 				return offset + 1;
 			}
 		}, "-re");
@@ -422,21 +425,11 @@ public class TrackCutterCommand {
 			public int handleOption(String[] options, int offset) {
 				// Read configuration from properties file.
 				EnhancedProperties properties = new EnhancedProperties();
-				InputStream inputStream = null;
-				try {
-					inputStream = new FileInputStream(options[offset + 1]);
+				try (InputStream inputStream = new FileInputStream(options[offset + 1])) {
 					properties.load(inputStream);
-					TrackCutterCommand.this.getConfiguration().loadProperties(properties);
+					getConfiguration().loadProperties(properties);
 				} catch (IOException e) {
-					LogUtil.logStacktrace(TrackCutterCommand.logger, Level.CONFIG, e);
-				} finally {
-					if (inputStream != null) {
-						try {
-							inputStream.close();
-						} catch (IOException e) {
-							LogUtil.logStacktrace(TrackCutterCommand.logger, Level.FINE, e);
-						}
-					}
+					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.CONFIG, e);
 				}
 				return offset + 2;
 			}
@@ -446,7 +439,7 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Write configuration to properties file after configuration has been set.
-				TrackCutterCommand.this.setWritePropertiesConfigurationTo(new File(options[offset + 1]));
+				setWritePropertiesConfigurationTo(new File(options[offset + 1]));
 				return offset + 2;
 			}
 		}, "-wp");
@@ -456,21 +449,11 @@ public class TrackCutterCommand {
 			public int handleOption(String[] options, int offset) {
 				// Read configuration from XML file.
 				EnhancedProperties properties = new EnhancedProperties();
-				InputStream inputStream = null;
-				try {
-					inputStream = new FileInputStream(options[offset + 1]);
+				try (InputStream inputStream = new FileInputStream(options[offset + 1])) {
 					properties.loadFromXML(inputStream);
-					TrackCutterCommand.this.getConfiguration().loadProperties(properties);
+					getConfiguration().loadProperties(properties);
 				} catch (IOException e) {
-					LogUtil.logStacktrace(TrackCutterCommand.logger, Level.CONFIG, e);
-				} finally {
-					if (inputStream != null) {
-						try {
-							inputStream.close();
-						} catch (IOException e) {
-							LogUtil.logStacktrace(TrackCutterCommand.logger, Level.FINE, e);
-						}
-					}
+					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.CONFIG, e);
 				}
 				return offset + 2;
 			}
@@ -481,7 +464,7 @@ public class TrackCutterCommand {
 			public int handleOption(String[] options, int offset) {
 				// Write configuration to XML file after configuration has been
 				// set.
-				TrackCutterCommand.this.setWriteXmlConfigurationTo(new File(options[offset + 1]));
+				setWriteXmlConfigurationTo(new File(options[offset + 1]));
 				return offset + 2;
 			}
 		}, "-wx");
@@ -492,7 +475,7 @@ public class TrackCutterCommand {
 				// Display help message.
 				TrackCutterCommand.printHelp();
 				// Don't do any processing.
-				TrackCutterCommand.this.setDoProcessing(false);
+				setDoProcessing(false);
 				return offset + 1;
 			}
 		}, "-?", "--help");
@@ -505,18 +488,20 @@ public class TrackCutterCommand {
 	 *
 	 * @param args The command line arguments.
 	 */
-	public void performProcessing(final String[] args) {
-		TrackCutter cutter = new TrackCutter(this.getConfiguration());
+	public void performProcessing(String[] args) {
+		TrackCutter cutter = new TrackCutter(getConfiguration());
 		SimpleOptionsParser argumentsParser = getArgumentsParser();
 
 		int firstFileIndex = argumentsParser.parseOptions(args);
 
-		if (firstFileIndex == -1 || (                         // Something went wrong with parsing the options.
-				firstFileIndex == args.length &&              // All parameters were parsed.
-				this.getFileNameSelectionPattern() == null && // No files are to be selected based on file name.
-				this.getPathSelectionPattern() == null &&     // No files are to be selected based on path.
-				!this.getReadCueSheetFromStdIn()              // No cue sheet will be read from standard input.
-			)) {
+		if (firstFileIndex == -1 ||                      // Something went wrong with parsing the options.
+			(
+				firstFileIndex == args.length &&         // All parameters were parsed.
+				getFileNameSelectionPattern() == null && // No files are to be selected based on file name.
+				getPathSelectionPattern() == null &&     // No files are to be selected based on path.
+				!getReadCueSheetFromStdIn()              // No cue sheet will be read from standard input.
+			)
+		) {
 			// Something went wrong, or no files or standard input were specified.
 			System.err.println("A problem occurred when parsing the command line arguments. Please check for syntax.");
 			printHelp();
@@ -524,25 +509,28 @@ public class TrackCutterCommand {
 		}
 
 		// Write properties configuration, if requested.
-		if (this.getWritePropertiesConfigurationTo() != null) {
-			try {
-				this.getConfiguration().getPropertiesSnapshot().store(new FileOutputStream(this.getWritePropertiesConfigurationTo()), "Configuration for TrackCutter.");
+		if (getWritePropertiesConfigurationTo() != null) {
+			try (FileOutputStream fis = new FileOutputStream(getWritePropertiesConfigurationTo())) {
+				getConfiguration().getPropertiesSnapshot().store(fis, "Configuration for TrackCutter.");
 			} catch (IOException e) {
-				LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
+				LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
 			}
 		}
 
 		// Write XML configuration, if requested.
-		if (this.getWriteXmlConfigurationTo() != null) {
-			try {
-				this.getConfiguration().getPropertiesSnapshot().storeToXML(new FileOutputStream(this.getWriteXmlConfigurationTo()), "Configuration for TrackCutter, as specified on " + new Date().toString() + ".");
+		if (getWriteXmlConfigurationTo() != null) {
+			try (FileOutputStream fis = new FileOutputStream(getWriteXmlConfigurationTo())) {
+				getConfiguration().getPropertiesSnapshot().storeToXML(
+					fis,
+					"Configuration for TrackCutter, as specified on " + new Date().toString() + "."
+				);
 			} catch (IOException e) {
-				LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
+				LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
 			}
 		}
 
 		// Only do processing if this is not disabled. (I.e. by the "-?" command.)
-		if (this.getDoProcessing()) {
+		if (getDoProcessing()) {
 			Set<File> fileSet = new HashSet<File>();
 
 			// Add the explicitly specified files to the set.
@@ -555,17 +543,24 @@ public class TrackCutterCommand {
 			// Only select files.
 			fileFilters.add(FileSelector.getFilesFilter());
 			// Add filter for selection based on path, if applicable.
-			if (this.getPathSelectionPattern() != null) {
-				fileFilters.add(FileSelector.getPathPatternFilter(this.getPathSelectionPattern()));
+			if (getPathSelectionPattern() != null) {
+				fileFilters.add(FileSelector.getPathPatternFilter(getPathSelectionPattern()));
 			}
 			// Add filter for selection based on file name, if applicable.
-			if (this.getFileNameSelectionPattern() != null) {
-				fileFilters.add(FileSelector.getFileNamePatternFilter(this.getFileNameSelectionPattern()));
+			if (getFileNameSelectionPattern() != null) {
+				fileFilters.add(FileSelector.getFileNamePatternFilter(getFileNameSelectionPattern()));
 			}
 			// Only do a select if we have a filter other than the filter that accepts only files.
 			if (fileFilters.size() > 1) {
 				List<File> fileList = new ArrayList<File>();
-				FileSelector.selectFiles(this.getSelectionBaseDirectory(), FileSelector.getIntersectionFileFilter(fileFilters), fileList, this.getRecursionDepth(), false, true);
+				FileSelector.selectFiles(
+					getSelectionBaseDirectory(),
+					FileSelector.getIntersectionFileFilter(fileFilters),
+					fileList,
+					getRecursionDepth(),
+					false,
+					true
+				);
 				fileSet.addAll(fileList);
 			}
 
@@ -574,22 +569,22 @@ public class TrackCutterCommand {
 				try {
 					cutter.cutTracksInCueSheet(cueFile);
 				} catch (Exception e) {
-					LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
+					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
 				}
 			}
 
 			// Process cue sheet from standard input, if specified.
-			if (this.readCueSheetFromStdIn) {
+			if (readCueSheetFromStdIn) {
 				try {
 					cutter.cutTracksInCueSheet(System.in);
 				} catch (Exception e) {
-					LogUtil.logStacktrace(TrackCutterCommand.logger, Level.SEVERE, e);
+					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
 				}
 			}
 		}
 
 		// Set doProcessing to true, as someone may want to reuse this instance.
-		this.setDoProcessing(true);
+		setDoProcessing(true);
 	}
 
 	/**
@@ -597,7 +592,7 @@ public class TrackCutterCommand {
 	 *
 	 * @param args Command line arguments.
 	 */
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
 		new TrackCutterCommand().performProcessing(args);
 	}
 
@@ -607,7 +602,7 @@ public class TrackCutterCommand {
 	 * @return The configuration for the TrackCutter.
 	 */
 	private TrackCutterConfiguration getConfiguration() {
-		return this.configuration;
+		return configuration;
 	}
 
 	/**
@@ -616,7 +611,7 @@ public class TrackCutterCommand {
 	 * @return Whether or not to do any processing.
 	 */
 	private boolean getDoProcessing() {
-		return this.doProcessing;
+		return doProcessing;
 	}
 
 	/**
@@ -624,7 +619,7 @@ public class TrackCutterCommand {
 	 *
 	 * @param doProcessing Whether or not to do any processing.
 	 */
-	private void setDoProcessing(final boolean doProcessing) {
+	private void setDoProcessing(boolean doProcessing) {
 		this.doProcessing = doProcessing;
 	}
 
@@ -636,7 +631,7 @@ public class TrackCutterCommand {
 	 *         selected.
 	 */
 	private Pattern getFileNameSelectionPattern() {
-		return this.fileNameSelectionPattern;
+		return fileNameSelectionPattern;
 	}
 
 	/**
@@ -646,7 +641,7 @@ public class TrackCutterCommand {
 	 * @param fileNameSelectionPattern The pattern that file names must pass in
 	 *            order for the file to be selected.
 	 */
-	private void setFileNameSelectionPattern(final Pattern fileNameSelectionPattern) {
+	private void setFileNameSelectionPattern(Pattern fileNameSelectionPattern) {
 		this.fileNameSelectionPattern = fileNameSelectionPattern;
 	}
 
@@ -658,7 +653,7 @@ public class TrackCutterCommand {
 	 *         selected.
 	 */
 	private Pattern getPathSelectionPattern() {
-		return this.pathSelectionPattern;
+		return pathSelectionPattern;
 	}
 
 	/**
@@ -668,7 +663,7 @@ public class TrackCutterCommand {
 	 * @param pathSelectionPattern The pattern that paths must pass in order for
 	 *            the file to be selected.
 	 */
-	private void setPathSelectionPattern(final Pattern pathSelectionPattern) {
+	private void setPathSelectionPattern(Pattern pathSelectionPattern) {
 		this.pathSelectionPattern = pathSelectionPattern;
 	}
 
@@ -678,7 +673,7 @@ public class TrackCutterCommand {
 	 * @return The recursion depth for file selection.
 	 */
 	private long getRecursionDepth() {
-		return this.recursionDepth;
+		return recursionDepth;
 	}
 
 	/**
@@ -688,7 +683,7 @@ public class TrackCutterCommand {
 	 * @see FileSelector#selectFiles(File, FileFilter, List, long, boolean,
 	 *      boolean)
 	 */
-	private void setRecursionDepth(final long recursionDepth) {
+	private void setRecursionDepth(long recursionDepth) {
 		this.recursionDepth = recursionDepth;
 	}
 
@@ -700,7 +695,7 @@ public class TrackCutterCommand {
 	 *      boolean)
 	 */
 	private File getSelectionBaseDirectory() {
-		return this.selectionBaseDirectory;
+		return selectionBaseDirectory;
 	}
 
 	/**
@@ -708,7 +703,7 @@ public class TrackCutterCommand {
 	 *
 	 * @param selectionBaseDirectory The base directory for file selection.
 	 */
-	private void setSelectionBaseDirectory(final File selectionBaseDirectory) {
+	private void setSelectionBaseDirectory(File selectionBaseDirectory) {
 		this.selectionBaseDirectory = selectionBaseDirectory;
 	}
 
@@ -718,7 +713,7 @@ public class TrackCutterCommand {
 	 * @return Whether or not to read a cue sheet from standard input.
 	 */
 	private boolean getReadCueSheetFromStdIn() {
-		return this.readCueSheetFromStdIn;
+		return readCueSheetFromStdIn;
 	}
 
 	/**
@@ -727,7 +722,7 @@ public class TrackCutterCommand {
 	 * @param readCueSheetFromStdIn Whether or not to read a cue sheet from
 	 *            standard input.
 	 */
-	private void setReadCueSheetFromStdIn(final boolean readCueSheetFromStdIn) {
+	private void setReadCueSheetFromStdIn(boolean readCueSheetFromStdIn) {
 		this.readCueSheetFromStdIn = readCueSheetFromStdIn;
 	}
 

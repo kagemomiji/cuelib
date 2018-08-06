@@ -22,23 +22,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import org.digitalmediaserver.cuelib.id3.CommentFrame;
+import org.digitalmediaserver.cuelib.util.Utils;
 
+
+/**
+ * The Class COMFrameReader.
+ */
 public class COMFrameReader implements FrameReader {
 
 	private final int headerSize;
 
-	public COMFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new COM frame reader.
+	 *
+	 * @param headerSize the header size.
+	 */
+	public COMFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public CommentFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException,
-		MalformedFrameException {
-		final CommentFrame result = new CommentFrame();
+	public CommentFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+		CommentFrame result = new CommentFrame();
 
-		final int encoding = input.read();
+		int encoding = input.read();
 
-		final Charset charset;
+		Charset charset;
 		switch (encoding) {
 			case 0:
 				charset = Charset.forName("ISO-8859-1");
@@ -60,22 +72,22 @@ public class COMFrameReader implements FrameReader {
 
 		result.setCharset(charset);
 
-		final StringBuilder languageBuilder = new StringBuilder();
+		StringBuilder languageBuilder = new StringBuilder();
 		languageBuilder.append((char) input.read()).append((char) input.read()).append((char) input.read());
 
 		// Read entire field, then process.
 		// Length -4 because of the encoding byte and 3 language bytes.
-		final byte[] b = new byte[size - 4];
-		input.read(b);
-		final String rawResult = new String(b, charset);
+		byte[] b = new byte[size - 4];
+		Utils.readFully(input, b);
+		String rawResult = new String(b, charset);
 		int nulPosition = rawResult.indexOf(0);
 		if (nulPosition < 0) {
 			throw new MalformedFrameException("Description not terminated in COM frame.");
 		}
-		final String description = rawResult.substring(0, nulPosition);
-		final String rawText = rawResult.substring(nulPosition + 1);
+		String description = rawResult.substring(0, nulPosition);
+		String rawText = rawResult.substring(nulPosition + 1);
 		nulPosition = rawText.indexOf(0);
-		final String value = rawText.substring(0, (nulPosition == -1) ? rawText.length() : nulPosition);
+		String value = rawText.substring(0, (nulPosition == -1) ? rawText.length() : nulPosition);
 		result.setLanguageCode(languageBuilder.toString());
 		result.setDescription(description);
 		result.setText(value);

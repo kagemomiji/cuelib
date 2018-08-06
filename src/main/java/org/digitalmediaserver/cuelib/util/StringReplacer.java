@@ -22,27 +22,21 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
- * <p>
  * A StringReplacer will perform a number of string replacements on the same
  * string in a single pass. For instance, you can replace all occurrences of
  * "schnauzer" by "bulldog" and all occurrences of "dog" by "cat". Doing this in
  * a single pass may yield a different result than doing it in sequence.
- * </p>
- *
  * <p>
  * For instance, consider the string "The schnauzer chases the other dog."
  * Replacing in a single pass will yield "The bulldog chases the other
  * cat.", while doing the replacements in sequence yields first "The bulldog
  * chases the other dog.", and then finally "The bullcat chases the other cat."
- * </p>
- *
  * <p>
  * Searches are done greedily. That is to say, the string "bulldogs rule" will
  * match the search string "bulldog" in preference over the search strings
  * "bull" (matches less) and "dogs rule" (matches more, but later).
- * </p>
- *
  * <p>
  * Instances of this class are reusable. They are also safe for concurrent use,
  * as long as the Map instance they are constructed on is safe for concurrent
@@ -50,7 +44,6 @@ import java.util.regex.Pattern;
  * implementations, including {@link java.util.HashMap},
  * {@link java.util.Hashtable}, and {@link java.util.TreeMap}, will meet this
  * requirement.
- * </p>
  *
  * @author jwbroek
  */

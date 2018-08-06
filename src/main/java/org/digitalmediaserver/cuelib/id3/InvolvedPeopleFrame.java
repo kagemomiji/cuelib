@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+
+/**
+ * The Class InvolvedPeopleFrame.
+ */
 public class InvolvedPeopleFrame implements ID3Frame {
 
 	private int totalFrameSize;
@@ -52,9 +56,17 @@ public class InvolvedPeopleFrame implements ID3Frame {
 		this.charset = charset;
 	}
 
+	/**
+	 * Instantiates a new involved people frame.
+	 */
 	public InvolvedPeopleFrame() {
 	}
 
+	/**
+	 * Instantiates a new involved people frame.
+	 *
+	 * @param totalFrameSize the total frame size
+	 */
 	public InvolvedPeopleFrame(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
@@ -69,28 +81,40 @@ public class InvolvedPeopleFrame implements ID3Frame {
 		return this.totalFrameSize;
 	}
 
-	public void setTotalFrameSize(final int totalFrameSize) {
+	/**
+	 * Sets the total frame size.
+	 *
+	 * @param totalFrameSize the new total frame size
+	 */
+	public void setTotalFrameSize(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Involved People frame: ").append(" [").append(this.totalFrameSize).append("] ")
-			.append(this.charset.toString()).append('\n')
-			.append("Flags: ").append(this.flags.toString()).append('\n');
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append("Involved People frame: ").append(" [").append(totalFrameSize).append("] ").append(charset.toString()).append('\n')
+			.append("Flags: ").append(flags.toString()).append('\n');
 		for (InvolvedPeopleFrame.InvolvedPerson involvedPerson : this.involvedPeopleList) {
-			builder.append("Involvee: ").append(involvedPerson.getInvolvee())
+			builder
+				.append("Involvee: ").append(involvedPerson.getInvolvee())
 				.append("Involvement: ").append(involvedPerson.getInvolvement()).append('\n');
 		}
 		return builder.toString();
 	}
 
+	/**
+	 * The Class InvolvedPerson.
+	 */
 	public static class InvolvedPerson {
 
 		private String involvee;
 		private String involvement;
 
+		/**
+		 * Instantiates a new involved person.
+		 */
 		public InvolvedPerson() {
 		}
 

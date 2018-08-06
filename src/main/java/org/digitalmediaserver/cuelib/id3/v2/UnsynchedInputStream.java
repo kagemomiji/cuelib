@@ -23,8 +23,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
+
+/**
+ * The Class UnsynchedInputStream.
+ */
 public class UnsynchedInputStream extends FilterInputStream {
 
+	/**
+	 * Instantiates a new unsynched input stream.
+	 *
+	 * @param in the in
+	 */
 	public UnsynchedInputStream(final InputStream in) {
 		super(new PushbackInputStream(in, 1));
 	}
@@ -49,9 +58,8 @@ public class UnsynchedInputStream extends FilterInputStream {
 			if (i == -1) {
 				if (index > 0) {
 					return index;
-				} else {
-					return -1;
 				}
+				return -1;
 			}
 			b[off + index] = (byte) i;
 		}

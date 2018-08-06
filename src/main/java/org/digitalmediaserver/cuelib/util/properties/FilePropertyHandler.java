@@ -21,17 +21,18 @@ package org.digitalmediaserver.cuelib.util.properties;
 import java.io.File;
 import java.util.Properties;
 
+
 /**
  * PropertyHandler for {@link File}s.
  *
  * @author jwbroek
  */
-final public class FilePropertyHandler implements PropertyHandler<File> {
+public class FilePropertyHandler implements PropertyHandler<File> {
 
 	/**
 	 * The singleton instance of this class.
 	 */
-	private final static FilePropertyHandler instance = new FilePropertyHandler();
+	private static final FilePropertyHandler INSTANCE = new FilePropertyHandler();
 
 	/**
 	 * This constructor is only meant to be called by FilePropertyHandler
@@ -47,34 +48,32 @@ final public class FilePropertyHandler implements PropertyHandler<File> {
 	 * @return An instance of this class.
 	 */
 	public static FilePropertyHandler getInstance() {
-		return FilePropertyHandler.instance;
+		return FilePropertyHandler.INSTANCE;
 	}
 
 	/**
 	 * Convert the value to a String that can be used in a {@link Properties}
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value to a string that can be used in a
 	 *         {@link Properties} instance.
 	 */
 	@Override
-	public String toProperty(final File value) {
-		final String result = value.getPath();
-		return result;
+	public String toProperty(File value) {
+		return value.getPath();
 	}
 
 	/**
 	 * Convert the value from a {@link Properties} instance into a File
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value from a {@link Properties} instance into
 	 *         a File instance.
 	 */
 	@Override
-	public File fromProperty(final String value) {
-		final File result = new File(value);
-		return result;
+	public File fromProperty(String value) {
+		return new File(value);
 	}
 }

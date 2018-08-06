@@ -20,28 +20,33 @@ package org.digitalmediaserver.cuelib.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Utility class for creating temporary files.
  *
  * @author jwbroek
  */
-final public class TemporaryFileCreator {
+public class TemporaryFileCreator {
+
+	/**
+	 * Not to be instantiated.
+	 */
+	private TemporaryFileCreator() {
+	}
 
 	/**
 	 * The logger for this class.
 	 */
-	private final static Logger LOGGER = LoggerFactory.getLogger(TemporaryFileCreator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TemporaryFileCreator.class);
+
 	/**
 	 * Counter for added to the names of temporary files and directories.
 	 */
-	private static int counter = 0;
-	/**
-	 * Lock for counter.
-	 */
-	private static Object counterLock = new Object();
+	private static final AtomicInteger COUNTER = new AtomicInteger();
 
 	/**
 	 * Create a temporary directory based on the information provided. The
@@ -51,8 +56,8 @@ final public class TemporaryFileCreator {
 	 *
 	 * @return A temporary directory, as specified.
 	 * @throws IOException Thrown when the directory could not be created.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary directory to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary directory to be created.
 	 */
 	public static File createTemporaryDirectory() throws IOException, SecurityException {
 		return createTemporaryDirectory(null);
@@ -67,8 +72,8 @@ final public class TemporaryFileCreator {
 	 * @param baseDir The directory to create the temporary directory in.
 	 * @return A temporary directory, as specified.
 	 * @throws IOException Thrown when the directory could not be created.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary directory to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary directory to be created.
 	 */
 	public static File createTemporaryDirectory(File baseDir) throws IOException, SecurityException {
 		return createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, true, false, 5);
@@ -83,8 +88,8 @@ final public class TemporaryFileCreator {
 	 *
 	 * @return A temporary file, as specified.
 	 * @throws IOException Thrown when the file could not be created.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary file to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary file to be created.
 	 */
 	public static File createTemporaryFile() throws IOException, SecurityException {
 		return createTemporaryFile(null);
@@ -100,8 +105,8 @@ final public class TemporaryFileCreator {
 	 * @param baseDir The directory to create the temporary directory in.
 	 * @return A temporary file, as specified.
 	 * @throws IOException Thrown when the file could not be created.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary file to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary file to be created.
 	 */
 	public static File createTemporaryFile(File baseDir) throws IOException, SecurityException {
 		return createTemporaryFileOrDirectory("TemporaryFileCreator", null, baseDir, false, false, 5);
@@ -134,11 +139,17 @@ final public class TemporaryFileCreator {
 	 *             created, even after the specified number of attempts.
 	 * @throws IllegalArgumentException Thrown when maxAttempts is smaller than
 	 *             1.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary file or directory to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary file or directory to be created.
 	 */
-	public static File createTemporaryFileOrDirectory(final String prefix, final String suffix, final File directory,
-		final boolean createDirectory, final boolean exactName, final int maxAttempts) throws IOException, IllegalArgumentException, SecurityException {
+	public static File createTemporaryFileOrDirectory(
+		String prefix,
+		String suffix,
+		File directory,
+		boolean createDirectory,
+		boolean exactName,
+		int maxAttempts
+	) throws IOException, IllegalArgumentException, SecurityException {
 
 		IOException ioException = null;
 		File result = null;
@@ -150,18 +161,20 @@ final public class TemporaryFileCreator {
 
 		// The filename consists of the prefix, a random number in hex, and a number from the counter.
 		// This is probably a little overkill, but you never know...
-		int counterNumber;
-		synchronized (TemporaryFileCreator.counterLock) {
-			counterNumber = counter++;
-		}
 		StringBuilder nameBuilder = new StringBuilder(prefix)
 			.append(Double.toHexString(Math.random()))
-			.append(counterNumber);
+			.append(COUNTER.incrementAndGet());
 
 		// Make the specified number of attempt to create a temporary file.
 		for (int attempt = 0; result == null && attempt < maxAttempts; attempt++) {
 			try {
-				result = TemporaryFileCreator.createNamedTemporaryFileOrDirectory(nameBuilder.toString(), suffix, directory, createDirectory, exactName);
+				result = createNamedTemporaryFileOrDirectory(
+					nameBuilder.toString(),
+					suffix,
+					directory,
+					createDirectory,
+					exactName
+				);
 			} catch (IOException e) {
 				// Save the exception, in case this is the last allowed attempt.
 				ioException = e;
@@ -196,16 +209,23 @@ final public class TemporaryFileCreator {
 	 * @return A temporary file, as specified.
 	 * @throws IOException Thrown when the file or directory could not be
 	 *             created.
-	 * @throws SecurityException Thrown when a {@link java.lang.SecurityManager}
-	 *             does not allow the temporary file or directory to be created.
+	 * @throws SecurityException Thrown when a {@link SecurityManager} does not
+	 *             allow the temporary file or directory to be created.
+	 * @throws IllegalArgumentException Under unknown circumstances.
+	 * @throws SecurityException If a security violation occurs.
 	 */
-	public static File createNamedTemporaryFileOrDirectory(final String name, final String suffix, final File directory,
-		final boolean createDirectory, final boolean exactName) throws IOException, IllegalArgumentException, SecurityException {
+	public static File createNamedTemporaryFileOrDirectory(
+		String name,
+		String suffix,
+		File directory,
+		boolean createDirectory,
+		boolean exactName
+	) throws IOException, IllegalArgumentException, SecurityException {
 
 		File result = null;
 
 		// Determine directory to create the file or directory in.
-		final File parentDirectory;
+		File parentDirectory;
 		if (directory == null) {
 			parentDirectory = new File(System.getProperty("java.io.tmpdir"));
 		} else {
@@ -224,7 +244,9 @@ final public class TemporaryFileCreator {
 			// We need to create a temporary file.
 			if (exactName) {
 				result = new File(parentDirectory, name + (suffix == null ? ".tmp" : suffix));
-				result.createNewFile();
+				if (!result.createNewFile()) {
+					throw new IOException("Failed to create \"" + result + "\"");
+				}
 			} else {
 				result = File.createTempFile(name + (suffix == null ? ".tmp" : suffix), suffix, parentDirectory);
 			}

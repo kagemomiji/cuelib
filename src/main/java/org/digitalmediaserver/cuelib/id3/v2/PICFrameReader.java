@@ -21,72 +21,92 @@ package org.digitalmediaserver.cuelib.id3.v2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.digitalmediaserver.cuelib.id3.PictureFrame;
 import org.digitalmediaserver.cuelib.id3.util.FieldReader;
 import org.digitalmediaserver.cuelib.io.ByteCountInputStream;
+import org.digitalmediaserver.cuelib.util.Utils;
 
+
+/**
+ * The Class PICFrameReader.
+ */
 public class PICFrameReader implements FrameReader {
 
 	private final int headerSize;
 	private int imageTypeSize = -1; // -1 Stands for unlimited.
 
-	public PICFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new PIC frame reader.
+	 *
+	 * @param headerSize the header size
+	 */
+	public PICFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
-	public PICFrameReader(final int headerSize, final boolean v2r00Mode) {
+	/**
+	 * Instantiates a new PIC frame reader.
+	 *
+	 * @param headerSize the header size
+	 * @param v2r00Mode the v 2 r 00 mode
+	 */
+	public PICFrameReader(int headerSize, @SuppressWarnings("unused") boolean v2r00Mode) {
 		this.headerSize = headerSize;
 		this.imageTypeSize = 3;
 	}
 
 	@Override
-	public PictureFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException, MalformedFrameException {
-		final ByteCountInputStream countingInput = new ByteCountInputStream(input);
+	public PictureFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+		try (ByteCountInputStream countingInput = new ByteCountInputStream(input)) {
+			PictureFrame result = new PictureFrame();
+			result.setTotalFrameSize(size + headerSize);
 
-		final PictureFrame result = new PictureFrame();
-		result.setTotalFrameSize(size + headerSize);
+			int encoding = countingInput.read();
 
-		final int encoding = countingInput.read();
+			Charset charset;
+			switch (encoding) {
+				case 0:
+					charset = StandardCharsets.ISO_8859_1;
+					break;
+				case 1:
+					charset = StandardCharsets.UTF_16;
+					break;
+				case 2:
+					// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
+					charset = StandardCharsets.UTF_16BE;
+					break;
+				case 3:
+					// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
+					charset = StandardCharsets.UTF_8;
+					break;
+				default:
+					throw new UnsupportedEncodingException("Encoding not supported: " + encoding);
+			}
 
-		final Charset charset;
-		switch (encoding) {
-			case 0:
-				charset = Charset.forName("ISO-8859-1");
-				break;
-			case 1:
-				charset = Charset.forName("UTF-16");
-				break;
-			case 2:
-				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-16BE");
-				break;
-			case 3:
-				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-8");
-				break;
-			default:
-				throw new UnsupportedEncodingException("Encoding not supported: " + encoding);
+			result.setCharset(charset);
+
+			if (this.imageTypeSize > 0) {
+				result.setImageType(FieldReader.readField(countingInput, this.imageTypeSize, Charset.forName("ISO-8859-1")));
+			} else {
+				result.setImageType(FieldReader.readUntilNul(countingInput, size - 1, Charset.forName("ISO-8859-1")));
+			}
+
+			result.setPictureNumber(countingInput.read());
+
+			// TODO Size is actually a maximum of 64 in 2.2 and 2.3.
+			result.setDescription(FieldReader.readUntilNul(countingInput, size, charset));
+
+			// Remainder of frame is data.
+			byte[] imageData = new byte[size - (int) countingInput.getBytesRead()];
+			Utils.readFully(countingInput, imageData);
+			result.setImageData(imageData);
+
+			return result;
 		}
-
-		result.setCharset(charset);
-
-		if (this.imageTypeSize > 0) {
-			result.setImageType(FieldReader.readField(countingInput, this.imageTypeSize, Charset.forName("ISO-8859-1")));
-		} else {
-			result.setImageType(FieldReader.readUntilNul(countingInput, size - 1, Charset.forName("ISO-8859-1")));
-		}
-
-		result.setPictureNumber(countingInput.read());
-
-		// TODO Size is actually a maximum of 64 in 2.2 and 2.3.
-		result.setDescription(FieldReader.readUntilNul(countingInput, size, charset));
-
-		// Remainder of frame is data.
-		final byte[] imageData = new byte[size - (int) countingInput.getBytesRead()];
-		countingInput.read(imageData);
-		result.setImageData(imageData);
-
-		return result;
 	}
 
 }

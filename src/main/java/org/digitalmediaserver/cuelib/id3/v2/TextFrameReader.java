@@ -21,45 +21,73 @@ package org.digitalmediaserver.cuelib.id3.v2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.digitalmediaserver.cuelib.id3.CanonicalFrameType;
 import org.digitalmediaserver.cuelib.id3.TextFrame;
 import org.digitalmediaserver.cuelib.id3.util.FieldReader;
 
+
+/**
+ * The Class TextFrameReader.
+ */
 public class TextFrameReader implements FrameReader {
 
 	private final CanonicalFrameType canonicalFrameType;
 	private final int headerSize;
 
-	public TextFrameReader(final CanonicalFrameType canonicalFrameType, final int headerSize) {
+	/**
+	 * Instantiates a new text frame reader.
+	 *
+	 * @param canonicalFrameType the canonical frame type
+	 * @param headerSize the header size
+	 */
+	public TextFrameReader(CanonicalFrameType canonicalFrameType, int headerSize) {
 		this.canonicalFrameType = canonicalFrameType;
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public TextFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException {
+	public TextFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException {
 		return this.readFrameBody(null, size, input);
 	}
 
-	public TextFrame readFrameBody(final String additionalTypeInfo, final int size, final InputStream input) throws IOException, UnsupportedEncodingException {
-		final TextFrame result = new TextFrame(this.canonicalFrameType);
+	/**
+	 * Read frame body.
+	 *
+	 * @param additionalTypeInfo the additional type info
+	 * @param size the size
+	 * @param input the input
+	 * @return the text frame
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	public TextFrame readFrameBody(
+		String additionalTypeInfo,
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException {
+		TextFrame result = new TextFrame(this.canonicalFrameType);
 
-		final int encoding = input.read();
+		int encoding = input.read();
 
-		final Charset charset;
+		Charset charset;
 		switch (encoding) {
 			case 0:
-				charset = Charset.forName("ISO-8859-1");
+				charset = StandardCharsets.ISO_8859_1;
 				break;
 			case 1:
-				charset = Charset.forName("UTF-16");
+				charset = StandardCharsets.UTF_16;
 				break;
 			case 2:
 				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-16BE");
+				charset = StandardCharsets.UTF_16BE;
 				break;
 			case 3:
 				// TODO Not supported until 2.4. Enable via option and throw exception otherwise.
-				charset = Charset.forName("UTF-8");
+				charset = StandardCharsets.UTF_8;
 				break;
 			default:
 				throw new UnsupportedEncodingException("Encoding not supported: " + encoding);

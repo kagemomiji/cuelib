@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Interface for messages such as warnings and errors. For use by CueSheet.
  *
@@ -50,7 +51,7 @@ public interface Message {
 	 * Get a textual representation of this Message. It is highly desirable to
 	 * have an informative String representation.
 	 *
-	 * @return Aa textual representation of this Message.
+	 * @return A textual representation of this Message.
 	 */
 	@Override
 	public String toString();

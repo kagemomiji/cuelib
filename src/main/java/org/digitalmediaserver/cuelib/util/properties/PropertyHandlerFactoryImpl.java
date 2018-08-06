@@ -21,6 +21,7 @@ package org.digitalmediaserver.cuelib.util.properties;
 import java.io.File;
 import javax.sound.sampled.AudioFileFormat;
 
+
 /**
  * Implementation of PropertyHandlerFactory that supports the various
  * PropertyHandlers in jwbroek.util.properties.
@@ -29,10 +30,12 @@ import javax.sound.sampled.AudioFileFormat;
  */
 public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The singleton instance of this class.
 	 */
-	private final static PropertyHandlerFactoryImpl instance = new PropertyHandlerFactoryImpl();
+	private static final PropertyHandlerFactoryImpl INSTANCE = new PropertyHandlerFactoryImpl();
 
 	/**
 	 * This constructor is only meant to be called by PropertyHandlerFactoryImpl
@@ -48,35 +51,33 @@ public class PropertyHandlerFactoryImpl implements PropertyHandlerFactory {
 	 * @return An instance of PropertyHandlerFactoryImpl.
 	 */
 	public static PropertyHandlerFactoryImpl getInstance() {
-		return PropertyHandlerFactoryImpl.instance;
+		return PropertyHandlerFactoryImpl.INSTANCE;
 	}
 
 	/**
 	 * Get a PropertyHandler for the specified type.
 	 *
-	 * @param propertyType
+	 * @param propertyType the property type {@link Class}.
 	 * @return A PropertyHandler for the specified type.
 	 * @throws UnsupportedOperationException When the specified type is not
 	 *             supported by this factory.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> PropertyHandler<T> getPropertyHandler(Class<T> propertyType) throws UnsupportedOperationException {
-		final PropertyHandler result;
 
+		// Unsafe operation, but there is no way around this (apart from doing lots of safe casts in the "if" blocks).
 		if (propertyType.equals(AudioFileFormat.Type.class)) {
-			result = AudioFileFormatTypePropertyHandler.getInstance();
+			return (PropertyHandler<T>) AudioFileFormatTypePropertyHandler.getInstance();
 		} else if (propertyType.equals(Boolean.class)) {
-			result = BooleanPropertyHandler.getInstance();
+			return (PropertyHandler<T>) BooleanPropertyHandler.getInstance();
 		} else if (propertyType.equals(File.class)) {
-			result = FilePropertyHandler.getInstance();
+			return (PropertyHandler<T>) FilePropertyHandler.getInstance();
 		} else if (propertyType.equals(Long.class)) {
-			result = LongPropertyHandler.getInstance();
+			return (PropertyHandler<T>) LongPropertyHandler.getInstance();
 		} else {
 			throw new UnsupportedOperationException("Unsupported type: '" + propertyType.toString() + "'");
 		}
-
-		// Unsafe operation, but there is no way around this (apart from doing lots of safe casts in the "if" blocks).
-		return result;
 	}
 
 }

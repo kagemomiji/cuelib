@@ -20,12 +20,13 @@ package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
 
+
 /**
  * PropertyHandler for {@link Boolean}s.
  *
  * @author jwbroek
  */
-final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
+public final class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 
 	/**
 	 * The singleton instance of this class.
@@ -52,27 +53,25 @@ final public class BooleanPropertyHandler implements PropertyHandler<Boolean> {
 	 * Convert the value to a String that can be used in a {@link Properties}
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value to a string that can be used in a
 	 *         {@link Properties} instance.
 	 */
 	@Override
-	public String toProperty(final Boolean value) {
-		final String result = value.toString();
-		return result;
+	public String toProperty(Boolean value) {
+		return value.toString();
 	}
 
 	/**
 	 * Convert the value from a {@link Properties} instance into a Boolean
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value from a {@link Properties} instance into
 	 *         a Boolean instance.
 	 */
 	@Override
-	public Boolean fromProperty(final String value) {
-		final Boolean result = Boolean.valueOf(value);
-		return result;
+	public Boolean fromProperty(String value) {
+		return Boolean.valueOf(value);
 	}
 }

@@ -18,22 +18,45 @@
  */
 package org.digitalmediaserver.cuelib.id3.v2;
 
+
+/**
+ * An {@link Exception} that indicates an unsupported encoding.
+ */
 public class UnsupportedEncodingException extends Exception {
 
 	private static final long serialVersionUID = 876206055952819005L;
 
+	/**
+	 * Instantiates a new unsupported encoding exception.
+	 */
 	public UnsupportedEncodingException() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new unsupported encoding exception.
+	 *
+	 * @param e the {@link Exception}.
+	 */
 	public UnsupportedEncodingException(final Exception e) {
 		super(e);
 	}
 
+	/**
+	 * Instantiates a new unsupported encoding exception.
+	 *
+	 * @param message the message.
+	 */
 	public UnsupportedEncodingException(final String message) {
 		super(message);
 	}
 
+	/**
+	 * Instantiates a new unsupported encoding exception.
+	 *
+	 * @param message the message.
+	 * @param e the {@link Exception}.
+	 */
 	public UnsupportedEncodingException(final String message, final Exception e) {
 		super(message, e);
 	}

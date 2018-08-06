@@ -31,6 +31,7 @@ import org.digitalmediaserver.cuelib.util.properties.AudioFileFormatTypeProperty
 import org.digitalmediaserver.cuelib.util.properties.EnhancedProperties;
 import org.digitalmediaserver.cuelib.util.properties.FilePropertyHandler;
 
+
 /**
  * This class represents a configuration for a TrackCutter instance. It takes
  * care of much of the bookkeeping, allowing TrackCutter to focus on his core
@@ -38,14 +39,21 @@ import org.digitalmediaserver.cuelib.util.properties.FilePropertyHandler;
  *
  * @author jwbroek
  */
+@SuppressWarnings("checkstyle:LineLength")
 public class TrackCutterConfiguration {
 
 	/**
 	 * Allowed modes for pregap handling.
 	 */
 	public enum PregapHandling {
+
+		/** The prepend. */
 		PREPEND,
+
+		/** The discard. */
 		DISCARD,
+
+		/** The separate. */
 		SEPARATE
 	};
 
@@ -102,7 +110,10 @@ public class TrackCutterConfiguration {
 	/**
 	 * Template for the post-processing command.
 	 */
-	private String postProcessCommandTemplate = "C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"<title>\" --ta \"<artist>\" --tl \"<album>\" --ty \"<year>\" --tc \"<comment>\" --tn \"<track>\" --tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
+	private String postProcessCommandTemplate =
+		"C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"<title>\" --ta \"<artist>\" " +
+		"--tl \"<album>\" --ty \"<year>\" --tc \"<comment>\" --tn \"<track>\" " +
+		"--tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
 
 	/**
 	 * Template for the file name of the cut pregaps.
@@ -117,12 +128,15 @@ public class TrackCutterConfiguration {
 	/**
 	 * Template for the post-processing command for the pregaps.
 	 */
-	private String pregapPostProcessCommandTemplate = "C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"Pregap of <title>\" --ta \"<artist>\" --tl \"<album>\" --ty \"<year>\" --tc \"Pregap of <title>\" --tn \"<track>\" --tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
+	private String pregapPostProcessCommandTemplate =
+		"C:\\lame\\lame.exe --vbr-new -V 0 -t --tt \"Pregap of <title>\" --ta \"<artist>\" " +
+		"--tl \"<album>\" --ty \"<year>\" --tc \"Pregap of <title>\" --tn \"<track>\" " +
+		"--tg \"<genre>\" \"<targetFile>\" \"<postProcessFile>\"";
 
 	/**
 	 * Replacer for the template values.
 	 */
-	public static final StringReplacer templateReplacer = new StringReplacer(getHumanReadableToFormatStringReplacements());
+	public static final StringReplacer TEMPLATE_REPLACER = new StringReplacer(getHumanReadableToFormatStringReplacements());
 
 	/**
 	 * Get a replacements map for human readable fields to formatting string
@@ -152,12 +166,12 @@ public class TrackCutterConfiguration {
 	 * <p>Load configuration data from the specified Properties.</p>
 	 * <p>The following properties are supported. If a value is not specified in the properties file, the
 	 * configuration for that field is not changed.</p>
-	 * <table>
+	 * <table summary="">
 	 * <tr><th>Property</th><th>Description</th><th>Values</th></tr>
 	 * <tr><td>parentDirectory</td><td>Parent directory for relative paths.</td><td>Directory path. When not set, a default is used.</td></tr>
 	 * <tr><td>pregapHandling</td><td>How to handle pregaps.</td><td>{@link TrackCutterConfiguration.PregapHandling}</td></tr>
 	 * <tr><td>pregapFrameLengthThreshold</td><td>Only process pregaps with a frame length greater than this.</td><td>{@link Long}.</td></tr>
-	 * <tr><td><targetType/td><td>Audio type to convert to.</td><td>{@link javax.sound.sampled.AudioFileFormat.Type} name.</td></tr>
+	 * <tr><td>targetType</td><td>Audio type to convert to.</td><td>{@link javax.sound.sampled.AudioFileFormat.Type} name.</td></tr>
 	 * <tr><td>redirectErr</td><td>Whether or not error output from post-processing should be redirected.</td><td>{@link Boolean}.</td></tr>
 	 * <tr><td>redirectStdOut</td><td>Whether or not standard output from post-processing should be redirected.</td><td>{@link Boolean}.</td></tr>
 	 * <tr><td>doPostProcessing</td><td>Whether or not we should do post-processing.</td><td>{@link Boolean}.</td></tr>
@@ -172,21 +186,21 @@ public class TrackCutterConfiguration {
 	 *
 	 * @param properties The Properties to load configuration from.
 	 */
-	public void loadProperties(final EnhancedProperties properties) {
-		this.parentDirectory = properties.getProperty("parentDirectory", this.parentDirectory, FilePropertyHandler.getInstance());
-		this.pregapHandling = properties.getProperty("pregapHandling", this.pregapHandling);
-		this.pregapFrameLengthThreshold = properties.getPropertyAsLong("pregapFrameLengthThreshold", this.pregapFrameLengthThreshold);
-		this.targetType = properties.getProperty("targetType", this.targetType, AudioFileFormatTypePropertyHandler.getInstance());
-		this.redirectErr = properties.getPropertyAsBoolean("redirectErr", this.redirectErr);
-		this.redirectStdOut = properties.getPropertyAsBoolean("redirectStdOut", this.redirectStdOut);
-		this.doPostProcessing = properties.getPropertyAsBoolean("doPostProcessing", this.doPostProcessing);
-		this.redirectToPostprocessing = properties.getPropertyAsBoolean("redirectToPostprocessing", this.redirectToPostprocessing);
-		this.cutFileNameTemplate = properties.getProperty("cutFileNameTemplate", this.cutFileNameTemplate);
-		this.postProcessFileNameTemplate = properties.getProperty("postProcessFileNameTemplate", this.postProcessFileNameTemplate);
-		this.postProcessCommandTemplate = properties.getProperty("postProcessCommandTemplate", this.postProcessCommandTemplate);
-		this.pregapCutFileNameTemplate = properties.getProperty("pregapCutFileNameTemplate", this.pregapCutFileNameTemplate);
-		this.pregapPostProcessFileNameTemplate = properties.getProperty("pregapPostProcessFileNameTemplate", this.pregapPostProcessFileNameTemplate);
-		this.pregapPostProcessCommandTemplate = properties.getProperty("pregapPostProcessCommandTemplate", this.pregapPostProcessCommandTemplate);
+	public void loadProperties(EnhancedProperties properties) {
+		parentDirectory = properties.getProperty("parentDirectory", parentDirectory, FilePropertyHandler.getInstance());
+		pregapHandling = properties.getProperty("pregapHandling", pregapHandling);
+		pregapFrameLengthThreshold = properties.getPropertyAsLong("pregapFrameLengthThreshold", pregapFrameLengthThreshold);
+		targetType = properties.getProperty("targetType", targetType, AudioFileFormatTypePropertyHandler.getInstance());
+		redirectErr = properties.getPropertyAsBoolean("redirectErr", redirectErr);
+		redirectStdOut = properties.getPropertyAsBoolean("redirectStdOut", redirectStdOut);
+		doPostProcessing = properties.getPropertyAsBoolean("doPostProcessing", doPostProcessing);
+		redirectToPostprocessing = properties.getPropertyAsBoolean("redirectToPostprocessing", redirectToPostprocessing);
+		cutFileNameTemplate = properties.getProperty("cutFileNameTemplate", cutFileNameTemplate);
+		postProcessFileNameTemplate = properties.getProperty("postProcessFileNameTemplate", postProcessFileNameTemplate);
+		postProcessCommandTemplate = properties.getProperty("postProcessCommandTemplate", postProcessCommandTemplate);
+		pregapCutFileNameTemplate = properties.getProperty("pregapCutFileNameTemplate", pregapCutFileNameTemplate);
+		pregapPostProcessFileNameTemplate = properties.getProperty("pregapPostProcessFileNameTemplate", pregapPostProcessFileNameTemplate);
+		pregapPostProcessCommandTemplate = properties.getProperty("pregapPostProcessCommandTemplate", pregapPostProcessCommandTemplate);
 	}
 
 	/**
@@ -198,7 +212,7 @@ public class TrackCutterConfiguration {
 	 *         EnhancedProperties instance.
 	 */
 	public EnhancedProperties getPropertiesSnapshot() {
-		final EnhancedProperties properties = new EnhancedProperties();
+		EnhancedProperties properties = new EnhancedProperties();
 
 		properties.setProperty("parentDirectory", this.parentDirectory, FilePropertyHandler.getInstance());
 		properties.setProperty("pregapHandling", this.pregapHandling);
@@ -222,11 +236,11 @@ public class TrackCutterConfiguration {
 	 * Get a file instance representing the audio file specified in the
 	 * FileData.
 	 *
-	 * @param fileData
+	 * @param fileData the {@link FileData}.
 	 * @return A file instance representing the audio file specified in the
 	 *         FileData.
 	 */
-	public File getAudioFile(final FileData fileData) {
+	public File getAudioFile(FileData fileData) {
 		File audioFile = new File(fileData.getFile());
 		if (audioFile.getParent() == null) {
 			audioFile = new File(this.getParentDirectory(), fileData.getFile());
@@ -243,7 +257,7 @@ public class TrackCutterConfiguration {
 	 * @return The input file name, normalized to be likely to be valid on
 	 *         modern file and operating systems.
 	 */
-	private static String normalizeFileName(final String fileName) {
+	private static String normalizeFileName(String fileName) {
 		StringBuilder builder = new StringBuilder(fileName.length());
 		int length = fileName.length();
 		for (int index = 0; index < length; index++) {
@@ -281,7 +295,7 @@ public class TrackCutterConfiguration {
 	 * @param fileNameTemplate The template for the file name.
 	 * @return The expanded file.
 	 */
-	public File getFileFromTemplate(final TrackData trackData, final String fileNameTemplate) {
+	public File getFileFromTemplate(TrackData trackData, String fileNameTemplate) {
 		String targetFileName = getExpandedFileName(trackData, fileNameTemplate);
 
 		File targetFile = new File(targetFileName);
@@ -299,9 +313,9 @@ public class TrackCutterConfiguration {
 	 * @param fileNameTemplate The template for the file name.
 	 * @return The expanded file name.
 	 */
-	private String getExpandedFileName(final TrackData trackData, final String fileNameTemplate) {
+	private static String getExpandedFileName(TrackData trackData, String fileNameTemplate) {
 		String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
-		String result = String.format(this.getTemplateReplacer().replace(fileNameTemplate),
+		String result = String.format(getTemplateReplacer().replace(fileNameTemplate),
 			normalizeFileName("" + trackData.getMetaData(CueSheet.MetaDataField.TITLE)),
 			normalizeFileName("" + trackData.getMetaData(CueSheet.MetaDataField.PERFORMER)),
 			normalizeFileName("" + trackData.getMetaData(CueSheet.MetaDataField.ALBUMTITLE)),
@@ -324,11 +338,15 @@ public class TrackCutterConfiguration {
 	 * @param processFileName The file name for after the post-processing step.
 	 * @return The expanded post-processing command.
 	 */
-	private String getExpandedProcessCommand(final TrackData trackData, final String processCommandTemplate, final String cutFileName,
-		final String processFileName) {
+	private static String getExpandedProcessCommand(
+		TrackData trackData,
+		String processCommandTemplate,
+		String cutFileName,
+		String processFileName
+	) {
 		String genre = trackData.getMetaData(CueSheet.MetaDataField.GENRE);
 		String result = String.format(
-			this.getTemplateReplacer().replace(processCommandTemplate),
+			getTemplateReplacer().replace(processCommandTemplate),
 			trackData.getMetaData(CueSheet.MetaDataField.TITLE),
 			trackData.getMetaData(CueSheet.MetaDataField.PERFORMER),
 			trackData.getMetaData(CueSheet.MetaDataField.ALBUMTITLE),
@@ -351,7 +369,7 @@ public class TrackCutterConfiguration {
 	 * @param processAction The associated processing action.
 	 * @return A File instance representing the file after cutting the track.
 	 */
-	public File getCutFile(final TrackCutterProcessingAction processAction) {
+	public File getCutFile(TrackCutterProcessingAction processAction) {
 		TrackData trackData = processAction.getTrackData();
 
 		String fileNameTemplate = processAction.getIsPregap() ? this.getPregapCutFileNameTemplate() : this.getCutFileNameTemplate();
@@ -366,10 +384,12 @@ public class TrackCutterConfiguration {
 	 * @param processAction The associated processing action.
 	 * @return A File instance representing the file after post-processing.
 	 */
-	public File getPostProcessFile(final TrackCutterProcessingAction processAction) {
+	public File getPostProcessFile(TrackCutterProcessingAction processAction) {
 		TrackData trackData = processAction.getTrackData();
 
-		String fileNameTemplate = processAction.getIsPregap() ? this.getPregapPostProcessFileNameTemplate() : this.getPostProcessFileNameTemplate();
+		String fileNameTemplate = processAction.getIsPregap() ?
+			getPregapPostProcessFileNameTemplate() :
+			getPostProcessFileNameTemplate();
 
 		File result = getFileFromTemplate(trackData, fileNameTemplate);
 		return result;
@@ -381,10 +401,17 @@ public class TrackCutterConfiguration {
 	 * @param processAction The associated processing action.
 	 * @return The command to use for post-processing.
 	 */
-	public String getPostProcessCommand(final TrackCutterProcessingAction processAction) {
+	public String getPostProcessCommand(TrackCutterProcessingAction processAction) {
 		TrackData trackData = processAction.getTrackData();
-		String commandTemplate = processAction.getIsPregap() ? this.getPregapPostProcessCommandTemplate() : this.getPostProcessCommandTemplate();
-		String processCommand = getExpandedProcessCommand(trackData, commandTemplate, processAction.getCutFile().getPath(), processAction.getPostProcessFile().getPath());
+		String commandTemplate = processAction.getIsPregap() ?
+			getPregapPostProcessCommandTemplate() :
+			getPostProcessCommandTemplate();
+		String processCommand = getExpandedProcessCommand(
+			trackData,
+			commandTemplate,
+			processAction.getCutFile().getPath(),
+			processAction.getPostProcessFile().getPath()
+		);
 
 		return processCommand;
 	}
@@ -394,8 +421,8 @@ public class TrackCutterConfiguration {
 	 *
 	 * @return The replacer for the template values.
 	 */
-	private StringReplacer getTemplateReplacer() {
-		return TrackCutterConfiguration.templateReplacer;
+	private static StringReplacer getTemplateReplacer() {
+		return TrackCutterConfiguration.TEMPLATE_REPLACER;
 	}
 
 	/**
@@ -412,7 +439,7 @@ public class TrackCutterConfiguration {
 	 *
 	 * @param parentDirectory The parent directory for relative paths.
 	 */
-	public void setParentDirectory(final File parentDirectory) {
+	public void setParentDirectory(File parentDirectory) {
 		this.parentDirectory = parentDirectory;
 	}
 
@@ -431,7 +458,7 @@ public class TrackCutterConfiguration {
 	 * @param targetFileNameTemplate The template for the file name of the
 	 *            tracks after cutting.
 	 */
-	public void setCutFileNameTemplate(final String targetFileNameTemplate) {
+	public void setCutFileNameTemplate(String targetFileNameTemplate) {
 		this.cutFileNameTemplate = targetFileNameTemplate;
 	}
 
@@ -469,7 +496,7 @@ public class TrackCutterConfiguration {
 	 * @param postProcessCommandTemplate The template for the command for
 	 *            post-processing tracks.
 	 */
-	public void setPostProcessCommandTemplate(final String postProcessCommandTemplate) {
+	public void setPostProcessCommandTemplate(String postProcessCommandTemplate) {
 		this.postProcessCommandTemplate = postProcessCommandTemplate;
 	}
 
@@ -487,7 +514,7 @@ public class TrackCutterConfiguration {
 	 *
 	 * @param pregapHandling The mode for pregap handling.
 	 */
-	public void setPregapHandling(final PregapHandling pregapHandling) {
+	public void setPregapHandling(PregapHandling pregapHandling) {
 		this.pregapHandling = pregapHandling;
 	}
 
@@ -509,7 +536,7 @@ public class TrackCutterConfiguration {
 	 * @param redirectErr Whether or not error output from post-processing
 	 *            should be redirected.
 	 */
-	public void setRedirectErr(final boolean redirectErr) {
+	public void setRedirectErr(boolean redirectErr) {
 		this.redirectErr = redirectErr;
 	}
 
@@ -531,7 +558,7 @@ public class TrackCutterConfiguration {
 	 * @param redirectStdOut Whether or not standard output from post-processing
 	 *            should be redirected.
 	 */
-	public void setRedirectStdOut(final boolean redirectStdOut) {
+	public void setRedirectStdOut(boolean redirectStdOut) {
 		this.redirectStdOut = redirectStdOut;
 	}
 
@@ -549,7 +576,7 @@ public class TrackCutterConfiguration {
 	 *
 	 * @param targetType The audio type to convert to.
 	 */
-	public void setTargetType(final AudioFileFormat.Type targetType) {
+	public void setTargetType(AudioFileFormat.Type targetType) {
 		this.targetType = targetType;
 	}
 
@@ -567,7 +594,7 @@ public class TrackCutterConfiguration {
 	 *
 	 * @param doPostProcessing Whether or not to do post-processing.
 	 */
-	public void setDoPostProcessing(final boolean doPostProcessing) {
+	public void setDoPostProcessing(boolean doPostProcessing) {
 		this.doPostProcessing = doPostProcessing;
 	}
 
@@ -587,7 +614,7 @@ public class TrackCutterConfiguration {
 	 * @param redirectToPostprocessing Whether or not to redirect the cut track
 	 *            directly to post-processing.
 	 */
-	public void setRedirectToPostprocessing(final boolean redirectToPostprocessing) {
+	public void setRedirectToPostprocessing(boolean redirectToPostprocessing) {
 		this.redirectToPostprocessing = redirectToPostprocessing;
 	}
 
@@ -606,7 +633,7 @@ public class TrackCutterConfiguration {
 	 * @param pregapTargetFileNameTemplate The template for the file name of the
 	 *            pregap tracks after cutting.
 	 */
-	public void setPregapCutFileNameTemplate(final String pregapTargetFileNameTemplate) {
+	public void setPregapCutFileNameTemplate(String pregapTargetFileNameTemplate) {
 		this.pregapCutFileNameTemplate = pregapTargetFileNameTemplate;
 	}
 
@@ -625,7 +652,7 @@ public class TrackCutterConfiguration {
 	 * @param pregapPostProcessFileNameTemplate The template for the file name
 	 *            of the post-processed tracks.
 	 */
-	public void setPregapPostProcessFileNameTemplate(final String pregapPostProcessFileNameTemplate) {
+	public void setPregapPostProcessFileNameTemplate(String pregapPostProcessFileNameTemplate) {
 		this.pregapPostProcessFileNameTemplate = pregapPostProcessFileNameTemplate;
 	}
 
@@ -644,7 +671,7 @@ public class TrackCutterConfiguration {
 	 * @param pregapPostProcessCommandTemplate The template for the command for
 	 *            post-processing tracks.
 	 */
-	public void setPregapPostProcessCommandTemplate(final String pregapPostProcessCommandTemplate) {
+	public void setPregapPostProcessCommandTemplate(String pregapPostProcessCommandTemplate) {
 		this.pregapPostProcessCommandTemplate = pregapPostProcessCommandTemplate;
 	}
 
@@ -665,7 +692,7 @@ public class TrackCutterConfiguration {
 	 * @param pregapFrameLengthThreshold The threshold on pregaps in frame
 	 *            length.
 	 */
-	public void setPregapFrameLengthThreshold(final long pregapFrameLengthThreshold) {
+	public void setPregapFrameLengthThreshold(long pregapFrameLengthThreshold) {
 		this.pregapFrameLengthThreshold = pregapFrameLengthThreshold;
 	}
 }

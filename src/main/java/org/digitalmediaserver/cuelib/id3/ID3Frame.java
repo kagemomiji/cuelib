@@ -20,19 +20,48 @@ package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
+
+/**
+ * The Interface ID3Frame.
+ */
 public interface ID3Frame {
 
-	public static final String PRESERVE_FRAME_WHEN_TAG_ALTERED = "preserve_frame_when_tag_altered";
-	public static final String PRESERVE_FRAME_WHEN_FILE_ALTERED = "preserve_frame_when_file_altered";
-	public static final String READ_ONLY = "read_only";
-	public static final String COMPRESSION_USED = "compression_used";
-	public static final String DATA_LENGTH_INDICATOR = "data_length_indicator";
-	public static final String ENCRYPTION_METHOD_USED = "encryption_method_used";
-	public static final String GROUP_ID = "group_id";
-	public static final String UNSYNC_USED = "unsync_used";
+	/** The Constant PRESERVE_FRAME_WHEN_TAG_ALTERED. */
+	String PRESERVE_FRAME_WHEN_TAG_ALTERED = "preserve_frame_when_tag_altered";
 
+	/** The Constant PRESERVE_FRAME_WHEN_FILE_ALTERED. */
+	String PRESERVE_FRAME_WHEN_FILE_ALTERED = "preserve_frame_when_file_altered";
+
+	/** The Constant READ_ONLY. */
+	String READ_ONLY = "read_only";
+
+	/** The Constant COMPRESSION_USED. */
+	String COMPRESSION_USED = "compression_used";
+
+	/** The Constant DATA_LENGTH_INDICATOR. */
+	String DATA_LENGTH_INDICATOR = "data_length_indicator";
+
+	/** The Constant ENCRYPTION_METHOD_USED. */
+	String ENCRYPTION_METHOD_USED = "encryption_method_used";
+
+	/** The Constant GROUP_ID. */
+	String GROUP_ID = "group_id";
+
+	/** The Constant UNSYNC_USED. */
+	String UNSYNC_USED = "unsync_used";
+
+	/**
+	 * Gets the total frame size.
+	 *
+	 * @return the total frame size
+	 */
 	public int getTotalFrameSize();
 
+	/**
+	 * Gets the canonical frame type.
+	 *
+	 * @return the canonical frame type
+	 */
 	public CanonicalFrameType getCanonicalFrameType();
 
 	/**

@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Utility class for piping data from an InputStream to an OutputStream, or to
  * nowhere. This class is particularly useful for reading the output streams of
@@ -54,7 +55,7 @@ public class StreamPiper implements Runnable {
 	/**
 	 * The logger for this class.
 	 */
-	private final static Logger LOGGER = LoggerFactory.getLogger(StreamPiper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StreamPiper.class);
 
 	/**
 	 * Pipe all input from the InputStream to the OutputStream. The OutputStream
@@ -62,10 +63,10 @@ public class StreamPiper implements Runnable {
 	 * discarded. In any case, the OutputStream will not be closed by
 	 * StreamPiper, but the InputStream will, once its end is reached.
 	 *
-	 * @param from
-	 * @param to
+	 * @param from the source {@link InputStream}.
+	 * @param to the target {@link OutputStream}.
 	 */
-	public StreamPiper(final InputStream from, final OutputStream to) {
+	public StreamPiper(InputStream from, OutputStream to) {
 		this(from, to, false);
 	}
 
@@ -76,11 +77,12 @@ public class StreamPiper implements Runnable {
 	 * StreamPiper if this is requested, while the InputStream will always be,
 	 * once its end is reached.
 	 *
-	 * @param from
-	 * @param to
-	 * @param closeOutput
+	 * @param from the source {@link InputStream}.
+	 * @param to the target {@link OutputStream}.
+	 * @param closeOutput whether or not to close the {@link OutputStream} after
+	 *            use.
 	 */
-	public StreamPiper(final InputStream from, final OutputStream to, final boolean closeOutput) {
+	public StreamPiper(InputStream from, OutputStream to, boolean closeOutput) {
 		this.from = from;
 		this.to = to;
 		this.closeOutput = closeOutput;
@@ -93,9 +95,9 @@ public class StreamPiper implements Runnable {
 	 * @param from The input to stream to file.
 	 * @param file The file to pipe input to, or null if the input should be
 	 *            thrown away.
-	 * @throws IOException
+	 * @throws IOException If an error occurs during the operation.
 	 */
-	public static void pipeStream(final InputStream from, final File file) throws IOException {
+	public static void pipeStream(InputStream from, File file) throws IOException {
 		OutputStream out = null;
 		if (file != null) {
 			out = new FileOutputStream(file);

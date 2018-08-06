@@ -20,6 +20,7 @@ package org.digitalmediaserver.cuelib.util;
 
 import java.io.File;
 
+
 /**
  * Utility class for helping to deal with some of the more inconvenient aspects
  * of null. Note that this class is often inappropriate. When a null value can
@@ -29,7 +30,7 @@ import java.io.File;
  *
  * @author jwbroek
  */
-final public class NullUtil {
+public final class NullUtil {
 
 	/**
 	 * This class does not need to be instantiated.
@@ -47,7 +48,7 @@ final public class NullUtil {
 	 *         {@link Object#toString()}, or null if the Object instance is a
 	 *         null reference.
 	 */
-	public static String toString(final Object o) {
+	public static String toString(Object o) {
 		String result = o == null ? null : o.toString();
 		return result;
 	}
@@ -64,9 +65,8 @@ final public class NullUtil {
 	 *         {@link Object#toString()}, or the specified default value if the
 	 *         Object instance is a null reference.
 	 */
-	public static String toString(final Object o, final String defaultValue) {
-		String result = o == null ? defaultValue : o.toString();
-		return result;
+	public static String toString(Object o, String defaultValue) {
+		return o == null ? defaultValue : o.toString();
 	}
 
 	/**
@@ -79,9 +79,8 @@ final public class NullUtil {
 	 *         {@link Object#toString()}, or "null" if the Object instance is a
 	 *         null reference.
 	 */
-	public static String toGuaranteedString(final Object o) {
-		String result = o == null ? "null" : o.toString();
-		return result;
+	public static String toGuaranteedString(Object o) {
+		return o == null ? "null" : o.toString();
 	}
 
 	/**
@@ -92,9 +91,8 @@ final public class NullUtil {
 	 * @return A File instance based on the specified String, or null if the
 	 *         String is null.
 	 */
-	public static File toFile(final String file) {
-		final File result = file == null ? null : new File(file);
-		return result;
+	public static File toFile(String file) {
+		return file == null ? null : new File(file);
 	}
 
 	/**
@@ -103,12 +101,12 @@ final public class NullUtil {
 	 *
 	 * @param value A String representing the Enum, or null.
 	 * @param enumType The Class instance of the Enum type to create.
+	 * @param <T> The type.
 	 * @return An Enum instance based on the specified String, or null if the
 	 *         String is null.
 	 */
-	public static <T extends Enum<T>> T toEnum(final String value, final Class<T> enumType) {
-		final T result = value == null ? null : Enum.valueOf(enumType, value);
-		return result;
+	public static <T extends Enum<T>> T toEnum(String value, Class<T> enumType) {
+		return value == null || enumType == null ? null : Enum.valueOf(enumType, value);
 	}
 
 	/**
@@ -119,34 +117,33 @@ final public class NullUtil {
 	 * @return A Long instance based on the specified String, or null if the
 	 *         String is null.
 	 */
-	public static Long toLong(final String longValue) {
-		final Long result = longValue == null ? null : Long.getLong(longValue);
-		return result;
+	public static Long toLong(String longValue) {
+		return longValue == null ? null : Long.getLong(longValue);
 	}
 
 	/**
 	 * Get the specified value, or the default value if the value was null.
 	 *
-	 * @param value
+	 * @param value The value.
 	 * @param defaultValue The value to return in case the value was null.
+	 * @param <E> extends.
 	 * @return The specified value, or the default value if the value was null.
 	 */
-	public static <E> E nullValue(final E value, final E defaultValue) {
-		final E result = value == null ? defaultValue : value;
-		return result;
+	public static <E> E nullValue(E value, E defaultValue) {
+		return value == null ? defaultValue : value;
 	}
 
 	/**
 	 * Get the specified value, or the default value if the value was null.
 	 * Shorthand for {@link #nullValue(Object, Object)}.
 	 *
-	 * @param value
+	 * @param value The value.
 	 * @param defaultValue The value to return in case the value was null.
+	 * @param <E> extends.
 	 * @return The specified value, or the default value if the value was null.
 	 */
-	public static <E> E nvl(final E value, final E defaultValue) {
-		final E result = NullUtil.nvl(value, defaultValue);
-		return result;
+	public static <E> E nvl(E value, E defaultValue) {
+		return nullValue(value, defaultValue);
 	}
 
 }

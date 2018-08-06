@@ -5,24 +5,38 @@ package org.digitalmediaserver.cuelib.id3;
 
 import java.util.Properties;
 
+
+/**
+ * The Class ITunesPodcastFrame.
+ */
 public class ITunesPodcastFrame implements ID3Frame {
 
 	private int totalFrameSize;
 	private Properties flags = new Properties();
 	private String payload;
 
+	/**
+	 * Instantiates a new iTunes podcast frame.
+	 */
 	public ITunesPodcastFrame() {
 	}
 
-	public ITunesPodcastFrame(final int totalFrameSize) {
+	/**
+	 * Instantiates a new iTunes podcast frame.
+	 *
+	 * @param totalFrameSize the total frame size
+	 */
+	public ITunesPodcastFrame(int totalFrameSize) {
 		this.totalFrameSize = totalFrameSize;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("iTunes podcast frame [").append(this.totalFrameSize).append("]\n").append("Flags: ").append(this.flags.toString())
-			.append('\n').append("Payload: ").append(this.payload);
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append("iTunes podcast frame [").append(totalFrameSize).append("]\n")
+			.append("Flags: ").append(flags.toString()).append('\n')
+			.append("Payload: ").append(payload);
 		return builder.toString();
 	}
 
@@ -42,18 +56,18 @@ public class ITunesPodcastFrame implements ID3Frame {
 	}
 
 	/**
-	 * Get the payload of this ITunesPodcastFrame.
+	 * Get the payload of this {@link ITunesPodcastFrame}.
 	 *
-	 * @return The payload of this ITunesPodcastFrame.
+	 * @return The payload of this {@link ITunesPodcastFrame}.
 	 */
 	public String getPayload() {
 		return payload;
 	}
 
 	/**
-	 * Set the payload of this ITunesPodcastFrame.
+	 * Set the payload of this {@link ITunesPodcastFrame}.
 	 *
-	 * @param payload The payload of this ITunesPodcastFrame.
+	 * @param payload The payload of this {@link ITunesPodcastFrame}.
 	 */
 	public void setPayload(String payload) {
 		this.payload = payload;

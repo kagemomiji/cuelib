@@ -22,23 +22,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import org.digitalmediaserver.cuelib.id3.UserDefinedTextFrame;
+import org.digitalmediaserver.cuelib.util.Utils;
 
+
+/**
+ * The Class TXXFrameReader.
+ */
 public class TXXFrameReader implements FrameReader {
 
 	private final int headerSize;
 
-	public TXXFrameReader(final int headerSize) {
+	/**
+	 * Instantiates a new TXX frame reader.
+	 *
+	 * @param headerSize the header size
+	 */
+	public TXXFrameReader(int headerSize) {
 		this.headerSize = headerSize;
 	}
 
 	@Override
-	public UserDefinedTextFrame readFrameBody(final int size, final InputStream input) throws IOException, UnsupportedEncodingException, MalformedFrameException {
-		final UserDefinedTextFrame result = new UserDefinedTextFrame();
+	public UserDefinedTextFrame readFrameBody(
+		int size,
+		InputStream input
+	) throws IOException, UnsupportedEncodingException, MalformedFrameException {
+		UserDefinedTextFrame result = new UserDefinedTextFrame();
 		result.setTotalFrameSize(size + this.headerSize);
 
-		final int encoding = input.read();
+		int encoding = input.read();
 
-		final Charset charset;
+		Charset charset;
 		switch (encoding) {
 			case 0:
 				charset = Charset.forName("ISO-8859-1");
@@ -61,17 +74,17 @@ public class TXXFrameReader implements FrameReader {
 
 		// Read entire field, then process.
 		// Length -1 because of the encoding byte.
-		final byte[] b = new byte[size - 1];
-		input.read(b);
-		final String rawResult = new String(b, charset);
+		byte[] b = new byte[size - 1];
+		Utils.readFully(input, b);
+		String rawResult = new String(b, charset);
 		int nulPosition = rawResult.indexOf(0);
 		if (nulPosition < 0) {
 			throw new MalformedFrameException("Description not terminated in TXX frame.");
 		}
-		final String description = rawResult.substring(0, nulPosition);
-		final String rawValue = rawResult.substring(nulPosition + 1);
+		String description = rawResult.substring(0, nulPosition);
+		String rawValue = rawResult.substring(nulPosition + 1);
 		nulPosition = rawValue.indexOf(0);
-		final String value = rawValue.substring(0, (nulPosition == -1) ? rawValue.length() : nulPosition);
+		String value = rawValue.substring(0, (nulPosition == -1) ? rawValue.length() : nulPosition);
 		result.setDescription(description);
 		result.setText(value);
 

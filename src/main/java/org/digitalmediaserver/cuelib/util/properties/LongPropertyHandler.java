@@ -20,12 +20,13 @@ package org.digitalmediaserver.cuelib.util.properties;
 
 import java.util.Properties;
 
+
 /**
  * PropertyHandler for {@link Long}s.
  *
  * @author jwbroek
  */
-final public class LongPropertyHandler implements PropertyHandler<Long> {
+public class LongPropertyHandler implements PropertyHandler<Long> {
 
 	/**
 	 * The singleton instance of this class.
@@ -52,12 +53,12 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 * Convert the value to a String that can be used in a {@link Properties}
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value to a string that can be used in a
 	 *         {@link Properties} instance.
 	 */
 	@Override
-	public String toProperty(final Long value) {
+	public String toProperty(Long value) {
 		return value.toString();
 	}
 
@@ -65,12 +66,12 @@ final public class LongPropertyHandler implements PropertyHandler<Long> {
 	 * Convert the value from a {@link Properties} instance into a Long
 	 * instance.
 	 *
-	 * @param value
+	 * @param value the value.
 	 * @return A conversion of the value from a {@link Properties} instance into
 	 *         a Long instance.
 	 */
 	@Override
-	public Long fromProperty(final String value) {
-		return new Long(value);
+	public Long fromProperty(String value) {
+		return Long.valueOf(value);
 	}
 }

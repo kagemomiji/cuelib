@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Simple representation of an INDEX datum in a cue sheet.
  *
@@ -33,7 +34,7 @@ public class Index {
 	/**
 	 * The position of this index. Null signifies that it was not specified.
 	 */
-	private Position position = null;
+	private Position position;
 
 	/**
 	 * Create a new Index.
@@ -49,7 +50,7 @@ public class Index {
 	 * @param position The position of this index. Null signifies that it was
 	 *            not specified.
 	 */
-	public Index(final int number, final Position position) {
+	public Index(int number, Position position) {
 		this.number = number;
 		this.position = position;
 	}
@@ -60,7 +61,7 @@ public class Index {
 	 * @return The number of this index. -1 signifies that it was not specified.
 	 */
 	public int getNumber() {
-		return this.number;
+		return number;
 	}
 
 	/**
@@ -69,7 +70,7 @@ public class Index {
 	 * @param number The number of this index. -1 signifies that it was not
 	 *            specified.
 	 */
-	public void setNumber(final int number) {
+	public void setNumber(int number) {
 		this.number = number;
 	}
 
@@ -80,7 +81,7 @@ public class Index {
 	 *         specified.
 	 */
 	public Position getPosition() {
-		return this.position;
+		return position;
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class Index {
 	 * @param position The position of this index. Null signifies that it was
 	 *            not specified.
 	 */
-	public void setPosition(final Position position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 }

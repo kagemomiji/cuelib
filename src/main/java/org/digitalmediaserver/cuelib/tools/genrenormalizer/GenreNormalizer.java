@@ -21,19 +21,31 @@ package org.digitalmediaserver.cuelib.tools.genrenormalizer;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * The Class GenreNormalizer.
+ */
 public class GenreNormalizer {
 
 	/**
 	 * Enum for specifying various search modes.
 	 */
 	public static enum SearchMode {
-		STRICT, NORMAL, HEURISTIC
+
+		/** The strict. */
+		STRICT,
+
+		/** The normal. */
+		NORMAL,
+
+		/** The heuristic. */
+		HEURISTIC
 	}
 
 	/**
 	 * All supported genres, indexed as per ID3v1.
 	 */
-	private final static String[] genres = {
+	private static final String[] GENRES = {
 		"Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz",
 		"Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska",
 		"Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop", "Vocal", "Jazz+Funk", "Fusion", "Trance",
@@ -70,8 +82,8 @@ public class GenreNormalizer {
 	private static Map<String, Integer> genreSignatureToID3Index = new HashMap<String, Integer>();
 
 	static {
-		for (int index = 0; index < GenreNormalizer.genres.length; index++) {
-			GenreNormalizer.genreSignatureToID3Index.put(GenreNormalizer.getGenreSignature(GenreNormalizer.genres[index]), index);
+		for (int index = 0; index < GenreNormalizer.GENRES.length; index++) {
+			GenreNormalizer.genreSignatureToID3Index.put(GenreNormalizer.getGenreSignature(GenreNormalizer.GENRES[index]), index);
 		}
 	}
 
@@ -91,7 +103,7 @@ public class GenreNormalizer {
 	 * @param genre
 	 * @return The signature of the genre.
 	 */
-	private static String getGenreSignature(final String genre) {
+	private static String getGenreSignature(String genre) {
 		StringBuilder builder = new StringBuilder(genre.length());
 		for (int index = 0; index < genre.length(); index++) {
 			char currentChar = genre.charAt(index);
@@ -120,12 +132,16 @@ public class GenreNormalizer {
 	 * @return The code for the specified genre, or -1 if no matching code can
 	 *         be found.
 	 */
-	public static int getGenreCode(final String genreDescription, final boolean allowWinAmpExtensions, final boolean allowLameExtensions,
-		final SearchMode searchMode) {
+	public static int getGenreCode(
+		String genreDescription,
+		boolean allowWinAmpExtensions,
+		boolean allowLameExtensions,
+		SearchMode searchMode
+	) {
 		int result = -1;
 
-		final String inputGenreSignature = getGenreSignature(genreDescription);
-		final Integer index = GenreNormalizer.genreSignatureToID3Index.get(inputGenreSignature);
+		String inputGenreSignature = getGenreSignature(genreDescription);
+		Integer index = GenreNormalizer.genreSignatureToID3Index.get(inputGenreSignature);
 
 		if (index == null) {
 			// No match. Try a heuristic, provided we're allowed to.
@@ -133,19 +149,19 @@ public class GenreNormalizer {
 				// See if the signature of this genre contains the signature of a known genre, or vice versa. If so,
 				// treat as that genre.
 				// Go backward through the list, as the later numbers are generally more specific.
-				final int maxGenre;
+				int maxGenre;
 				if (!allowWinAmpExtensions) {
 					maxGenre = GenreNormalizer.firstWinAmpExtensionIndex - 1;
 				} else if (!allowLameExtensions) {
 					maxGenre = GenreNormalizer.firstLameExtensionIndex - 1;
 				} else {
-					maxGenre = GenreNormalizer.genres.length - 1;
+					maxGenre = GenreNormalizer.GENRES.length - 1;
 				}
 
 				for (int heuristicGenreIndex = maxGenre; heuristicGenreIndex >= 0 && result == -1; heuristicGenreIndex--) {
 					if (
-						inputGenreSignature.contains(getGenreSignature(GenreNormalizer.genres[heuristicGenreIndex])) ||
-						getGenreSignature(GenreNormalizer.genres[heuristicGenreIndex]).contains(inputGenreSignature)
+						inputGenreSignature.contains(getGenreSignature(GenreNormalizer.GENRES[heuristicGenreIndex])) ||
+						getGenreSignature(GenreNormalizer.GENRES[heuristicGenreIndex]).contains(inputGenreSignature)
 					) {
 						result = heuristicGenreIndex;
 					}
@@ -156,7 +172,7 @@ public class GenreNormalizer {
 			result = index;
 
 			// If the search mode is strict, then make sure the genre name is completely identical.
-			if (searchMode == SearchMode.STRICT && !genreDescription.equals(GenreNormalizer.genres[index])) {
+			if (searchMode == SearchMode.STRICT && !genreDescription.equals(GenreNormalizer.GENRES[index])) {
 				result = -1;
 			}
 
@@ -190,16 +206,16 @@ public class GenreNormalizer {
 	 * @return The description for the specified genre, or null if no matching
 	 *         description can be found.
 	 */
-	public static String getGenreDescription(final int genreCode, final boolean allowWinAmpExtensions, final boolean allowLameExtensions) {
+	public static String getGenreDescription(int genreCode, boolean allowWinAmpExtensions, boolean allowLameExtensions) {
 		String result = null;
 
 		// Make sure genreCode is a valid array index, and it doesn't go into extension blocks it isn't allowed into.
 		if (
-			genreCode >= 0 && genreCode < GenreNormalizer.genres.length &&
+			genreCode >= 0 && genreCode < GenreNormalizer.GENRES.length &&
 			(allowWinAmpExtensions || genreCode < GenreNormalizer.firstWinAmpExtensionIndex) &&
 			(allowLameExtensions || genreCode < GenreNormalizer.firstLameExtensionIndex)
 		) {
-			result = GenreNormalizer.genres[genreCode];
+			result = GenreNormalizer.GENRES[genreCode];
 		}
 
 		return result;
@@ -217,8 +233,17 @@ public class GenreNormalizer {
 	 * @return The normalized description for the specified genre, or null if no
 	 *         matching code can be found.
 	 */
-	public static String normalizeGenreDescription(final String genreDescription, final boolean allowWinAmpExtensions, final boolean allowLameExtensions) {
-		return normalizeGenreDescription(genreDescription, allowWinAmpExtensions, allowLameExtensions, GenreNormalizer.SearchMode.HEURISTIC);
+	public static String normalizeGenreDescription(
+		String genreDescription,
+		boolean allowWinAmpExtensions,
+		boolean allowLameExtensions
+	) {
+		return normalizeGenreDescription(
+			genreDescription,
+			allowWinAmpExtensions,
+			allowLameExtensions,
+			GenreNormalizer.SearchMode.HEURISTIC
+		);
 	}
 
 	/**
@@ -238,12 +263,20 @@ public class GenreNormalizer {
 	 * @return The normalized description for the specified genre, or null if no
 	 *         matching code can be found.
 	 */
-	public static String normalizeGenreDescription(final String genreDescription, final boolean allowWinAmpExtensions, final boolean allowLameExtensions, final SearchMode searchMode) {
-		return getGenreDescription(GenreNormalizer.getGenreCode(genreDescription, allowWinAmpExtensions, allowLameExtensions, searchMode), allowWinAmpExtensions, allowLameExtensions);
-	}
-
-	public static void main(String... Param) {
-		System.out.println(GenreNormalizer.normalizeGenreDescription("Crossover", false, false));
-		System.out.println(String.format("%1$s", (Object) null));
+	public static String normalizeGenreDescription(
+		String genreDescription,
+		boolean allowWinAmpExtensions,
+		boolean allowLameExtensions,
+		SearchMode searchMode
+	) {
+		return getGenreDescription(
+			GenreNormalizer.getGenreCode(
+				genreDescription,
+				allowWinAmpExtensions,
+				allowLameExtensions,
+				searchMode),
+			allowWinAmpExtensions,
+			allowLameExtensions
+		);
 	}
 }

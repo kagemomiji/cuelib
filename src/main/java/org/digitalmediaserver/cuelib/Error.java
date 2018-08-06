@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+
 /**
  * Simple error for use by a cue sheet.
  *
@@ -32,7 +33,7 @@ public class Error extends MessageImplementation {
 	 * @param lineNumber The line number of the input that caused the error.
 	 * @param message A message explaining what is wrong.
 	 */
-	public Error(final String input, final int lineNumber, final String message) {
+	public Error(String input, int lineNumber, String message) {
 		super("Error", input, lineNumber, message);
 	}
 
@@ -42,7 +43,7 @@ public class Error extends MessageImplementation {
 	 * @param lineOfInput The input that caused the error.
 	 * @param message A message explaining what is wrong.
 	 */
-	public Error(final LineOfInput lineOfInput, final String message) {
+	public Error(LineOfInput lineOfInput, String message) {
 		super("Error", lineOfInput, message);
 	}
 }
