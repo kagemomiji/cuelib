@@ -2,14 +2,28 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.digitalmediaserver</groupId>
-	<artifactId>cuelib</artifactId>
-	<version>1.2.1-SNAPSHOT</version>
-	<name>Cuelib</name>
-	<description>A library for manipulating cue sheets.</description>
+	<artifactId>cuelib-parent</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Cuelib Parent</name>
+
+	<description>The parent POM for Cuelib, a library for manipulating cue sheets.</description>
+	<url>https://github.com/DigitalMediaServer/cuelib</url>
+
 	<properties>
 		<jdk.source.version>1.7</jdk.source.version>
 		<jdk.target.version>1.7</jdk.target.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<javadocPluginVersion>3.0.1</javadocPluginVersion>
 	</properties>
+
+	<modules>
+		<module>cuelib-core</module>
+		<module>cuelib-id3</module>
+		<module>cuelib-tools</module>
+	</modules>
 	
 	<dependencies>
 		<dependency>
@@ -17,14 +31,22 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+	<!--
+		Repository to upload to during the deploy phase. Ftp, sftp and scp are supported.
+		The "id" parameter must match a "server" entry in Maven configuration (e.g. ~/.m2/settings.xml)
+		where username and password are provided.
+	-->
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<build>
+		<defaultGoal>package</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -35,6 +57,124 @@
 					<target>${jdk.target.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${javadocPluginVersion}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<stylesheetfile>${basedir}/doc/stylesheet.css</stylesheetfile>
+							<docfilessubdirs>true</docfilessubdirs>
+							<tagletArtifacts>
+								<tagletArtifact>
+									<groupId>org.codehaus.plexus</groupId>
+									<artifactId>plexus-component-javadoc</artifactId>
+									<version>${plexusComponentJavadocVersion}</version>
+								</tagletArtifact>
+							</tagletArtifacts>
+							<failOnError>false</failOnError>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${javadocPluginVersion}</version>
+				<configuration>
+					<stylesheetfile>${basedir}/doc/stylesheet.css</stylesheetfile>
+					<docfilessubdirs>true</docfilessubdirs>
+					<tagletArtifacts>
+						<tagletArtifact>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-component-javadoc</artifactId>
+							<version>${plexusComponentJavadocVersion}</version>
+						</tagletArtifact>
+					</tagletArtifacts>
+					<failOnError>false</failOnError>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<lineLength>120</lineLength>
+					<stylesheet>${basedir}/doc/stylesheet.css</stylesheet>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
