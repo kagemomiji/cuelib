@@ -11,6 +11,37 @@
 	<description>The parent POM for Cuelib, a library for manipulating cue sheets.</description>
 	<url>https://github.com/DigitalMediaServer/cuelib</url>
 
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License, Version 2</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:DigitalMediaServer/cuelib</connection>
+		<developerConnection>scm:git:git@github.com:DigitalMediaServer/cuelib</developerConnection>
+		<url>http://github.com/DigitalMediaServer/cuelib</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>jwbroek</id>
+			<name>Jan-Willem van den Broek</name>
+		</developer>
+		<developer>
+			<id>Nadahar</id>
+			<timezone>1</timezone>
+			<url>http://github.com/Nadahar</url>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/DigitalMediaServer/cuelib/issues</url>
+	</issueManagement>
+
 	<properties>
 		<jdk.source.version>1.7</jdk.source.version>
 		<jdk.target.version>1.7</jdk.target.version>
