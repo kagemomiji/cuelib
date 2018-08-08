@@ -28,19 +28,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.sound.sampled.AudioFileFormat;
 import org.digitalmediaserver.cuelib.Position;
 import org.digitalmediaserver.cuelib.tools.io.FileSelector;
 import org.digitalmediaserver.cuelib.tools.trackcutter.TrackCutterConfiguration.PregapHandling;
-import org.digitalmediaserver.cuelib.tools.util.LogUtil;
 import org.digitalmediaserver.cuelib.tools.util.SimpleOptionsParser;
 import org.digitalmediaserver.cuelib.tools.util.properties.EnhancedProperties;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 
 
 /**
@@ -49,6 +49,11 @@ import org.digitalmediaserver.cuelib.tools.util.properties.EnhancedProperties;
  * @author jwbroek
  */
 public class TrackCutterCommand {
+
+	/**
+	 * The logger for this class.
+	 */
+	private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(TrackCutterCommand.class);
 
 	/**
 	 * The configuration for the TrackCutter. Will be modified based on the
@@ -102,11 +107,6 @@ public class TrackCutterCommand {
 	private File writeXmlConfigurationTo = null;
 
 	/**
-	 * The logger for this class.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(TrackCutterCommand.class.getCanonicalName());
-
-	/**
 	 * Print a help message.
 	 */
 	private static void printHelp() {
@@ -143,12 +143,9 @@ public class TrackCutterCommand {
 		System.out.println(" -s                  Redirect audio to post-processing step.");
 		System.out.println(" -ro                 Redirect output of post-processing step to log file.");
 		System.out.println(" -re                 Redirect error output of post-processing step to log file.");
-		System.out.println(" -l level            Override jdk 1.4 logging settings. The following levels are supported:");
-		System.out.println("                     \"none\" (no cuelib logging), \"specific\" (only TrackCutter logging),");
-		System.out.println("                     \"all\" (all cuelib logging). When logging is enabled, TrackCutter will");
-		System.out.println("                     also try to ensure that logging is directed to the console. This setting");
-		System.out.println("                     does not influence logging outside of cuelib. For this, use the standard");
-		System.out.println("                     jdk 1.4 logging settings.");
+		System.out.println(" -l level            Override the standard logging level. The following levels are supported:");
+		System.out.println("                     \"off\" (no logging), \"error\" (only errors), \"warn\" (only errors and");
+		System.out.println("                     warnings), \"info\" (the default), \"debug\" and \"trace\" (all logging)");
 		System.out.println(" -rp file            Read configuration from properties file.");
 		System.out.println(" -wp file            Write configuration to properties file.");
 		System.out.println(" -rx file            Read configuration from xml properties file.");
@@ -379,42 +376,33 @@ public class TrackCutterCommand {
 			@Override
 			public int handleOption(String[] options, int offset) {
 				// Override logging.
-				String level = options[offset + 1];
-				if ("none".equals(level)) {
-					// Suppress logging of the jwbroek.cuelib tree.
-					Logger.getLogger("jwbroek.cuelib").setLevel(Level.OFF);
-				} else if ("specific".equals(level)) {
-					// Suppress logging of the jwbroek.cuelib tree.
-					Logger.getLogger("jwbroek.cuelib").setLevel(Level.OFF);
-					// Do allow INFO logging of the trackcutter log.
-					Logger trackCutterLogger = Logger.getLogger(TrackCutter.class.getCanonicalName());
-					if (!trackCutterLogger.isLoggable(Level.INFO)) {
-						trackCutterLogger.setLevel(Level.INFO);
-					}
-					// If there is no ConsoleLogger configured, then add one.
-					if (!LogUtil.hasHandlerActive(trackCutterLogger, Level.INFO, ConsoleHandler.class)) {
-						trackCutterLogger.addHandler(new ConsoleHandler());
-					}
-				} else if ("all".equals(level)) {
-					// Enable INFO logging of the jwbroek.cuelib tree, and specifically the
-					// TrackCutter log.
-					Logger cuelibLoggger = Logger.getLogger("jwbroek.cuelib");
-					if (!cuelibLoggger.isLoggable(Level.INFO)) {
-						cuelibLoggger.setLevel(Level.INFO);
-					}
-					Logger trackCutterLogger = Logger.getLogger(TrackCutter.class.getCanonicalName());
-					if (!trackCutterLogger.isLoggable(Level.INFO)) {
-						trackCutterLogger.setLevel(Level.INFO);
-					}
-					// If there is no ConsoleLogger configured, then add one.
-					if (!LogUtil.hasHandlerActive(Logger.getLogger("jwbroek.cuelib"), Level.INFO, ConsoleHandler.class)) {
-						Logger.getLogger("jwbroek.cuelib").addHandler(new ConsoleHandler());
-					}
-					if (!LogUtil.hasHandlerActive(trackCutterLogger, Level.INFO, ConsoleHandler.class)) {
-						trackCutterLogger.addHandler(new ConsoleHandler());
-					}
-				} else {
-					throw new IllegalArgumentException("Invalid level setting for -l option: '" + level + "'");
+				String level = options[offset + 1].toLowerCase(Locale.ROOT);
+				switch (level) {
+					case "off":
+					case "none":
+						LOGGER.setLevel(Level.OFF);
+						break;
+					case "error":
+						LOGGER.setLevel(Level.ERROR);
+						break;
+					case "warn":
+					case "warning":
+						LOGGER.setLevel(Level.WARN);
+						break;
+					case "info":
+						LOGGER.setLevel(Level.INFO);
+						break;
+					case "debug":
+						LOGGER.setLevel(Level.DEBUG);
+						break;
+					case "trace":
+						LOGGER.setLevel(Level.TRACE);
+						break;
+					case "all":
+						LOGGER.setLevel(Level.ALL);
+						break;
+					default:
+						throw new IllegalArgumentException("Invalid level setting for -l option: '" + level + "'");
 				}
 				return offset + 2;
 			}
@@ -429,7 +417,8 @@ public class TrackCutterCommand {
 					properties.load(inputStream);
 					getConfiguration().loadProperties(properties);
 				} catch (IOException e) {
-					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.CONFIG, e);
+					LOGGER.warn("An error occurred while reading the configuration: {}", e.getMessage());
+					LOGGER.trace("", e);
 				}
 				return offset + 2;
 			}
@@ -453,7 +442,8 @@ public class TrackCutterCommand {
 					properties.loadFromXML(inputStream);
 					getConfiguration().loadProperties(properties);
 				} catch (IOException e) {
-					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.CONFIG, e);
+					LOGGER.warn("An error occurred while reading the configuration: {}", e.getMessage());
+					LOGGER.trace("", e);
 				}
 				return offset + 2;
 			}
@@ -513,7 +503,8 @@ public class TrackCutterCommand {
 			try (FileOutputStream fis = new FileOutputStream(getWritePropertiesConfigurationTo())) {
 				getConfiguration().getPropertiesSnapshot().store(fis, "Configuration for TrackCutter.");
 			} catch (IOException e) {
-				LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
+				LOGGER.error("An error occurred while writing the configuration: {}", e.getMessage());
+				LOGGER.trace("", e);
 			}
 		}
 
@@ -525,7 +516,8 @@ public class TrackCutterCommand {
 					"Configuration for TrackCutter, as specified on " + new Date().toString() + "."
 				);
 			} catch (IOException e) {
-				LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
+				LOGGER.error("An error occurred while writing the configuration: {}", e.getMessage());
+				LOGGER.trace("", e);
 			}
 		}
 
@@ -568,8 +560,9 @@ public class TrackCutterCommand {
 			for (File cueFile : fileSet) {
 				try {
 					cutter.cutTracksInCueSheet(cueFile);
-				} catch (Exception e) {
-					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
+				} catch (IOException e) {
+					LOGGER.error("An error occurred while processing cue file \"{}\": {}", cueFile, e.getMessage());
+					LOGGER.trace("", e);
 				}
 			}
 
@@ -578,7 +571,8 @@ public class TrackCutterCommand {
 				try {
 					cutter.cutTracksInCueSheet(System.in);
 				} catch (Exception e) {
-					LogUtil.logStacktrace(TrackCutterCommand.LOGGER, Level.SEVERE, e);
+					LOGGER.error("An error occurred while processing cue sheet: {}", e.getMessage());
+					LOGGER.trace("", e);
 				}
 			}
 		}
