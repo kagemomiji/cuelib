@@ -80,4 +80,11 @@ public class LineOfInput {
 	public int getLineNumber() {
 		return lineNumber;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("LineOfInput [").append(String.format("%03d: \"", lineNumber)).append(input).append("\"]");
+		return sb.toString();
+	}
 }

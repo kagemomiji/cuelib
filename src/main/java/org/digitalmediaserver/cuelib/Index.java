@@ -18,6 +18,8 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import static org.digitalmediaserver.cuelib.util.Utils.appendSeparator;
+
 
 /**
  * Simple representation of an INDEX datum in a cue sheet.
@@ -92,5 +94,21 @@ public class Index {
 	 */
 	public void setPosition(Position position) {
 		this.position = position;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[");
+		boolean first = true;
+		if (number >= 0) {
+			sb.append("number=").append(number);
+			first = false;
+		}
+		if (position != null) {
+			appendSeparator(sb, first);
+			sb.append("position=").append(position);
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }

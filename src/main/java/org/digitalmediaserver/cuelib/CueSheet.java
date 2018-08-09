@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import static org.digitalmediaserver.cuelib.util.Utils.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -542,5 +543,70 @@ public class CueSheet {
 	 */
 	public Path getFile() {
 		return file;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("CueSheet [").append("\n");
+		boolean first = true;
+
+		if (file != null) {
+			sb.append("    file=").append('"').append(file).append('"');
+			first = false;
+		}
+		if (!isBlank(title)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    title=").append(title);
+		}
+		if (!isBlank(performer)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    performer=").append(performer);
+		}
+		if (!isBlank(songwriter)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    songwriter=").append(songwriter);
+		}
+		if (year > 0) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    year=").append(year);
+		}
+		if (!isBlank(genre)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    genre=").append(genre);
+		}
+		if (discNumber > 0) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    discNumber=").append(discNumber);
+		}
+		if (totalDiscs > 0) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    totalDiscs=").append(totalDiscs);
+		}
+		if (!isBlank(cdTextFile)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    cdTextFile=").append(cdTextFile);
+		}
+		if (!isBlank(discId)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    discId=").append(discId);
+		}
+		if (!isBlank(comment)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    comment=").append(comment);
+		}
+		if (!isBlank(catalog)) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    catalog=").append(catalog);
+		}
+		if (!fileData.isEmpty()) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    fileData=").append(collectionToString(fileData, 8));
+		}
+		if (!messages.isEmpty()) {
+			first = appendSeparator(sb, first, "\n");
+			sb.append("    messages=").append(collectionToString(messages, 8));
+		}
+		sb.append("\n]");
+		return sb.toString();
 	}
 }

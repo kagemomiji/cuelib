@@ -18,6 +18,8 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import static org.digitalmediaserver.cuelib.util.Utils.*;
+
 
 /**
  * Implementation of the Message interface. Implements a specific type of
@@ -97,9 +99,25 @@ public abstract class MessageImplementation implements Message {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(input).append('\n');
-		builder.append(type).append(" [Line ").append(lineNumber).append("] ").append(message).append('\n');
-		return builder.toString();
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		if (!isBlank(type)) {
+			sb.append(type);
+			first = false;
+		}
+		if (lineNumber > -1) {
+			first = appendSeparator(sb, first, " ");
+			sb.append('(').append(String.format("%03d", lineNumber)).append(')');
+		}
+		if (!isBlank(message)) {
+			first = appendSeparator(sb, first, " ");
+			sb.append(message);
+		}
+		if (!isBlank(input)) {
+			appendSeparator(sb, first, ": ");
+			sb.append('"').append(input).append('"');
+		}
+		return sb.toString();
 	}
 
 	/**

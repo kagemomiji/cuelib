@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import static org.digitalmediaserver.cuelib.util.Utils.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,5 +159,24 @@ public class FileData {
 	 */
 	public void setParent(CueSheet parent) {
 		this.parent = parent;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[");
+		if (!isBlank(fileType)) {
+			sb.append(fileType).append(" ");
+		}
+		sb.append("file=");
+		if (isBlank(file)) {
+			sb.append("None");
+		} else {
+			sb.append('"').append(file).append('"');
+		}
+		if (!trackData.isEmpty()) {
+			sb.append(" trackData=").append(collectionToString(trackData, 12));
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }

@@ -18,6 +18,8 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import java.util.Locale;
+
 
 /**
  * Simple representation for a position field in a cue sheet.
@@ -137,5 +139,10 @@ public class Position {
 	 */
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
+	}
+
+	@Override
+	public String toString() {
+		return String.format(Locale.ROOT, "%d:%02d.%02d", minutes, seconds, frames);
 	}
 }

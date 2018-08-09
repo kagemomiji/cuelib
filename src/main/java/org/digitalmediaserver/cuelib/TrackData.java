@@ -18,6 +18,7 @@
  */
 package org.digitalmediaserver.cuelib;
 
+import static org.digitalmediaserver.cuelib.util.Utils.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -410,5 +411,53 @@ public class TrackData {
 	 */
 	public void setParent(FileData parent) {
 		this.parent = parent;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[");
+		boolean first = true;
+		if (!isBlank(dataType)) {
+			sb.append("dataType=").append(dataType);
+			first = false;
+		}
+		if (!isBlank(title)) {
+			first = appendSeparator(sb, first);
+			sb.append("title=").append(title);
+		}
+		if (!isBlank(performer)) {
+			first = appendSeparator(sb, first);
+			sb.append("performer=").append(performer);
+		}
+		if (!isBlank(songwriter)) {
+			first = appendSeparator(sb, first);
+			sb.append("songwriter=").append(songwriter);
+		}
+		if (number > 0) {
+			first = appendSeparator(sb, first);
+			sb.append("number=").append(number);
+		}
+		if (!isBlank(isrcCode)) {
+			first = appendSeparator(sb, first);
+			sb.append("isrcCode=").append(isrcCode);
+		}
+		if (pregap != null) {
+			first = appendSeparator(sb, first);
+			sb.append("pregap=").append(pregap);
+		}
+		if (postgap != null) {
+			first = appendSeparator(sb, first);
+			sb.append("postgap=").append(postgap);
+		}
+		if (!flags.isEmpty()) {
+			first = appendSeparator(sb, first);
+			sb.append("flags=").append(collectionToString(flags));
+		}
+		if (!indices.isEmpty()) {
+			first = appendSeparator(sb, first);
+			sb.append("indices=").append(collectionToString(indices));
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }
