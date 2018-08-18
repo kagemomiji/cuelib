@@ -66,6 +66,19 @@ public class Position {
 	}
 
 	/**
+	 * Creates a new {@link Position} based on the sample number.
+	 *
+	 * @param sampleNumber the sample number.
+	 * @param sampleRate the sample rate.
+	 */
+	public Position(long sampleNumber, int sampleRate) {
+		int totalSeconds = (int) (sampleNumber / sampleRate);
+		minutes = totalSeconds / 60;
+		seconds = totalSeconds % 60;
+		frames = (int) (((sampleNumber % sampleRate) * 75) / sampleRate);
+	}
+
+	/**
 	 * Get the total number of frames represented by this position. This is
 	 * equal to {@code frames + (75 * (seconds + 60 * minutes))}.
 	 *
