@@ -47,7 +47,7 @@
 		<jdk.target.version>1.7</jdk.target.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<javadocPluginVersion>3.0.1</javadocPluginVersion>
+		<javadocPluginVersion>3.11.2</javadocPluginVersion>
 	</properties>
 
 	<modules>
