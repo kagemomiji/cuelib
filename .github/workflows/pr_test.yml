@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - '.github/trivy_scan.yml'
+      - '.github/workflows/trivy_scan.yml'
+      - '.github/workflows/pr_test.yml'
       - '.github/dependabot.yml'
       - "**.md"
 
