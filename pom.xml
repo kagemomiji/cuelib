@@ -200,7 +200,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.5</version>
+				<version>3.6.0</version>
 				<configuration>
 					<lineLength>120</lineLength>
 					<stylesheet>${basedir}/doc/stylesheet.css</stylesheet>
